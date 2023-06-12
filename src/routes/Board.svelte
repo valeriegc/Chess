@@ -1,97 +1,51 @@
 <script lang="ts">
 	import { boardArr } from '../stores';
 
+	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+	const whiteSquares = [
+		1, 3, 5, 7, 10, 12, 14, 16, 17, 19, 21, 23, 26, 28, 30, 32, 33, 35, 37, 39, 42, 44, 46, 48, 49,
+		51, 53, 55, 58, 60, 62, 64
+	];
+
 	for (let i = 1; i < 65; i++) {
-		if (i < 9 || (i > 16 && i < 25) || (i > 32 && i < 41) || (i > 48 && i < 57)) {
-			if (i % 2 !== 0) {
-				$boardArr.push({
-					number: i,
-					coords: '',
-					color: 'white',
-					occupied: false,
-					occupier: ''
-				});
-			} else {
-				$boardArr.push({
-					number: i,
-					coords: '',
-					color: 'black',
-					occupied: false,
-					occupier: ''
-				});
-			}
-		} else {
-			if (i % 2 !== 0) {
-				$boardArr.push({
-					number: i,
-					coords: '',
-					color: 'black',
-					occupied: false,
-					occupier: ''
-				});
-			} else {
-				$boardArr.push({
-					number: i,
-					coords: '',
-					color: 'white',
-					occupied: false,
-					occupier: ''
-				});
-			}
-			$boardArr = $boardArr;
-		}
+		$boardArr.push({
+			number: i,
+			coords: '',
+			occupier: ''
+		});
+		$boardArr = $boardArr;
 	}
 </script>
 
 <div class="boardOuterWrap">
 	<div class="boardX">
-		<div class="letters">A</div>
-		<div class="letters">B</div>
-		<div class="letters">C</div>
-		<div class="letters">D</div>
-		<div class="letters">E</div>
-		<div class="letters">F</div>
-		<div class="letters">G</div>
-		<div class="letters">H</div>
+		{#each letters as letter}
+			<div class="letters">{letter}</div>
+		{/each}
 	</div>
 	<div class="boardInnerWrap">
 		<div class="boardY">
 			<div class="boardY">
-				<div class="numbers">1</div>
-				<div class="numbers">2</div>
-				<div class="numbers">3</div>
-				<div class="numbers">4</div>
-				<div class="numbers">5</div>
-				<div class="numbers">6</div>
-				<div class="numbers">7</div>
-				<div class="numbers">8</div>
+				{#each { length: 8 } as _, i}
+					<div class="numbers">{i + 1}</div>
+				{/each}
 			</div>
 		</div>
 		<div class="boardGrid">
 			{#each $boardArr as square}
-				<div style="background-color:{square.color};" />
+				<div style="background-color:{whiteSquares.includes(square.number) ? 'white' : 'black'}" />
 			{/each}
 		</div>
 		<div class="boardY">
-			<div class="numbers">1</div>
-			<div class="numbers">2</div>
-			<div class="numbers">3</div>
-			<div class="numbers">4</div>
-			<div class="numbers">5</div>
-			<div class="numbers">6</div>
-			<div class="numbers">7</div>
-			<div class="numbers">8</div>
+			{#each { length: 8 } as _, i}
+				<div class="numbers">{i + 1}</div>
+			{/each}
 		</div>
 	</div>
 	<div class="boardX">
-		<div class="letters">A</div>
-		<div class="letters">B</div>
-		<div class="letters">C</div>
-		<div class="letters">D</div>
-		<div class="letters">E</div>
-		<div class="letters">F</div>
-		<div class="letters">G</div>
-		<div class="letters">H</div>
+		{#each letters as letter}
+			<div class="letters">{letter}</div>
+		{/each}
 	</div>
 </div>
 
