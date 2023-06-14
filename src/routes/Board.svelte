@@ -30,7 +30,9 @@
 			{#each $boardArr as square}
 				<div
 					class="square"
-					style="background-color:{whiteSquares.includes(square.number) ? 'white' : 'darkgray'}"
+					style="background-color:{whiteSquares.includes(square.number)
+						? 'var(--lightsquare)'
+						: 'var(--darksquare)'}"
 				>
 					<svelte:component this={square.occupier} />
 				</div>
