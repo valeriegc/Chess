@@ -1,20 +1,59 @@
 <script lang="ts">
 	import { boardArr } from '../stores';
+	import BB from '../pieces/BB.svelte';
+	import BW from '../pieces/BW.svelte';
+	import HB from '../pieces/HB.svelte';
+	import HW from '../pieces/HW.svelte';
+	import KB from '../pieces/KB.svelte';
+	import KW from '../pieces/KW.svelte';
+	import PB from '../pieces/PB.svelte';
+	import PW from '../pieces/PW.svelte';
+	import QB from '../pieces/QB.svelte';
+	import QW from '../pieces/QW.svelte';
+	import TB from '../pieces/TB.svelte';
+	import TW from '../pieces/TW.svelte';
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
+	let piecesBlack = [TB, HB, BB, QB, KB, BB, HB, TB];
+
+	for (let i = 0; i < 8; i++) {
+		piecesBlack.push(PB);
+	}
+
+	let piecesWhite = [TW, HW, BW, QW, KW, BW, HW, TW];
+	for (let i = 0; i < 8; i++) {
+		piecesWhite.unshift(PW);
+	}
+
 	const whiteSquares = [
 		1, 3, 5, 7, 10, 12, 14, 16, 17, 19, 21, 23, 26, 28, 30, 32, 33, 35, 37, 39, 42, 44, 46, 48, 49,
 		51, 53, 55, 58, 60, 62, 64
 	];
 
-	for (let i = 1; i < 65; i++) {
-		$boardArr.push({
-			number: i,
-			coords: '',
-			occupier: ''
-		});
+	for (let i = 0; i < 64; i++) {
+		if (i < 16) {
+			$boardArr.push({
+				number: i + 1,
+				coords: '',
+				occupier: piecesBlack[i]
+			});
+		} else if (i > 47) {
+			$boardArr.push({
+				number: i + 1,
+				coords: '',
+				occupier: piecesWhite[i - 48]
+			});
+		} else {
+			$boardArr.push({
+				number: i + 1,
+				coords: '',
+				occupier: ''
+			});
+		}
 		$boardArr = $boardArr;
 	}
+	console.log($boardArr);
 </script>
 
 <div class="boardOuterWrap">
@@ -33,7 +72,12 @@
 		</div>
 		<div class="boardGrid">
 			{#each $boardArr as square}
-				<div style="background-color:{whiteSquares.includes(square.number) ? 'white' : 'black'}" />
+				<div
+					class="square"
+					style="background-color:{whiteSquares.includes(square.number) ? 'white' : 'darkgray'}"
+				>
+					<svelte:component this={square.occupier} />
+				</div>
 			{/each}
 		</div>
 		<div class="boardY">
@@ -88,5 +132,11 @@
 		border: solid black 1px;
 		display: grid;
 		grid-template-columns: repeat(8, 1fr);
+		grid-template-rows: repeat(8, 1fr);
+	}
+	.square {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 </style>
