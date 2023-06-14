@@ -1,29 +1,29 @@
 import { boardArr } from "../stores";
 
-import BB from '../pieces/BB.svelte';
-	import BW from '../pieces/BW.svelte';
-	import HB from '../pieces/HB.svelte';
-	import HW from '../pieces/HW.svelte';
-	import KB from '../pieces/KB.svelte';
-	import KW from '../pieces/KW.svelte';
-	import PB from '../pieces/PB.svelte';
-	import PW from '../pieces/PW.svelte';
-	import QB from '../pieces/QB.svelte';
-	import QW from '../pieces/QW.svelte';
-	import TB from '../pieces/TB.svelte';
-	import TW from '../pieces/TW.svelte';
+import TowerB from "../pieces/Tower_B.svelte";
+import HorseB from "../pieces/Horse_B.svelte";
+import BishopB from "../pieces/Bishop_B.svelte";
+import QueenB from "../pieces/Queen_B.svelte";
+import KingB from "../pieces/King_B.svelte";
+import PawnB from "../pieces/Pawn_B.svelte";
+import TowerW from "../pieces/Tower_W.svelte";
+import HorseW from "../pieces/Horse_W.svelte";
+import BishopW from "../pieces/Bishop_W.svelte";
+import QueenW from "../pieces/Queen_W.svelte";
+import KingW from "../pieces/King_W.svelte";
+import PawnW from "../pieces/Pawn_W.svelte";
 
 export const initPieces = ($boardArr) => {
 
-	const piecesBlack = [TB, HB, BB, QB, KB, BB, HB, TB];
+	const piecesBlack = [TowerB, HorseB, BishopB, QueenB, KingB, BishopB, HorseB, TowerB];
 
 	for (let i = 0; i < 8; i++) {
-		piecesBlack.push(PB);
+		piecesBlack.push(PawnB);
 	}
 
-	const piecesWhite = [TW, HW, BW, QW, KW, BW, HW, TW];
+	const piecesWhite = [TowerW, HorseW, BishopW, QueenW, KingW, BishopW, HorseW, TowerW];
 	for (let i = 0; i < 8; i++) {
-		piecesWhite.unshift(PW);
+		piecesWhite.unshift(PawnW);
 	}
 
 	for (let i = 0; i < 64; i++) {
