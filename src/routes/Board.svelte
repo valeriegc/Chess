@@ -1,20 +1,15 @@
 <script lang="ts">
 	import { boardArr } from '../stores';
+	import { initPieces } from '../functions/initPieces';
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
 	const whiteSquares = [
 		1, 3, 5, 7, 10, 12, 14, 16, 17, 19, 21, 23, 26, 28, 30, 32, 33, 35, 37, 39, 42, 44, 46, 48, 49,
 		51, 53, 55, 58, 60, 62, 64
 	];
 
-	for (let i = 1; i < 65; i++) {
-		$boardArr.push({
-			number: i,
-			coords: '',
-			occupier: ''
-		});
-		$boardArr = $boardArr;
-	}
+	initPieces($boardArr);
 </script>
 
 <div class="boardOuterWrap">
@@ -33,7 +28,12 @@
 		</div>
 		<div class="boardGrid">
 			{#each $boardArr as square}
-				<div style="background-color:{whiteSquares.includes(square.number) ? 'white' : 'black'}" />
+				<div
+					class="square"
+					style="background-color:{whiteSquares.includes(square.number) ? 'white' : 'darkgray'}"
+				>
+					<svelte:component this={square.occupier} />
+				</div>
 			{/each}
 		</div>
 		<div class="boardY">
@@ -88,5 +88,11 @@
 		border: solid black 1px;
 		display: grid;
 		grid-template-columns: repeat(8, 1fr);
+		grid-template-rows: repeat(8, 1fr);
+	}
+	.square {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 </style>
