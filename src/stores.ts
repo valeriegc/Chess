@@ -1,9 +1,9 @@
-import type { SvelteComponent } from 'svelte';
+import type {  SvelteComponent, SvelteComponentTyped } from 'svelte';
 import { writable } from "svelte/store";
 export interface Square {
-    number: number
+    number: number;
     coords: string;
-    occupier: SvelteComponent;
+    occupier: typeof SvelteComponent | null;
 }
 export const boardArr = writable<Square[]>([]);
 export const selectedSquare = writable(-1)
