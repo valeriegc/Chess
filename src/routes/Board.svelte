@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { boardArr, selectedSquare } from '../stores';
 	import { initPieces } from '../functions/initPieces';
+	import { fade, fly } from 'svelte/transition';
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
@@ -51,7 +52,11 @@
 						: 'var(--darkSquare)'}"
 					on:click={() => handleMove(square.number, square.occupier)}
 				>
-					<svelte:component this={square.occupier} />
+					{#if square.occupier !== ''}
+						<div in:fly={{ duration: 1000 }} out:fade>
+							<svelte:component this={square.occupier} />
+						</div>
+					{/if}
 				</div>
 			{/each}
 		</div>
