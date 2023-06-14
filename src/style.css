@@ -3,5 +3,7 @@
 }
 
 :root {
-	--lightsquare: white;
-	--darksquare: darkgrey; }
+	--lightSquare: white;
+	--darkSquare: darkgrey;
+	--selectedSquare: lightblue; }
+

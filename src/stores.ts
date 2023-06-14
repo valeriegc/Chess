@@ -6,3 +6,4 @@ export interface Square {
     occupier: SvelteComponent;
 }
 export const boardArr = writable<Square[]>([]);
+export const selectedSquare = writable(0)

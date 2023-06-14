@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { boardArr } from '../stores';
+	import { boardArr, selectedSquare } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
@@ -10,6 +10,19 @@
 	];
 
 	initPieces($boardArr);
+
+	const handleMove = (squareNumber: number, occupier: string) => {
+		if (squareNumber !== $selectedSquare && occupier != '') {
+			$selectedSquare = squareNumber;
+			$selectedSquare = $selectedSquare;
+		} else if (squareNumber !== $selectedSquare && occupier == '') {
+			$boardArr[squareNumber - 1].occupier = $boardArr[$selectedSquare - 1].occupier;
+			$boardArr[$selectedSquare - 1].occupier = '';
+			$boardArr = $boardArr;
+			$selectedSquare = 0;
+			$selectedSquare = $selectedSquare;
+		}
+	};
 </script>
 
 <div class="boardOuterWrap">
@@ -28,11 +41,15 @@
 		</div>
 		<div class="boardGrid">
 			{#each $boardArr as square}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div
 					class="square"
-					style="background-color:{whiteSquares.includes(square.number)
-						? 'var(--lightsquare)'
-						: 'var(--darksquare)'}"
+					style="background-color:{square.number == $selectedSquare
+						? 'var(--selectedSquare'
+						: whiteSquares.includes(square.number)
+						? 'var(--lightSquare)'
+						: 'var(--darkSquare)'}"
+					on:click={() => handleMove(square.number, square.occupier)}
 				>
 					<svelte:component this={square.occupier} />
 				</div>
