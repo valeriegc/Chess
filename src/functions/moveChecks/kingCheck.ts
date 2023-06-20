@@ -1,18 +1,20 @@
 import { allowedSquares } from "../../stores";
+import { column, firstColumn, lastColumn, row, columnFinder } from "../../global";
 
 export const kingCheck = (targetSquare:number) => {
-const allowedSquares2 = []
-const columnNumber = targetSquare%8 == 0 ? 8: targetSquare%8
+const tempArray = []
+const columnNumber = columnFinder(targetSquare)
 
-if (columnNumber == 1) {
-    allowedSquares2.push(targetSquare+1, targetSquare-8, targetSquare+8)
+switch (columnNumber){
+case (firstColumn) :
+    tempArray.push(targetSquare+column, targetSquare-row, targetSquare+row)
+break;
+case (lastColumn):
+    tempArray.push(targetSquare-column, targetSquare-row, targetSquare+row)
+break;
+default:
+    tempArray.push(targetSquare-column,targetSquare+column,
+        targetSquare + row, targetSquare-row)
 }
-else if (columnNumber == 8){
-    allowedSquares2.push(targetSquare-1, targetSquare-8, targetSquare+8)
-}
-else {
-    allowedSquares2.push(targetSquare-1,targetSquare+1,
-        targetSquare + 8, targetSquare-8)
-}
-allowedSquares.set(allowedSquares2)
+allowedSquares.set(tempArray)
 }

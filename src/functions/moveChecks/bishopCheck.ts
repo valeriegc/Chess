@@ -1,42 +1,42 @@
+import { diagonalRowNE, diagonalRowSW,rowFinder,column, firstColumn, columnFinder, row, lastColumn, lastRow, firstRow, diagonalRowSE, diagonalRowNW } from "../../global"
 import { allowedSquares } from "../../stores"
 
 export const bishopCheck = (targetSquare:number) => {
 
-const allowedSquares1 = []
+const tempArray = []
+const startSquare = targetSquare
+let currentSquare =targetSquare
 
-let currentSquare = targetSquare
-
-if (currentSquare%8 !== 1 && Math.ceil(currentSquare/8) !== 8){
-for (let i=0; i< 8; i++){
-    currentSquare = currentSquare +7
-    if (currentSquare%8 == 1 || Math.ceil(currentSquare/8) == 8) i = 8
-    allowedSquares1.push(currentSquare)
-}}
-currentSquare = targetSquare
-
-if (Math.ceil(currentSquare/8) !==8 && currentSquare%8 !== 0 ){
-for (let i=0; i < 8; i++){
-    currentSquare = currentSquare+9
-    if (currentSquare%8 == 0 || Math.ceil(currentSquare/8)==8) i = 8
-    allowedSquares1.push(currentSquare)
-}}
-currentSquare = targetSquare
-
-if (Math.ceil(currentSquare/8) !==1 && currentSquare%8 !== 0 ){
-for (let i=0; i<8; i++){
-    currentSquare = currentSquare -7
-    if (currentSquare%8 == 0 || Math.ceil(currentSquare/8)==1) i = 8
-    allowedSquares1.push(currentSquare)}
-}
-currentSquare = targetSquare
-
-if (currentSquare%8 !== 1 && Math.ceil(currentSquare/8)!==1){
-for (let i=0; i < 8; i++){
-    currentSquare = currentSquare-9
-    if (currentSquare%8 == 1 || Math.ceil(currentSquare/8)==1) i = 8
-    allowedSquares1.push(currentSquare)
-}}
-
-allowedSquares.set(allowedSquares1)
-console.log(allowedSquares1)
-}
+if (columnFinder(currentSquare) !== firstColumn && rowFinder(currentSquare) !== lastRow){
+    for (let i=0; i< 8; i++){
+        currentSquare = currentSquare + diagonalRowSW
+        if (columnFinder(currentSquare) == firstColumn || rowFinder(currentSquare) == lastRow) i = 8
+        tempArray.push(currentSquare)
+    }}
+    currentSquare = targetSquare
+    
+    if (rowFinder(currentSquare) !== lastRow && columnFinder(currentSquare) !== lastColumn ){
+    for (let i=0; i < 8; i++){
+        currentSquare = currentSquare+ diagonalRowSE
+        if (columnFinder(currentSquare) == lastColumn || rowFinder(currentSquare)==8) i = 8
+        tempArray.push(currentSquare)
+    }}
+    currentSquare = targetSquare
+    
+    if (rowFinder(currentSquare) !== firstRow && columnFinder(currentSquare) !== lastColumn ){
+    for (let i=0; i<8; i++){
+        currentSquare = currentSquare + diagonalRowNE
+        if (columnFinder(currentSquare) == lastColumn || rowFinder(currentSquare)==firstRow) i = 8
+        tempArray.push(currentSquare)}
+    }
+    currentSquare = targetSquare
+    
+    if (columnFinder(currentSquare) !== firstColumn && rowFinder(currentSquare)!==firstRow){
+    for (let i=0; i < 8; i++){
+        currentSquare = currentSquare + diagonalRowNW
+        if (columnFinder(currentSquare) == firstColumn || rowFinder(currentSquare)==firstRow) i = 8
+        tempArray.push(currentSquare)
+    }}
+    
+       allowedSquares.set(tempArray.filter(n=> n!==startSquare).sort((a,b) => a -b))
+    }

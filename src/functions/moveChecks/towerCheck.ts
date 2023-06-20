@@ -1,36 +1,32 @@
 import { allowedSquares } from "../../stores"
+import { lastColumn, columnFinder, biggestSquare, firstColumn, smallestSquare } from "../../global"
 export const towerCheck = (targetSquare:number) => {
-    const startSquare = targetSquare
-    const finalColumn = 8
-    let columnNumber = startSquare%finalColumn
 
-    const allowedSquares2 = []
-
-    //vertical checks
-
+    const columnNumber = columnFinder(targetSquare)
+    const tempArray = []
     let counter = 1    
-    if (columnNumber == 0) columnNumber = finalColumn
-    for (let i=columnNumber; i > 1; i--) {
-        allowedSquares2.push(startSquare-counter)
+
+    //horizontal checks
+
+    for (let i=columnNumber; i > firstColumn; i--) {
+        tempArray.push(targetSquare-counter)
         counter += 1
     }
     counter = 1
-    for (let i=columnNumber; i < finalColumn; i++){
-        allowedSquares2.push(startSquare+counter)
+    for (let i=columnNumber; i < lastColumn; i++){
+        tempArray.push(targetSquare+counter)
         counter +=1
     }
 
-    //horizontal downwards
-    for (let i=startSquare;i>0; i-=finalColumn){
-    allowedSquares2.push(i)
+    //vertical checks
+    for (let i=targetSquare;i>=smallestSquare; i-=lastColumn){
+    tempArray.push(i)
     }
 
-    //horizontal upwards
-
-    for (let i=startSquare; i<65; i+=finalColumn){
-    allowedSquares2.push(i)
+    for (let i=targetSquare; i<= biggestSquare; i+=lastColumn){
+    tempArray.push(i)
     }
 
-    const allowedSquares3 =allowedSquares2.filter(n=> n!==startSquare).sort((a,b) => a -b)
-    allowedSquares.set(allowedSquares3)
+    allowedSquares.set(tempArray.filter(n=> n!==targetSquare).sort((a,b) => a -b))
+  
 }
