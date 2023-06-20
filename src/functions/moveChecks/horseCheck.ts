@@ -1,30 +1,20 @@
 import { allowedSquares } from "../../stores"
+import { columnFinder, column } from "../../global"
 
 export const horseCheck = (targetSquare: number) => {
     const startColumnNumber = targetSquare%8 == 0 ? 8 : targetSquare%8
 
-    const columnCounter = (n:number) => {
-    if (n%8 == 0) return 8
-    else return n%8
-    }
-
-    const plusOneRow = [-15,17] //works
-    const plusTwoRow = [-6, 10] //works
+    const plusOneRow = [-15,17] 
+    const plusTwoRow = [-6, 10] 
     const minusOneRow = [-17,15]
     const minusTwoRow = [6, -10]
-    const allowedSquares1 = []
+    const tempArray = []
 
-    plusOneRow.map(n => columnCounter(targetSquare + n) == (startColumnNumber +1) ? allowedSquares1.push(targetSquare+n) : n)
-    console.log(allowedSquares1)
-    plusTwoRow.map(n => columnCounter(targetSquare + n) == (startColumnNumber +2) ? allowedSquares1.push(targetSquare+n) : n)
-    console.log(allowedSquares1)
-    minusOneRow.map(n => columnCounter(targetSquare +n) == (startColumnNumber -1) ? allowedSquares1.push(targetSquare+n) : n)
-    console.log(allowedSquares1)
-    minusTwoRow.map(n => columnCounter(targetSquare +n) == (startColumnNumber -2) ? allowedSquares1.push(targetSquare+n) : n)
-    console.log(allowedSquares1)
+    plusOneRow.map(n => columnFinder(targetSquare + n) == (startColumnNumber + column) ? tempArray.push(targetSquare+n) : n)
+    plusTwoRow.map(n => columnFinder(targetSquare + n) == (startColumnNumber + 2*column) ? tempArray.push(targetSquare+n) : n)
+    minusOneRow.map(n => columnFinder(targetSquare +n) == (startColumnNumber - column) ? tempArray.push(targetSquare+n) : n)
+    minusTwoRow.map(n => columnFinder(targetSquare +n) == (startColumnNumber - 2*column) ? tempArray.push(targetSquare+n) : n)
 
-    const allowedSquares2 = allowedSquares1.filter(n => n>0 && n<65)
-    
-    allowedSquares.set(allowedSquares2)
+    allowedSquares.set(tempArray.filter(n => n>0 && n<65))
 
 }
