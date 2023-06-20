@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { boardArr, selectedSquare } from '../stores';
+	import { boardArr, selectedSquare, allowedSquares } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import type { SvelteComponent } from 'svelte';
+	import { pieceCheck } from '../functions/moveChecks/pieceCheck';
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
@@ -19,6 +20,7 @@
 
 		if (targetOccupied) {
 			$selectedSquare = targetSquare;
+			pieceCheck(occupier, targetSquare);
 		} else {
 			$boardArr[targetSquare - 1].occupier = $boardArr[$selectedSquare - 1].occupier;
 			$boardArr[$selectedSquare - 1].occupier = null;
@@ -47,8 +49,11 @@
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div
 					class="square"
-					style="background-color:{square.number == $selectedSquare
-						? 'var(--selectedSquare'
+					style="background-color:
+					{$allowedSquares.includes(square.number)
+						? 'var(--possibleMove)'
+						: square.number == $selectedSquare
+						? 'var(--selectedSquare)'
 						: whiteSquares.includes(square.number)
 						? 'var(--lightSquare)'
 						: 'var(--darkSquare)'}"

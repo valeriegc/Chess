@@ -5,5 +5,7 @@
 :root {
 	--lightSquare: white;
 	--darkSquare: darkgrey;
-	--selectedSquare: lightblue; }
+	--selectedSquare: lightblue;
+	--possibleMove: lightgreen;
+ }
 

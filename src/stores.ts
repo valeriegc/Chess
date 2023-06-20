@@ -7,3 +7,4 @@ export interface Square {
 }
 export const boardArr = writable<Square[]>([]);
 export const selectedSquare = writable(-1)
+export const allowedSquares = writable<number[]>([])
