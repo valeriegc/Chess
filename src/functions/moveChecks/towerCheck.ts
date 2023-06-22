@@ -4,7 +4,9 @@ export const towerCheck = (targetSquare:number) => {
 
     const columnNumber = columnFinder(targetSquare)
     const tempArray = []
+    const rowLength = 8
     let counter = 1    
+    
 
     //horizontal checks
 
@@ -19,14 +21,14 @@ export const towerCheck = (targetSquare:number) => {
     }
 
     //vertical checks
-    for (let i=targetSquare;i>=smallestSquare; i-=lastColumn){
+    for (let i=targetSquare;i>=smallestSquare; i-=rowLength){ 
     tempArray.push(i)
     }
 
-    for (let i=targetSquare; i<= biggestSquare; i+=lastColumn){
+    for (let i=targetSquare; i<= biggestSquare; i+=rowLength){
     tempArray.push(i)
     }
 
-    allowedSquares.set(tempArray.filter(n=> n!==targetSquare).sort((a,b) => a -b))
+    allowedSquares.set(tempArray.filter(n=> n!==targetSquare))
   
 }

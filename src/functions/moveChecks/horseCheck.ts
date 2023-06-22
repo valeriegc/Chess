@@ -2,7 +2,7 @@ import { allowedSquares } from "../../stores"
 import { columnFinder, column } from "../../global"
 
 export const horseCheck = (targetSquare: number) => {
-    const startColumnNumber = targetSquare%8 == 0 ? 8 : targetSquare%8
+    const startColumnNumber = columnFinder(targetSquare)
 
     const plusOneRow = [-15,17] 
     const plusTwoRow = [-6, 10] 
