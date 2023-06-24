@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { boardArr, selectedSquare, allowedSquares } from '../stores';
+	import { boardArr, selectedSquare, allowedSquares, turn } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import type { SvelteComponent } from 'svelte';
@@ -20,10 +20,12 @@
 
 		if (targetOccupied) {
 			$selectedSquare = targetSquare;
-			pieceCheck(occupier, targetSquare);
+			$allowedSquares = pieceCheck(occupier, targetSquare)!;
 		} else {
 			$boardArr[targetSquare - 1].occupier = $boardArr[$selectedSquare - 1].occupier;
+			$boardArr[targetSquare - 1].color = $boardArr[$selectedSquare - 1].color;
 			$boardArr[$selectedSquare - 1].occupier = null;
+			$boardArr[$selectedSquare - 1].color = '';
 			$boardArr = $boardArr;
 			$selectedSquare = -1;
 		}

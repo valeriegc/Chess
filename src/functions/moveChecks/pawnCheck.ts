@@ -4,7 +4,7 @@ import PawnB from '../../pieces/Pawn_B.svelte';
 import { row, rowFinder } from '../../global';
 
 export const pawnCheck = (targetSquare: number, movingPiece: typeof SvelteComponent) => {
-	const tempArray = [];
+	const tempArray: number[] = [];
 	const rowNumber = rowFinder(targetSquare);
 
 	if (movingPiece == PawnB) {
@@ -14,5 +14,5 @@ export const pawnCheck = (targetSquare: number, movingPiece: typeof SvelteCompon
 		tempArray.push(targetSquare - row);
 		if (rowNumber == 7) tempArray.push(targetSquare - 2 * row);
 	}
-	allowedSquares.set(tempArray);
+	return tempArray;
 };
