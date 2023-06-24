@@ -10,7 +10,7 @@ import {
 } from '../../global';
 
 export const kingCheck = (targetSquare: number) => {
-	const tempArray = [];
+	const tempArray: number[] = [];
 	const columnNumber = columnFinder(targetSquare);
 
 	switch (columnNumber) {
@@ -28,5 +28,5 @@ export const kingCheck = (targetSquare: number) => {
 				targetSquare - row
 			);
 	}
-	allowedSquares.set(tempArray.filter((n) => n > smallestSquare && n < biggestSquare));
+	return tempArray.filter((n) => n > smallestSquare && n < biggestSquare);
 };
