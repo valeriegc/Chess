@@ -18,12 +18,18 @@ import { pawnCheck } from './pawnCheck';
 import { bishopCheck } from './bishopCheck';
 import { queenCheck } from './queenCheck';
 import { kingCheck } from './kingCheck';
+import type { Square } from '../../stores';
 
-export const pieceCheck = (movingPiece: typeof SvelteComponent, targetSquare: number) => {
+export const pieceCheck = (
+	movingPiece: typeof SvelteComponent,
+	targetSquare: number,
+	board: Square[],
+	turn: string
+) => {
 	switch (movingPiece) {
 		case TowerW:
 		case TowerB:
-			return towerCheck(targetSquare);
+			return towerCheck(targetSquare, board, turn);
 
 		case HorseW:
 		case HorseB:
