@@ -22,7 +22,11 @@ export const pawnCheck = (
 		if (hasOpponentPiece(targetSquare + row - 1, boardArr, turn)) {
 			tempArray.push(targetSquare + row - 1);
 		}
-		if (rowNumber == 2 && !hasOwnPiece(targetSquare + 2 * row, boardArr, turn)) {
+		if (
+			rowNumber == 2 &&
+			!hasOwnPiece(targetSquare + 2 * row, boardArr, turn) &&
+			!hasOwnPiece(targetSquare + row, boardArr, turn)
+		) {
 			tempArray.push(targetSquare + 2 * row);
 		}
 	} else {
@@ -35,7 +39,11 @@ export const pawnCheck = (
 		if (hasOpponentPiece(targetSquare - row - 1, boardArr, turn)) {
 			tempArray.push(targetSquare - row - 1);
 		}
-		if (rowNumber == 7 && !hasOwnPiece(targetSquare - 2 * row, boardArr, turn)) {
+		if (
+			rowNumber == 7 &&
+			!hasOwnPiece(targetSquare - 2 * row, boardArr, turn) &&
+			!hasOwnPiece(targetSquare + row, boardArr, turn)
+		) {
 			tempArray.push(targetSquare - 2 * row);
 		}
 	}
