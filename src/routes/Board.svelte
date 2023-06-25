@@ -3,7 +3,7 @@
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import type { SvelteComponent } from 'svelte';
-	import { pieceCheck } from '../functions/moveChecks/pieceCheck';
+	import { pieceCheck } from '../functions/pieceCheck';
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
