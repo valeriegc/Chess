@@ -1,11 +1,12 @@
 import { lastColumn, columnFinder, biggestSquare, firstColumn, smallestSquare } from '../../global';
 
-export const towerCheck = (targetSquare: number) => {
+export const towerCheck = (targetSquare: number, board) => {
+	const boardArr = board;
 	const columnNumber = columnFinder(targetSquare);
 	const tempArray: number[] = [];
 	const rowLength = 8;
 	let counter = 1;
-
+	console.log(boardArr);
 	//horizontal checks
 
 	for (let i = columnNumber; i > firstColumn; i--) {

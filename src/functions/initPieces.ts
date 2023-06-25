@@ -31,22 +31,19 @@ export const initPieces = () => {
 			tempBoardArray.push({
 				number: i + 1,
 				coords: '',
-				occupier: piecesBlack[i],
-				color: 'black'
+				occupier: { component: piecesBlack[i], color: 'black' }
 			});
 		} else if (i > 47) {
 			tempBoardArray.push({
 				number: i + 1,
 				coords: '',
-				occupier: piecesWhite[i - 48],
-				color: 'white'
+				occupier: { component: piecesWhite[i - 48], color: 'white' }
 			});
 		} else {
 			tempBoardArray.push({
 				number: i + 1,
 				coords: '',
-				occupier: null,
-				color: ''
+				occupier: { component: null, color: '' }
 			});
 		}
 	}
