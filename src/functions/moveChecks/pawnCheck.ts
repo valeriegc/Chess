@@ -42,7 +42,7 @@ export const pawnCheck = (
 		if (
 			rowNumber == 7 &&
 			!hasOwnPiece(targetSquare - 2 * row, boardArr, turn) &&
-			!hasOwnPiece(targetSquare + row, boardArr, turn)
+			!hasOwnPiece(targetSquare - row, boardArr, turn)
 		) {
 			tempArray.push(targetSquare - 2 * row);
 		}
