@@ -45,7 +45,7 @@ export const pieceCheck = (
 
 		case BishopB:
 		case BishopW:
-			return bishopCheck(targetSquare);
+			return bishopCheck(targetSquare, board, turn);
 
 		case KingB:
 		case KingW:
