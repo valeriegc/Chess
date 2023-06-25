@@ -1,4 +1,3 @@
-import { allowedSquares } from '../../stores';
 import {
 	column,
 	firstColumn,
@@ -6,27 +5,46 @@ import {
 	row,
 	columnFinder,
 	smallestSquare,
-	biggestSquare
+	biggestSquare,
+	hasOwnPiece
 } from '../../global';
+import type { Square } from '../../stores';
 
-export const kingCheck = (targetSquare: number) => {
-	const tempArray: number[] = [];
+export const kingCheck = (targetSquare: number, board: Square[], turn: string) => {
+	const tempArrayLimited: number[] = [];
 	const columnNumber = columnFinder(targetSquare);
 
 	switch (columnNumber) {
 		case firstColumn:
-			tempArray.push(targetSquare + column, targetSquare - row, targetSquare + row);
+			tempArrayLimited.push(
+				targetSquare + column,
+				targetSquare - row,
+				targetSquare + row,
+				targetSquare - row + 1,
+				targetSquare + row + 1
+			);
 			break;
 		case lastColumn:
-			tempArray.push(targetSquare - column, targetSquare - row, targetSquare + row);
+			tempArrayLimited.push(
+				targetSquare - column,
+				targetSquare - row,
+				targetSquare + row,
+				targetSquare - row - 1,
+				targetSquare + row - 1
+			);
 			break;
 		default:
-			tempArray.push(
+			tempArrayLimited.push(
 				targetSquare - column,
 				targetSquare + column,
 				targetSquare + row,
-				targetSquare - row
+				targetSquare - row,
+				targetSquare - row + 1,
+				targetSquare + row + 1,
+				targetSquare - row - 1,
+				targetSquare + row - 1
 			);
 	}
-	return tempArray.filter((n) => n > smallestSquare && n < biggestSquare);
+	const tempArray = tempArrayLimited.filter((n) => n > smallestSquare && n < biggestSquare);
+	return tempArray.filter((n) => !hasOwnPiece(n, board, turn));
 };

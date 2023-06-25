@@ -49,6 +49,6 @@ export const pieceCheck = (
 
 		case KingB:
 		case KingW:
-			return kingCheck(targetSquare);
+			return kingCheck(targetSquare, board, turn);
 	}
 };
