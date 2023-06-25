@@ -1,4 +1,4 @@
-import { columnFinder, column } from '../../global';
+import { columnFinder, column, hasOwnPiece } from '../../global';
 import type { Square } from '../../stores';
 
 export const horseCheck = (targetSquare: number, boardArr: Square[], turn: string) => {
@@ -31,5 +31,5 @@ export const horseCheck = (targetSquare: number, boardArr: Square[], turn: strin
 		}
 	});
 	const tempArrayLimited = tempArray.filter((n) => n > 0 && n < 65);
-	return tempArrayLimited.filter((n) => boardArr[n - 1].occupier.color !== turn);
+	return tempArrayLimited.filter((n) => !hasOwnPiece(n, boardArr, turn));
 };
