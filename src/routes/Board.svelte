@@ -20,7 +20,7 @@
 
 		if (targetOccupied) {
 			$selectedSquare = targetSquare;
-			$allowedSquares = pieceCheck(occupier, targetSquare, $boardArr, $turn);
+			$allowedSquares = pieceCheck(occupier, targetSquare, $boardArr, $turn)!;
 		} else {
 			$boardArr[targetSquare - 1].occupier.component =
 				$boardArr[$selectedSquare - 1].occupier.component;
