@@ -33,7 +33,7 @@ export const pieceCheck = (
 
 		case HorseW:
 		case HorseB:
-			return horseCheck(targetSquare);
+			return horseCheck(targetSquare, board, turn);
 
 		case PawnB:
 		case PawnW:
