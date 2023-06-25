@@ -1,7 +1,7 @@
-import { allowedSquares } from '../../stores';
-import { columnFinder, column } from '../../global';
+import { columnFinder, column, hasOwnPiece } from '../../global';
+import type { Square } from '../../stores';
 
-export const horseCheck = (targetSquare: number) => {
+export const horseCheck = (targetSquare: number, boardArr: Square[], turn: string) => {
 	const startColumnNumber = columnFinder(targetSquare);
 
 	const plusOneRow = [-15, 17];
@@ -10,26 +10,26 @@ export const horseCheck = (targetSquare: number) => {
 	const minusTwoRow = [6, -10];
 	const tempArray: number[] = [];
 
-	plusOneRow.map((n) =>
-		columnFinder(targetSquare + n) == startColumnNumber + column
-			? tempArray.push(targetSquare + n)
-			: n
-	);
-	plusTwoRow.map((n) =>
-		columnFinder(targetSquare + n) == startColumnNumber + 2 * column
-			? tempArray.push(targetSquare + n)
-			: n
-	);
-	minusOneRow.map((n) =>
-		columnFinder(targetSquare + n) == startColumnNumber - column
-			? tempArray.push(targetSquare + n)
-			: n
-	);
-	minusTwoRow.map((n) =>
-		columnFinder(targetSquare + n) == startColumnNumber - 2 * column
-			? tempArray.push(targetSquare + n)
-			: n
-	);
-
-	return tempArray.filter((n) => n > 0 && n < 65);
+	plusOneRow.forEach((n) => {
+		if (columnFinder(targetSquare + n) == startColumnNumber + column) {
+			tempArray.push(targetSquare + n);
+		}
+	});
+	plusTwoRow.forEach((n) => {
+		if (columnFinder(targetSquare + n) == startColumnNumber + 2 * column) {
+			tempArray.push(targetSquare + n);
+		}
+	});
+	minusOneRow.forEach((n) => {
+		if (columnFinder(targetSquare + n) == startColumnNumber - column) {
+			tempArray.push(targetSquare + n);
+		}
+	});
+	minusTwoRow.forEach((n) => {
+		if (columnFinder(targetSquare + n) == startColumnNumber - 2 * column) {
+			tempArray.push(targetSquare + n);
+		}
+	});
+	const tempArrayLimited = tempArray.filter((n) => n > 0 && n < 65);
+	return tempArrayLimited.filter((n) => !hasOwnPiece(n, boardArr, turn));
 };

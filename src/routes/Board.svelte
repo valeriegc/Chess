@@ -3,7 +3,7 @@
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import type { SvelteComponent } from 'svelte';
-	import { pieceCheck } from '../functions/moveChecks/pieceCheck';
+	import { pieceCheck } from '../functions/pieceCheck';
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
@@ -20,12 +20,13 @@
 
 		if (targetOccupied) {
 			$selectedSquare = targetSquare;
-			$allowedSquares = pieceCheck(occupier, targetSquare)!;
+			$allowedSquares = pieceCheck(occupier, targetSquare, $boardArr, $turn)!;
 		} else {
-			$boardArr[targetSquare - 1].occupier = $boardArr[$selectedSquare - 1].occupier;
-			$boardArr[targetSquare - 1].color = $boardArr[$selectedSquare - 1].color;
-			$boardArr[$selectedSquare - 1].occupier = null;
-			$boardArr[$selectedSquare - 1].color = '';
+			$boardArr[targetSquare - 1].occupier.component =
+				$boardArr[$selectedSquare - 1].occupier.component;
+			$boardArr[targetSquare - 1].occupier.color = $boardArr[$selectedSquare - 1].occupier.color;
+			$boardArr[$selectedSquare - 1].occupier.component = null;
+			$boardArr[$selectedSquare - 1].occupier.color = '';
 			$boardArr = $boardArr;
 			$selectedSquare = -1;
 		}
@@ -59,11 +60,11 @@
 						: whiteSquares.includes(square.number)
 						? 'var(--lightSquare)'
 						: 'var(--darkSquare)'}"
-					on:click={() => handleSelectAndMove(square.number, square.occupier)}
+					on:click={() => handleSelectAndMove(square.number, square.occupier.component)}
 				>
 					{#if square.occupier !== null}
 						<div in:fly={{ duration: 1000 }} out:fade>
-							<svelte:component this={square.occupier} />
+							<svelte:component this={square.occupier.component} />
 						</div>
 					{/if}
 				</div>

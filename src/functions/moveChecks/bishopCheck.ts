@@ -8,18 +8,27 @@ import {
 	lastRow,
 	firstRow,
 	diagonalRowSE,
-	diagonalRowNW
+	diagonalRowNW,
+	hasOwnPiece,
+	hasOpponentPiece
 } from '../../global';
+import type { Square } from '../../stores';
 
-export const bishopCheck = (targetSquare: number) => {
+export const bishopCheck = (targetSquare: number, board: Square[], turn: string) => {
 	const tempArray: number[] = [];
-	const startSquare = targetSquare;
 	let currentSquare = targetSquare;
 
 	if (columnFinder(currentSquare) !== firstColumn && rowFinder(currentSquare) !== lastRow) {
 		for (let i = 0; i < 8; i++) {
 			currentSquare = currentSquare + diagonalRowSW;
-			if (columnFinder(currentSquare) == firstColumn || rowFinder(currentSquare) == lastRow) i = 8;
+			if (columnFinder(currentSquare) == firstColumn || rowFinder(currentSquare) == lastRow) {
+				i = 8;
+			}
+			if (hasOwnPiece(currentSquare, board, turn)) break;
+			if (hasOpponentPiece(currentSquare, board, turn)) {
+				tempArray.push(currentSquare);
+				break;
+			}
 			tempArray.push(currentSquare);
 		}
 	}
@@ -29,6 +38,11 @@ export const bishopCheck = (targetSquare: number) => {
 		for (let i = 0; i < 8; i++) {
 			currentSquare = currentSquare + diagonalRowSE;
 			if (columnFinder(currentSquare) == lastColumn || rowFinder(currentSquare) == 8) i = 8;
+			if (hasOwnPiece(currentSquare, board, turn)) break;
+			if (hasOpponentPiece(currentSquare, board, turn)) {
+				tempArray.push(currentSquare);
+				break;
+			}
 			tempArray.push(currentSquare);
 		}
 	}
@@ -38,6 +52,11 @@ export const bishopCheck = (targetSquare: number) => {
 		for (let i = 0; i < 8; i++) {
 			currentSquare = currentSquare + diagonalRowNE;
 			if (columnFinder(currentSquare) == lastColumn || rowFinder(currentSquare) == firstRow) i = 8;
+			if (hasOwnPiece(currentSquare, board, turn)) break;
+			if (hasOpponentPiece(currentSquare, board, turn)) {
+				tempArray.push(currentSquare);
+				break;
+			}
 			tempArray.push(currentSquare);
 		}
 	}
@@ -47,9 +66,14 @@ export const bishopCheck = (targetSquare: number) => {
 		for (let i = 0; i < 8; i++) {
 			currentSquare = currentSquare + diagonalRowNW;
 			if (columnFinder(currentSquare) == firstColumn || rowFinder(currentSquare) == firstRow) i = 8;
+			if (hasOwnPiece(currentSquare, board, turn)) break;
+			if (hasOpponentPiece(currentSquare, board, turn)) {
+				tempArray.push(currentSquare);
+				break;
+			}
 			tempArray.push(currentSquare);
 		}
 	}
 
-	return tempArray.filter((n) => n !== startSquare).sort((a, b) => a - b);
+	return tempArray.filter((n) => n !== targetSquare).sort((a, b) => a - b);
 };

@@ -3,8 +3,10 @@ import { writable } from 'svelte/store';
 export interface Square {
 	number: number;
 	coords: string;
-	color: string;
-	occupier: typeof SvelteComponent | null;
+	occupier: {
+		component: typeof SvelteComponent | null;
+		color: string;
+	};
 }
 export const boardArr = writable<Square[]>([]);
 export const selectedSquare = writable(-1);
