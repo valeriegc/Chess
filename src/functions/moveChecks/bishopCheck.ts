@@ -16,8 +16,7 @@ import type { Square } from '../../stores';
 
 export const bishopCheck = (targetSquare: number, board: Square[], turn: string) => {
 	const tempArray: number[] = [];
-	const startSquare = targetSquare;
-	let currentSquare = startSquare;
+	let currentSquare = targetSquare;
 
 	if (columnFinder(currentSquare) !== firstColumn && rowFinder(currentSquare) !== lastRow) {
 		for (let i = 0; i < 8; i++) {
@@ -33,7 +32,7 @@ export const bishopCheck = (targetSquare: number, board: Square[], turn: string)
 			tempArray.push(currentSquare);
 		}
 	}
-	currentSquare = startSquare;
+	currentSquare = targetSquare;
 
 	if (rowFinder(currentSquare) !== lastRow && columnFinder(currentSquare) !== lastColumn) {
 		for (let i = 0; i < 8; i++) {
@@ -47,7 +46,7 @@ export const bishopCheck = (targetSquare: number, board: Square[], turn: string)
 			tempArray.push(currentSquare);
 		}
 	}
-	currentSquare = startSquare;
+	currentSquare = targetSquare;
 
 	if (rowFinder(currentSquare) !== firstRow && columnFinder(currentSquare) !== lastColumn) {
 		for (let i = 0; i < 8; i++) {
@@ -61,7 +60,7 @@ export const bishopCheck = (targetSquare: number, board: Square[], turn: string)
 			tempArray.push(currentSquare);
 		}
 	}
-	currentSquare = startSquare;
+	currentSquare = targetSquare;
 
 	if (columnFinder(currentSquare) !== firstColumn && rowFinder(currentSquare) !== firstRow) {
 		for (let i = 0; i < 8; i++) {
@@ -76,5 +75,5 @@ export const bishopCheck = (targetSquare: number, board: Square[], turn: string)
 		}
 	}
 
-	return tempArray.filter((n) => n !== startSquare).sort((a, b) => a - b);
+	return tempArray.filter((n) => n !== targetSquare).sort((a, b) => a - b);
 };
