@@ -1,4 +1,3 @@
-import { allowedSquares } from '../../stores';
 import { columnFinder, column } from '../../global';
 
 export const horseCheck = (targetSquare: number) => {
