@@ -37,7 +37,7 @@ export const pieceCheck = (
 
 		case PawnB:
 		case PawnW:
-			return pawnCheck(targetSquare, movingPiece);
+			return pawnCheck(targetSquare, movingPiece, board, turn);
 
 		case QueenB:
 		case QueenW:
