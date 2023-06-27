@@ -2,7 +2,6 @@
 	import { boardArr, selectedSquare, allowedSquares, turn } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
-	import type { SvelteComponent } from 'svelte';
 	import { pieceCheck } from '../functions/pieceCheck';
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
@@ -14,21 +13,35 @@
 
 	initPieces();
 
-	const handleSelectAndMove = (targetSquare: number, occupier: typeof SvelteComponent | null) => {
-		if ($selectedSquare == targetSquare) return;
-		const targetOccupied = occupier != null;
-
-		if (targetOccupied) {
-			$selectedSquare = targetSquare;
-			$allowedSquares = pieceCheck(occupier, targetSquare, $boardArr, $turn)!;
-		} else {
-			$boardArr[targetSquare - 1].occupier.component =
+	const handleSelectAndMove = (newSquare: number) => {
+		if ($allowedSquares.includes(newSquare)) {
+			$boardArr[newSquare - 1].occupier.component =
 				$boardArr[$selectedSquare - 1].occupier.component;
-			$boardArr[targetSquare - 1].occupier.color = $boardArr[$selectedSquare - 1].occupier.color;
+			$boardArr[newSquare - 1].occupier.color = $boardArr[$selectedSquare - 1].occupier.color;
 			$boardArr[$selectedSquare - 1].occupier.component = null;
 			$boardArr[$selectedSquare - 1].occupier.color = '';
 			$boardArr = $boardArr;
 			$selectedSquare = -1;
+			$allowedSquares = [];
+			$turn == 'white' ? ($turn = 'black') : ($turn = 'white');
+		} else {
+			if (
+				$boardArr[newSquare - 1].occupier.component == null ||
+				$boardArr[newSquare - 1].occupier.color !== $turn
+			)
+				return;
+			else if (
+				$boardArr[newSquare - 1].occupier.color == $turn &&
+				$boardArr[newSquare - 1].occupier.component !== null
+			) {
+				$selectedSquare = newSquare;
+				$allowedSquares = pieceCheck(
+					$boardArr[$selectedSquare - 1].occupier.component!,
+					$selectedSquare,
+					$boardArr,
+					$turn
+				)!;
+			}
 		}
 	};
 </script>
@@ -60,7 +73,7 @@
 						: whiteSquares.includes(square.number)
 						? 'var(--lightSquare)'
 						: 'var(--darkSquare)'}"
-					on:click={() => handleSelectAndMove(square.number, square.occupier.component)}
+					on:click={() => handleSelectAndMove(square.number)}
 				>
 					{#if square.occupier !== null}
 						<div in:fly={{ duration: 1000 }} out:fade>
