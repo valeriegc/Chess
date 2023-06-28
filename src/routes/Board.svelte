@@ -3,6 +3,9 @@
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
+	import { kingCheckMate, kingChecked } from '../functions/kingChecked';
+	import KingB from '../pieces/King_B.svelte';
+	import KingW from '../pieces/King_W.svelte';
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
@@ -23,6 +26,10 @@
 			$boardArr = $boardArr;
 			$selectedSquare = -1;
 			$allowedSquares = [];
+			const kingToCheck = $turn == 'white' ? KingB : KingW;
+			const kingLocation = $boardArr.findIndex((n) => n.occupier.component == kingToCheck);
+			if (kingChecked($boardArr, kingToCheck, kingLocation)) console.log('CHECKED');
+			else if (!kingChecked($boardArr, kingToCheck, kingLocation)) console.log('Not checked');
 			$turn == 'white' ? ($turn = 'black') : ($turn = 'white');
 		} else {
 			if (
