@@ -2,6 +2,7 @@ import type { SvelteComponent } from 'svelte';
 import PawnB from '../../pieces/Pawn_B.svelte';
 import { row, rowFinder, hasOwnPiece, hasOpponentPiece } from '../../global';
 import type { Square } from '../../stores';
+import PawnW from '../../pieces/Pawn_W.svelte';
 
 export const pawnCheck = (
 	targetSquare: number,
@@ -33,9 +34,11 @@ export const pawnCheck = (
 		if (!hasOwnPiece(targetSquare - row, boardArr, turn)) {
 			tempArray.push(targetSquare - row);
 		}
+
 		if (hasOpponentPiece(targetSquare - row + 1, boardArr, turn)) {
 			tempArray.push(targetSquare - row + 1);
 		}
+
 		if (hasOpponentPiece(targetSquare - row - 1, boardArr, turn)) {
 			tempArray.push(targetSquare - row - 1);
 		}
