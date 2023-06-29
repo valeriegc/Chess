@@ -28,8 +28,11 @@
 			$allowedSquares = [];
 			const kingToCheck = $turn == 'white' ? KingB : KingW;
 			const kingLocation = $boardArr.findIndex((n) => n.occupier.component == kingToCheck);
-			if (kingChecked($boardArr, kingToCheck, kingLocation)) console.log('CHECKED');
-			else if (!kingChecked($boardArr, kingToCheck, kingLocation)) console.log('Not checked');
+			if (kingChecked($boardArr, kingToCheck, kingLocation)) {
+				if (kingCheckMate(kingToCheck, kingLocation, $boardArr)) {
+				}
+			}
+			if (!kingChecked($boardArr, kingToCheck, kingLocation));
 			$turn == 'white' ? ($turn = 'black') : ($turn = 'white');
 		} else {
 			if (
