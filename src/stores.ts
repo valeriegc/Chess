@@ -1,7 +1,6 @@
 import type { SvelteComponent, SvelteComponentTyped } from 'svelte';
 import { writable } from 'svelte/store';
 export interface Square {
-	number: number;
 	coords: string;
 	occupier: {
 		component: typeof SvelteComponent | null;

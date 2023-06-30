@@ -16,7 +16,6 @@ import BishopB from '../pieces/Bishop_B.svelte';
 import TowerB from '../pieces/Tower_B.svelte';
 import HorseB from '../pieces/Horse_B.svelte';
 import KingB from '../pieces/King_B.svelte';
-import KingW from '../pieces/King_W.svelte';
 
 export const kingChecked = (board: Square[], king: typeof SvelteComponent, index: number) => {
 	const colorToCheck = king == KingB ? 'white' : 'black';
@@ -63,11 +62,11 @@ export const kingChecked = (board: Square[], king: typeof SvelteComponent, index
 		});
 	}
 
-	const bishopThreat = bishopCheck(index + 1, board, bishopCheckDefiner);
+	const bishopThreat = bishopCheck(index, board, bishopCheckDefiner);
 	bishopThreat.forEach((n) => {
 		if (
-			board[n - 1].occupier.component == bishopToFilter ||
-			board[n - 1].occupier.component == queenToFilter
+			board[n].occupier.component == bishopToFilter ||
+			board[n].occupier.component == queenToFilter
 		)
 			isChecked = true;
 	});
@@ -92,13 +91,12 @@ export const kingCheckMate = (king: typeof SvelteComponent, index: number, board
 	if (king == KingB) {
 		turn = 'black';
 		remainingKingMoves = kingCheck(index, board, turn);
-		const allowedMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n - 1));
+		const allowedMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n));
 		if (allowedMoves.length == 0) return true;
 	} else {
 		turn = 'white';
 		remainingKingMoves = kingCheck(index, board, turn);
-		console.log(remainingKingMoves);
-		const allowedMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n - 1));
+		const allowedMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n));
 
 		if (allowedMoves.length == 0) return true;
 	}
