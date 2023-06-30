@@ -16,19 +16,21 @@ export const diagonalRowSW = 7;
 export const diagonalRowSE = 9;
 
 export const columnFinder = (targetSquare: number) => {
+	targetSquare += 1;
 	if (targetSquare % 8 == 0) return 8;
 	else return targetSquare % 8;
 };
 
 export const rowFinder = (targetSquare: number) => {
+	targetSquare += 1;
 	return Math.ceil(targetSquare / 8);
 };
 
 export const hasOwnPiece = (targetSquare: number, board: Square[], turn: string) => {
 	if (
-		board[targetSquare - 1].occupier.color == turn ||
-		board[targetSquare - 1].occupier.component == KingB ||
-		board[targetSquare - 1].occupier.component == KingW
+		board[targetSquare].occupier.color == turn ||
+		board[targetSquare].occupier.component == KingB ||
+		board[targetSquare].occupier.component == KingW
 	) {
 		return true;
 	}
@@ -36,8 +38,8 @@ export const hasOwnPiece = (targetSquare: number, board: Square[], turn: string)
 };
 export const hasOpponentPiece = (targetSquare: number, board: Square[], turn: string) => {
 	if (
-		(board[targetSquare - 1].occupier.color == 'black' && turn == 'white') ||
-		(board[targetSquare - 1].occupier.color == 'white' && turn == 'black')
+		(board[targetSquare].occupier.color == 'black' && turn == 'white') ||
+		(board[targetSquare].occupier.color == 'white' && turn == 'black')
 	) {
 		return true;
 	}

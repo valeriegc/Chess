@@ -9,20 +9,19 @@
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-	const whiteSquares = [
-		1, 3, 5, 7, 10, 12, 14, 16, 17, 19, 21, 23, 26, 28, 30, 32, 33, 35, 37, 39, 42, 44, 46, 48, 49,
-		51, 53, 55, 58, 60, 62, 64
+	const darkSquares = [
+		1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23, 24, 26, 28, 30, 33, 35, 37, 39, 40, 42, 44, 46, 49,
+		51, 53, 55, 56, 58, 60, 62, 64
 	];
 
 	initPieces();
 
 	const handleSelectAndMove = (newSquare: number) => {
 		if ($allowedSquares.includes(newSquare)) {
-			$boardArr[newSquare - 1].occupier.component =
-				$boardArr[$selectedSquare - 1].occupier.component;
-			$boardArr[newSquare - 1].occupier.color = $boardArr[$selectedSquare - 1].occupier.color;
-			$boardArr[$selectedSquare - 1].occupier.component = null;
-			$boardArr[$selectedSquare - 1].occupier.color = '';
+			$boardArr[newSquare].occupier.component = $boardArr[$selectedSquare].occupier.component;
+			$boardArr[newSquare].occupier.color = $boardArr[$selectedSquare].occupier.color;
+			$boardArr[$selectedSquare].occupier.component = null;
+			$boardArr[$selectedSquare].occupier.color = '';
 			$boardArr = $boardArr;
 			$selectedSquare = -1;
 			$allowedSquares = [];
@@ -32,21 +31,22 @@
 				if (kingCheckMate(kingToCheck, kingLocation, $boardArr)) {
 				}
 			}
-			if (!kingChecked($boardArr, kingToCheck, kingLocation));
+			if (!kingChecked($boardArr, kingToCheck, kingLocation)) {
+			}
 			$turn == 'white' ? ($turn = 'black') : ($turn = 'white');
 		} else {
 			if (
-				$boardArr[newSquare - 1].occupier.component == null ||
-				$boardArr[newSquare - 1].occupier.color !== $turn
+				$boardArr[newSquare].occupier.component == null ||
+				$boardArr[newSquare].occupier.color !== $turn
 			)
 				return;
 			else if (
-				$boardArr[newSquare - 1].occupier.color == $turn &&
-				$boardArr[newSquare - 1].occupier.component !== null
+				$boardArr[newSquare].occupier.color == $turn &&
+				$boardArr[newSquare].occupier.component !== null
 			) {
 				$selectedSquare = newSquare;
 				$allowedSquares = pieceCheck(
-					$boardArr[$selectedSquare - 1].occupier.component!,
+					$boardArr[$selectedSquare].occupier.component!,
 					$selectedSquare,
 					$boardArr,
 					$turn
@@ -71,19 +71,19 @@
 			</div>
 		</div>
 		<div class="boardGrid">
-			{#each $boardArr as square}
+			{#each $boardArr as square, i}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div
 					class="square"
 					style="background-color:
-					{$allowedSquares.includes(square.number)
+					{$allowedSquares.includes(i)
 						? 'var(--possibleMove)'
-						: square.number == $selectedSquare
+						: i == $selectedSquare
 						? 'var(--selectedSquare)'
-						: whiteSquares.includes(square.number)
-						? 'var(--lightSquare)'
-						: 'var(--darkSquare)'}"
-					on:click={() => handleSelectAndMove(square.number)}
+						: darkSquares.includes(i)
+						? 'var(--darkSquare)'
+						: 'var(--lightSquare)'}"
+					on:click={() => handleSelectAndMove(i)}
 				>
 					{#if square.occupier !== null}
 						<div in:fly={{ duration: 1000 }} out:fade>
