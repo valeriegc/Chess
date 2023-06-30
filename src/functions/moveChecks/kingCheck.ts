@@ -9,6 +9,7 @@ import {
 	hasOwnPiece
 } from '../../global';
 import type { Square } from '../../stores';
+import { canKingCastle } from './castlingCheck';
 
 export const kingCheck = (targetSquare: number, board: Square[], turn: string) => {
 	const tempArrayLimited: number[] = [];
@@ -46,5 +47,11 @@ export const kingCheck = (targetSquare: number, board: Square[], turn: string) =
 			);
 	}
 	const tempArray = tempArrayLimited.filter((n) => n > smallestSquare && n < biggestSquare);
-	return tempArray.filter((n) => !hasOwnPiece(n, board, turn));
+	const castles = canKingCastle(targetSquare, board, turn);
+	console.log(castles);
+	const tempArray2 = tempArray.filter((n) => !hasOwnPiece(n, board, turn));
+	if (castles.length > 0) {
+		castles.forEach((n) => tempArray2.push(n));
+	}
+	return tempArray2;
 };

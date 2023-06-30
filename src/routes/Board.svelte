@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { boardArr, selectedSquare, allowedSquares, turn } from '../stores';
+	import { boardArr, selectedSquare, allowedSquares, turn, moveArr } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -20,6 +20,11 @@
 		if ($allowedSquares.includes(newSquare)) {
 			$boardArr[newSquare - 1].occupier.component =
 				$boardArr[$selectedSquare - 1].occupier.component;
+			$moveArr.push({
+				oldCoord: $selectedSquare,
+				newCoord: newSquare,
+				piece: $boardArr[$selectedSquare - 1].occupier.component!
+			});
 			$boardArr[newSquare - 1].occupier.color = $boardArr[$selectedSquare - 1].occupier.color;
 			$boardArr[$selectedSquare - 1].occupier.component = null;
 			$boardArr[$selectedSquare - 1].occupier.color = '';

@@ -8,7 +8,13 @@ export interface Square {
 		color: string;
 	};
 }
+export interface Move {
+	oldCoord: number;
+	newCoord: number;
+	piece: typeof SvelteComponent;
+}
 export const boardArr = writable<Square[]>([]);
+export const moveArr = writable<Move[]>([]);
 export const selectedSquare = writable(-1);
 export const allowedSquares = writable<number[]>([]);
 export const turn = writable('white');

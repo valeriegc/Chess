@@ -68,23 +68,27 @@ export const kingChecked = (board: Square[], king: typeof SvelteComponent, index
 		if (
 			board[n - 1].occupier.component == bishopToFilter ||
 			board[n - 1].occupier.component == queenToFilter
-		)
+		) {
 			isChecked = true;
+			console.log('king is checked by bishop');
+		}
 	});
 	const towerThreat = towerCheck(indexToCheck, board, colorToCheck);
 	towerThreat.forEach((n) => {
 		if (
-			board[n].occupier.component == towerToFilter ||
-			board[n].occupier.component == queenToFilter
-		)
+			board[n - 1].occupier.component == towerToFilter ||
+			board[n - 1].occupier.component == queenToFilter
+		) {
 			isChecked = true;
+		}
 	});
 	const horseThreat = horseCheck(indexToCheck, board, colorToCheck);
 	horseThreat.forEach((n) => {
 		if (board[n].occupier.component == horseToFilter) isChecked = true;
 	});
-	if (isChecked) return true;
-	else return false;
+	if (isChecked) {
+		isChecked = true;
+	} else return false;
 };
 export const kingCheckMate = (king: typeof SvelteComponent, index: number, board: Square[]) => {
 	let remainingKingMoves = [];
@@ -97,7 +101,6 @@ export const kingCheckMate = (king: typeof SvelteComponent, index: number, board
 	} else {
 		turn = 'white';
 		remainingKingMoves = kingCheck(index, board, turn);
-		console.log(remainingKingMoves);
 		const allowedMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n - 1));
 
 		if (allowedMoves.length == 0) return true;
