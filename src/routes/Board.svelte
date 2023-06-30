@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { boardArr, selectedSquare, allowedSquares, turn } from '../stores';
+	import { boardArr, selectedSquare, allowedSquares, turn, moves } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -23,6 +23,11 @@
 			$boardArr[$selectedSquare].occupier.component = null;
 			$boardArr[$selectedSquare].occupier.color = '';
 			$boardArr = $boardArr;
+			$moves.push({
+				pre: $selectedSquare,
+				post: newSquare,
+				component: $boardArr[newSquare].occupier.component
+			});
 			$selectedSquare = -1;
 			$allowedSquares = [];
 			const kingToCheck = $turn == 'white' ? KingB : KingW;
