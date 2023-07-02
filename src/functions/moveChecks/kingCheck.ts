@@ -8,7 +8,12 @@ import {
 	biggestSquare,
 	hasOwnPiece
 } from '../../global';
+import KingB from '../../pieces/King_B.svelte';
+import KingW from '../../pieces/King_W.svelte';
+import TowerB from '../../pieces/Tower_B.svelte';
+import TowerW from '../../pieces/Tower_W.svelte';
 import type { Square } from '../../stores';
+import { castlingCheck } from './castlingCheck';
 
 export const kingCheck = (targetSquare: number, board: Square[], turn: string) => {
 	const tempArrayLimited: number[] = [];
@@ -45,6 +50,9 @@ export const kingCheck = (targetSquare: number, board: Square[], turn: string) =
 				targetSquare + row - 1
 			);
 	}
+	const king = turn == 'black' ? KingB : KingW;
+	const tower = turn == 'black' ? TowerB : TowerW;
+	castlingCheck(king, tower, board);
 	const tempArray = tempArrayLimited.filter((n) => n > smallestSquare && n < biggestSquare);
 	return tempArray.filter((n) => !hasOwnPiece(n, board, turn));
 };
