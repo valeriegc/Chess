@@ -1,5 +1,7 @@
 import KingB from './pieces/King_B.svelte';
 import KingW from './pieces/King_W.svelte';
+import TowerB from './pieces/Tower_B.svelte';
+import TowerW from './pieces/Tower_W.svelte';
 import type { Square } from './stores';
 
 export const lastColumn = 8;
@@ -41,6 +43,14 @@ export const hasOpponentPiece = (targetSquare: number, board: Square[], turn: st
 		(board[targetSquare].occupier.color == 'black' && turn == 'white') ||
 		(board[targetSquare].occupier.color == 'white' && turn == 'black')
 	) {
+		return true;
+	}
+	return false;
+};
+export const isKingCastling = (targetSquare: number, board: Square[], turn: string) => {
+	if (turn == 'black') {
+		if (board[targetSquare].occupier.component == TowerB) return true;
+	} else if (board[targetSquare].occupier.component == TowerW) {
 		return true;
 	}
 	return false;

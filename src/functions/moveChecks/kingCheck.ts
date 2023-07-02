@@ -18,7 +18,6 @@ import { castlingCheck } from './castlingCheck';
 export const kingCheck = (targetSquare: number, board: Square[], turn: string) => {
 	const tempArrayLimited: number[] = [];
 	const columnNumber = columnFinder(targetSquare);
-
 	switch (columnNumber) {
 		case firstColumn:
 			tempArrayLimited.push(
@@ -52,7 +51,10 @@ export const kingCheck = (targetSquare: number, board: Square[], turn: string) =
 	}
 	const king = turn == 'black' ? KingB : KingW;
 	const tower = turn == 'black' ? TowerB : TowerW;
-	castlingCheck(king, tower, board);
-	const tempArray = tempArrayLimited.filter((n) => n > smallestSquare && n < biggestSquare);
-	return tempArray.filter((n) => !hasOwnPiece(n, board, turn));
+	const castleArr = castlingCheck(king, tower, board);
+	castleArr?.forEach((n) => tempArrayLimited.push(n));
+	const tempArray = tempArrayLimited.filter(
+		(n) => (n > smallestSquare && n < biggestSquare) || n == 0
+	);
+	return tempArray.filter((n) => castleArr?.includes(n) || !hasOwnPiece(n, board, turn));
 };

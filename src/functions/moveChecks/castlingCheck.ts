@@ -14,11 +14,8 @@ export const castlingCheck = (
 	let castleSquares: number[];
 	castleSquares = [];
 	const pastMoves = get(moves);
-	//return if past moves includes King
 	if (pastMoves.find((n) => n.component == king)) return castleSquares;
-	//checks for black king
 	if (king == KingB) {
-		//check for black, square 0
 		if (!pastMoves.find((n) => n.component == tower && n.pre == 0)) {
 			if (
 				board[1].occupier.component == null &&
@@ -66,5 +63,6 @@ export const castlingCheck = (
 			}
 		}
 	}
-	console.log(castleSquares);
+
+	return castleSquares;
 };
