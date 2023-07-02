@@ -30,6 +30,6 @@ export const horseCheck = (targetSquare: number, boardArr: Square[], turn: strin
 			tempArray.push(targetSquare + n);
 		}
 	});
-	const tempArrayLimited = tempArray.filter((n) => n > 0 && n < 65);
+	const tempArrayLimited = tempArray.filter((n) => n > 0 && n < 64);
 	return tempArrayLimited.filter((n) => !hasOwnPiece(n, boardArr, turn));
 };
