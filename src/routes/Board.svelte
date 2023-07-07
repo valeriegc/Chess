@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { boardArr, selectedSquare, allowedMoves, turn, moves } from '../stores';
+	import { boardArr, allowedMoves, moves } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -7,8 +7,14 @@
 	import KingB from '../pieces/King_B.svelte';
 	import KingW from '../pieces/King_W.svelte';
 	import { isKingCastling } from '../global';
+	import type { SvelteComponent } from 'svelte';
 
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+	let turn = 'white';
+	let selectedSquare = -1;
+
+	let selectedPiece: null | typeof SvelteComponent;
+	selectedPiece = null;
 
 	const darkSquares = [
 		1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23, 24, 26, 28, 30, 33, 35, 37, 39, 40, 42, 44, 46, 49,
@@ -18,94 +24,100 @@
 	initPieces();
 
 	const changeTurn = () => {
-		$turn == 'white' ? ($turn = 'black') : ($turn = 'white');
+		turn == 'white' ? (turn = 'black') : (turn = 'white');
 	};
 	const movePiece = (newSquare: number) => {
-		$boardArr[newSquare].occupier.component = $boardArr[$selectedSquare].occupier.component;
-		$boardArr[newSquare].occupier.color = $boardArr[$selectedSquare].occupier.color;
-		$boardArr[$selectedSquare].occupier.component = null;
-		$boardArr[$selectedSquare].occupier.color = '';
+		$boardArr[newSquare].occupier.component = selectedPiece;
+		$boardArr[newSquare].occupier.color = turn;
+		$boardArr[selectedSquare].occupier.component = null;
+		$boardArr[selectedSquare].occupier.color = '';
 		$boardArr = $boardArr;
 		$moves.push({
-			pre: $selectedSquare,
+			pre: selectedSquare,
 			post: newSquare,
 			component: $boardArr[newSquare].occupier.component
 		});
-		$selectedSquare = -1;
+		selectedSquare = -1;
 		$allowedMoves = [];
 	};
 	const updateSelection = (newSquare: number) => {
+		const kingToCheck = turn == 'white' ? KingB : KingW;
+		const kingLocation = $boardArr.findIndex((n) => n.occupier.component == kingToCheck);
+
+		if (kingChecked($boardArr, kingToCheck, kingLocation)) {
+			if (kingCheckMate(kingToCheck, kingLocation, $boardArr)) {
+				alert('Game over king is check mate');
+			}
+			selectedSquare = kingLocation;
+			$allowedMoves = pieceCheck(selectedPiece!, selectedSquare, $boardArr, turn)!;
+			return;
+		}
+
 		if (
 			$boardArr[newSquare].occupier.component == null ||
-			$boardArr[newSquare].occupier.color !== $turn
+			$boardArr[newSquare].occupier.color !== turn
 		)
 			return;
 		else if (
-			$boardArr[newSquare].occupier.color == $turn &&
+			$boardArr[newSquare].occupier.color == turn &&
 			$boardArr[newSquare].occupier.component !== null
 		) {
-			$selectedSquare = newSquare;
+			selectedSquare = newSquare;
+			selectedPiece = $boardArr[selectedSquare].occupier.component;
 			$allowedMoves = pieceCheck(
-				$boardArr[$selectedSquare].occupier.component!,
-				$selectedSquare,
+				$boardArr[selectedSquare].occupier.component!,
+				selectedSquare,
 				$boardArr,
-				$turn
+				turn
 			)!;
 		}
 	};
 
 	const castleTheKing = (newSquare: number) => {
-		let one: number;
-		let two: number;
-		if (newSquare > $selectedSquare) {
-			one = -1;
-			two = -2;
+		let newKingLoc: number;
+		let newTowerLoc: number;
+		if (newSquare > selectedSquare) {
+			newKingLoc = newSquare - 1;
+			newTowerLoc = newSquare - 2;
 		} else {
-			one = 1;
-			two = 2;
+			newKingLoc = newSquare + 1;
+			newTowerLoc = newSquare + 2;
 		}
 		//move king
-		$boardArr[newSquare + one].occupier.component = $boardArr[$selectedSquare].occupier.component;
-		$boardArr[newSquare + one].occupier.color = $boardArr[$selectedSquare].occupier.color;
+		$boardArr[newKingLoc].occupier.component = selectedPiece;
+		$boardArr[newKingLoc].occupier.color = turn;
 		// move tower
-		$boardArr[newSquare + two].occupier.component = $boardArr[newSquare].occupier.component;
-		$boardArr[newSquare + two].occupier.color = $boardArr[newSquare].occupier.color;
+		$boardArr[newTowerLoc].occupier.component = $boardArr[newSquare].occupier.component;
+		$boardArr[newTowerLoc].occupier.color = turn;
 		//empty old parts
-		$boardArr[$selectedSquare].occupier.component = null;
-		$boardArr[$selectedSquare].occupier.color = '';
+		$boardArr[selectedSquare].occupier.component = null;
+		$boardArr[selectedSquare].occupier.color = '';
 		$boardArr[newSquare].occupier.component = null;
 		$boardArr[newSquare].occupier.color = '';
-		$boardArr = $boardArr;
 		$moves.push({
-			pre: $selectedSquare,
-			post: newSquare + one,
-			component: $boardArr[$selectedSquare].occupier.component
+			pre: selectedSquare,
+			post: newKingLoc,
+			component: selectedPiece
 		});
 		$moves.push({
 			pre: newSquare,
-			post: newSquare + two,
+			post: newTowerLoc,
 			component: $boardArr[newSquare].occupier.component
 		});
-		$selectedSquare = -1;
+		$boardArr = $boardArr;
+		selectedSquare = -1;
 		$allowedMoves = [];
 		changeTurn();
 	};
 
 	const handleSelectAndMove = (newSquare: number) => {
 		if ($allowedMoves.includes(newSquare)) {
-			if (!isKingCastling(newSquare, $boardArr, $turn)) {
+			if (!isKingCastling(newSquare, $boardArr, turn)) {
 				movePiece(newSquare);
 				changeTurn();
-			} else if (isKingCastling(newSquare, $boardArr, $turn)) {
+			} else if (isKingCastling(newSquare, $boardArr, turn)) {
 				castleTheKing(newSquare);
-			}
-			const kingToCheck = $turn == 'white' ? KingB : KingW;
-			const kingLocation = $boardArr.findIndex((n) => n.occupier.component == kingToCheck);
-			if (kingChecked($boardArr, kingToCheck, kingLocation)) {
-				if (kingCheckMate(kingToCheck, kingLocation, $boardArr)) {
-				}
-			}
-			if (!kingChecked($boardArr, kingToCheck, kingLocation)) {
+				changeTurn();
 			}
 		} else {
 			updateSelection(newSquare);
@@ -135,7 +147,7 @@
 					style="background-color:
 					{$allowedMoves.includes(i)
 						? 'var(--possibleMove)'
-						: i == $selectedSquare
+						: i == selectedSquare
 						? 'var(--selectedSquare)'
 						: darkSquares.includes(i)
 						? 'var(--darkSquare)'
