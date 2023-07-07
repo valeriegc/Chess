@@ -43,20 +43,19 @@ export const kingChecked = (board: Square[], king: typeof SvelteComponent, index
 		horseToFilter = HorseB;
 		queenToFilter = QueenB;
 	}
-
-	const indexToCheck = index;
 	let isChecked = false;
 	let pawnThreat: number[];
 	let pawnThreat2: number[];
+	console.log(index);
 	if (king == KingB) {
-		pawnThreat = pawnCheck(index, PawnB, board, colorToCheck);
-		pawnThreat2 = pawnThreat.filter((n) => n > index && n < 65 && n > 0 && n !== index + 8);
+		pawnThreat = pawnCheck(index, board, colorToCheck, pawnToCheckInCheck);
+		pawnThreat2 = pawnThreat.filter((n) => n > index && n < 63 && n > 0 && n !== index + 8);
 		pawnThreat2.forEach((n) => {
 			if (board[n].occupier.component == PawnW) isChecked = true;
 		});
 	} else {
-		pawnThreat = pawnCheck(index, PawnW, board, colorToCheck);
-		pawnThreat2 = pawnThreat.filter((n) => n < index && n < 64 && n > 0 && n !== index - 8);
+		pawnThreat = pawnCheck(index, board, colorToCheck, pawnToCheckInCheck);
+		pawnThreat2 = pawnThreat.filter((n) => n < index && n < 63 && n > 0 && n !== index - 8);
 		pawnThreat2.forEach((n) => {
 			if (board[n].occupier.component == PawnB) isChecked = true;
 		});
@@ -70,7 +69,7 @@ export const kingChecked = (board: Square[], king: typeof SvelteComponent, index
 		)
 			isChecked = true;
 	});
-	const towerThreat = towerCheck(indexToCheck, board, colorToCheck);
+	const towerThreat = towerCheck(index, board, colorToCheck);
 	towerThreat.forEach((n) => {
 		if (
 			board[n].occupier.component == towerToFilter ||
@@ -78,7 +77,7 @@ export const kingChecked = (board: Square[], king: typeof SvelteComponent, index
 		)
 			isChecked = true;
 	});
-	const horseThreat = horseCheck(indexToCheck, board, colorToCheck);
+	const horseThreat = horseCheck(index, board, colorToCheck);
 	horseThreat.forEach((n) => {
 		if (board[n].occupier.component == horseToFilter) isChecked = true;
 	});
@@ -91,14 +90,14 @@ export const kingCheckMate = (king: typeof SvelteComponent, index: number, board
 	if (king == KingB) {
 		turn = 'black';
 		remainingKingMoves = kingCheck(index, board, turn);
-		const allowedMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n));
-		if (allowedMoves.length == 0) return true;
+		const allowedKingMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n));
+		if (allowedKingMoves.length == 0) return true;
 	} else {
 		turn = 'white';
 		remainingKingMoves = kingCheck(index, board, turn);
-		const allowedMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n));
+		const allowedKingMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n));
 
-		if (allowedMoves.length == 0) return true;
+		if (allowedKingMoves.length == 0) return true;
 	}
 	return false;
 };

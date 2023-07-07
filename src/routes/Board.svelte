@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { boardArr, selectedSquare, allowedSquares, turn, moves } from '../stores';
+	import { boardArr, selectedSquare, allowedMoves, turn, moves } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -17,75 +17,87 @@
 
 	initPieces();
 
+	const changeTurn = () => {
+		$turn == 'white' ? ($turn = 'black') : ($turn = 'white');
+	};
+	const movePiece = (newSquare: number) => {
+		$boardArr[newSquare].occupier.component = $boardArr[$selectedSquare].occupier.component;
+		$boardArr[newSquare].occupier.color = $boardArr[$selectedSquare].occupier.color;
+		$boardArr[$selectedSquare].occupier.component = null;
+		$boardArr[$selectedSquare].occupier.color = '';
+		$boardArr = $boardArr;
+		$moves.push({
+			pre: $selectedSquare,
+			post: newSquare,
+			component: $boardArr[newSquare].occupier.component
+		});
+		$selectedSquare = -1;
+		$allowedMoves = [];
+	};
+	const updateSelection = (newSquare: number) => {
+		if (
+			$boardArr[newSquare].occupier.component == null ||
+			$boardArr[newSquare].occupier.color !== $turn
+		)
+			return;
+		else if (
+			$boardArr[newSquare].occupier.color == $turn &&
+			$boardArr[newSquare].occupier.component !== null
+		) {
+			$selectedSquare = newSquare;
+			$allowedMoves = pieceCheck(
+				$boardArr[$selectedSquare].occupier.component!,
+				$selectedSquare,
+				$boardArr,
+				$turn
+			)!;
+		}
+	};
+
+	const castleTheKing = (newSquare: number) => {
+		let one: number;
+		let two: number;
+		if (newSquare > $selectedSquare) {
+			one = -1;
+			two = -2;
+		} else {
+			one = 1;
+			two = 2;
+		}
+		//move king
+		$boardArr[newSquare + one].occupier.component = $boardArr[$selectedSquare].occupier.component;
+		$boardArr[newSquare + one].occupier.color = $boardArr[$selectedSquare].occupier.color;
+		// move tower
+		$boardArr[newSquare + two].occupier.component = $boardArr[newSquare].occupier.component;
+		$boardArr[newSquare + two].occupier.color = $boardArr[newSquare].occupier.color;
+		//empty old parts
+		$boardArr[$selectedSquare].occupier.component = null;
+		$boardArr[$selectedSquare].occupier.color = '';
+		$boardArr[newSquare].occupier.component = null;
+		$boardArr[newSquare].occupier.color = '';
+		$boardArr = $boardArr;
+		$moves.push({
+			pre: $selectedSquare,
+			post: newSquare + one,
+			component: $boardArr[$selectedSquare].occupier.component
+		});
+		$moves.push({
+			pre: newSquare,
+			post: newSquare + two,
+			component: $boardArr[newSquare].occupier.component
+		});
+		$selectedSquare = -1;
+		$allowedMoves = [];
+		changeTurn();
+	};
+
 	const handleSelectAndMove = (newSquare: number) => {
-		if ($allowedSquares.includes(newSquare)) {
+		if ($allowedMoves.includes(newSquare)) {
 			if (!isKingCastling(newSquare, $boardArr, $turn)) {
-				$boardArr[newSquare].occupier.component = $boardArr[$selectedSquare].occupier.component;
-				$boardArr[newSquare].occupier.color = $boardArr[$selectedSquare].occupier.color;
-				$boardArr[$selectedSquare].occupier.component = null;
-				$boardArr[$selectedSquare].occupier.color = '';
-				$boardArr = $boardArr;
-				$moves.push({
-					pre: $selectedSquare,
-					post: newSquare,
-					component: $boardArr[newSquare].occupier.component
-				});
-				$selectedSquare = -1;
-				$allowedSquares = [];
+				movePiece(newSquare);
+				changeTurn();
 			} else if (isKingCastling(newSquare, $boardArr, $turn)) {
-				if (newSquare > $selectedSquare) {
-					//move king
-					$boardArr[newSquare - 1].occupier.component =
-						$boardArr[$selectedSquare].occupier.component;
-					$boardArr[newSquare - 1].occupier.color = $boardArr[$selectedSquare].occupier.color;
-					// move tower
-					$boardArr[newSquare - 2].occupier.component = $boardArr[newSquare].occupier.component;
-					$boardArr[newSquare - 2].occupier.color = $boardArr[newSquare].occupier.color;
-					//empty old parts
-					$boardArr[$selectedSquare].occupier.component = null;
-					$boardArr[$selectedSquare].occupier.color = '';
-					$boardArr[newSquare].occupier.component = null;
-					$boardArr[newSquare].occupier.color = '';
-					$boardArr = $boardArr;
-					$moves.push({
-						pre: $selectedSquare,
-						post: newSquare - 1,
-						component: $boardArr[$selectedSquare].occupier.component
-					});
-					$moves.push({
-						pre: newSquare,
-						post: newSquare - 2,
-						component: $boardArr[newSquare].occupier.component
-					});
-					$selectedSquare = -1;
-					$allowedSquares = [];
-				} else {
-					//move king
-					$boardArr[newSquare + 1].occupier.component =
-						$boardArr[$selectedSquare].occupier.component;
-					$boardArr[newSquare + 1].occupier.color = $turn;
-					// move tower
-					$boardArr[newSquare + 2].occupier.component = $boardArr[newSquare].occupier.component;
-					$boardArr[newSquare + 2].occupier.color = $turn;
-					//empty old parts
-					$boardArr[$selectedSquare].occupier.component = null;
-					$boardArr[$selectedSquare].occupier.color = '';
-					$boardArr[newSquare].occupier.component = null;
-					$boardArr[newSquare].occupier.color = '';
-					$boardArr = $boardArr;
-					$moves.push({
-						pre: $selectedSquare,
-						post: newSquare + 1,
-						component: $boardArr[$selectedSquare].occupier.component
-					});
-					$moves.push({
-						pre: newSquare,
-						post: newSquare + 2,
-						component: $boardArr[newSquare].occupier.component
-					});
-					$selectedSquare = -1;
-					$allowedSquares = [];
-				}
+				castleTheKing(newSquare);
 			}
 			const kingToCheck = $turn == 'white' ? KingB : KingW;
 			const kingLocation = $boardArr.findIndex((n) => n.occupier.component == kingToCheck);
@@ -95,25 +107,8 @@
 			}
 			if (!kingChecked($boardArr, kingToCheck, kingLocation)) {
 			}
-			$turn == 'white' ? ($turn = 'black') : ($turn = 'white');
 		} else {
-			if (
-				$boardArr[newSquare].occupier.component == null ||
-				$boardArr[newSquare].occupier.color !== $turn
-			)
-				return;
-			else if (
-				$boardArr[newSquare].occupier.color == $turn &&
-				$boardArr[newSquare].occupier.component !== null
-			) {
-				$selectedSquare = newSquare;
-				$allowedSquares = pieceCheck(
-					$boardArr[$selectedSquare].occupier.component!,
-					$selectedSquare,
-					$boardArr,
-					$turn
-				)!;
-			}
+			updateSelection(newSquare);
 		}
 	};
 </script>
@@ -138,7 +133,7 @@
 				<div
 					class="square"
 					style="background-color:
-					{$allowedSquares.includes(i)
+					{$allowedMoves.includes(i)
 						? 'var(--possibleMove)'
 						: i == $selectedSquare
 						? 'var(--selectedSquare)'

@@ -15,5 +15,5 @@ export interface Move {
 export const boardArr = writable<Square[]>([]);
 export const moves = writable<Move[]>([]);
 export const selectedSquare = writable(-1);
-export const allowedSquares = writable<number[]>([]);
+export const allowedMoves = writable<number[]>([]);
 export const turn = writable('white');

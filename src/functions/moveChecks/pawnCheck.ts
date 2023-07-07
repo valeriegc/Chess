@@ -1,13 +1,18 @@
 import type { SvelteComponent } from 'svelte';
-import PawnB from '../../pieces/Pawn_B.svelte';
 import { row, rowFinder, hasOwnPiece, hasOpponentPiece } from '../../global';
 import type { Square } from '../../stores';
+import PawnB from '../../pieces/Pawn_B.svelte';
 
-export const pawnCheck = (targetSquare: number, board: Square[], turn: string) => {
+export const pawnCheck = (
+	targetSquare: number,
+	board: Square[],
+	turn: string,
+	movingPiece: typeof SvelteComponent
+) => {
 	const tempArray: number[] = [];
 	const rowNumber = rowFinder(targetSquare);
-
-	if (turn == 'black') {
+	console.log(turn, targetSquare);
+	if (movingPiece == PawnB) {
 		if (!board[targetSquare + row].occupier.component) {
 			tempArray.push(targetSquare + row);
 		}

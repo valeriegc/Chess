@@ -3,7 +3,6 @@ import { moves, type Square } from '../../stores';
 import KingB from '../../pieces/King_B.svelte';
 import type { SvelteComponent } from 'svelte';
 import KingW from '../../pieces/King_W.svelte';
-import { kingCheck } from './kingCheck';
 import { kingChecked } from '../kingChecked';
 
 export const castlingCheck = (
