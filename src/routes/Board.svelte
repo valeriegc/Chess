@@ -21,15 +21,17 @@
 	};
 
 	const movePiece = (newSquare: number) => {
+		//fill new square
 		boardArr[newSquare].occupier.component = selectedPiece;
 		boardArr[newSquare].occupier.color = turn;
+		//reset old square
 		boardArr[selectedSquare].occupier.component = null;
 		boardArr[selectedSquare].occupier.color = '';
 		boardArr = boardArr;
 		$moves.push({
 			pre: selectedSquare,
 			post: newSquare,
-			component: boardArr[newSquare].occupier.component
+			component: selectedPiece
 		});
 		selectedSquare = -1;
 		allowedMoves = [];
@@ -46,25 +48,19 @@
 			allowedMoves = pieceCheck(selectedPiece!, selectedSquare, boardArr, turn)!;
 			return;
 		}
+		const emptySquare = boardArr[newSquare].occupier.component == null;
+		const opponentPiece = boardArr[newSquare].occupier.color !== turn;
 
-		if (
-			boardArr[newSquare].occupier.component == null ||
-			boardArr[newSquare].occupier.color !== turn
-		)
-			return;
-		else if (
-			boardArr[newSquare].occupier.color == turn &&
-			boardArr[newSquare].occupier.component !== null
-		) {
-			selectedSquare = newSquare;
-			selectedPiece = boardArr[selectedSquare].occupier.component;
-			allowedMoves = pieceCheck(
-				boardArr[selectedSquare].occupier.component!,
-				selectedSquare,
-				boardArr,
-				turn
-			)!;
-		}
+		if (emptySquare || opponentPiece) return;
+
+		selectedSquare = newSquare;
+		selectedPiece = boardArr[selectedSquare].occupier.component;
+		allowedMoves = pieceCheck(
+			boardArr[selectedSquare].occupier.component!,
+			selectedSquare,
+			boardArr,
+			turn
+		)!;
 	};
 
 	const castleTheKing = (newSquare: number) => {
