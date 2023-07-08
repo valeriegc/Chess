@@ -1,5 +1,4 @@
-import { boardArr, type Square } from '../stores';
-
+import type { Square } from '../stores';
 import TowerB from '../pieces/Tower_B.svelte';
 import HorseB from '../pieces/Horse_B.svelte';
 import BishopB from '../pieces/Bishop_B.svelte';
@@ -14,7 +13,7 @@ import KingW from '../pieces/King_W.svelte';
 import PawnW from '../pieces/Pawn_W.svelte';
 
 export const initPieces = () => {
-	const tempBoardArray: Square[] = [];
+	const boardArray: Square[] = [];
 	const piecesBlack = [TowerB, HorseB, BishopB, QueenB, KingB, BishopB, HorseB, TowerB];
 
 	for (let i = 0; i < 8; i++) {
@@ -28,21 +27,21 @@ export const initPieces = () => {
 
 	for (let i = 0; i < 64; i++) {
 		if (i < 16) {
-			tempBoardArray.push({
+			boardArray.push({
 				coords: '',
 				occupier: { component: piecesBlack[i], color: 'black' }
 			});
 		} else if (i > 47) {
-			tempBoardArray.push({
+			boardArray.push({
 				coords: '',
 				occupier: { component: piecesWhite[i - 48], color: 'white' }
 			});
 		} else {
-			tempBoardArray.push({
+			boardArray.push({
 				coords: '',
 				occupier: { component: null, color: '' }
 			});
 		}
 	}
-	boardArr.set(tempBoardArray);
+	return boardArray;
 };
