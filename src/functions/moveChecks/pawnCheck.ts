@@ -1,5 +1,5 @@
 import type { SvelteComponent } from 'svelte';
-import { rowFinder, hasOwnPiece, hasOpponentPiece } from '../../global';
+import { rowFinder, hasOpponentPiece } from '../../global';
 import type { Square } from '../../stores';
 import PawnB from '../../pieces/Pawn_B.svelte';
 
