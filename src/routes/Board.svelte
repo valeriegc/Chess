@@ -73,26 +73,26 @@
 		)!;
 	};
 
-	const castleTheKing = (targetTowerLoc: number) => {
+	const castleTheKing = (oldTowerLoc: number) => {
 		let newKingLoc: number;
 		let newTowerLoc: number;
-		const castleToLeft = targetTowerLoc > selectedSquare;
+		const castleToLeft = oldTowerLoc > selectedSquare;
 
 		if (castleToLeft) {
-			newKingLoc = targetTowerLoc - 1;
-			newTowerLoc = targetTowerLoc - 2;
+			newKingLoc = oldTowerLoc - 1;
+			newTowerLoc = oldTowerLoc - 2;
 		} else {
-			newKingLoc = targetTowerLoc + 1;
-			newTowerLoc = targetTowerLoc + 2;
+			newKingLoc = oldTowerLoc + 1;
+			newTowerLoc = oldTowerLoc + 2;
 		}
 		//move king
 		fillSquare({ component: selectedPiece!, color: turn, square: newKingLoc });
 		// move tower
-		const movingTower = boardArr[targetTowerLoc].occupier.component;
-		fillSquare({ component: movingTower!, color: turn, square: targetTowerLoc });
+		const movingTower = boardArr[oldTowerLoc].occupier.component;
+		fillSquare({ component: movingTower!, color: turn, square: newTowerLoc });
 		//empty old parts
 		emptySquare(selectedSquare);
-		emptySquare(targetTowerLoc);
+		emptySquare(oldTowerLoc);
 
 		$moves.push({
 			pre: selectedSquare,
@@ -100,13 +100,10 @@
 			component: selectedPiece
 		});
 		$moves.push({
-			pre: targetTowerLoc,
+			pre: oldTowerLoc,
 			post: newTowerLoc,
 			component: movingTower
 		});
-		selectedSquare = -1;
-		allowedMoves = [];
-		changeTurn();
 	};
 
 	const handleSelectAndMove = (newSquare: number) => {
@@ -120,6 +117,8 @@
 			movePiece(newSquare);
 		}
 		changeTurn();
+		selectedSquare = -1;
+		allowedMoves = [];
 	};
 
 	const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];

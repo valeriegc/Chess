@@ -13,4 +13,3 @@ export interface Move {
 	component: typeof SvelteComponent | null;
 }
 export const moves = writable<Move[]>([]);
-export const selectedSquare = writable(-1);
