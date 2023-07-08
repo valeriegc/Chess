@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { boardArr, allowedMoves, moves } from '../stores';
+	import { boardArr, moves } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -12,6 +12,7 @@
 	let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 	let turn = 'white';
 	let selectedSquare = -1;
+	let allowedMoves: number[] = [];
 
 	let selectedPiece: null | typeof SvelteComponent;
 	selectedPiece = null;
@@ -38,7 +39,7 @@
 			component: $boardArr[newSquare].occupier.component
 		});
 		selectedSquare = -1;
-		$allowedMoves = [];
+		allowedMoves = [];
 	};
 	const updateSelection = (newSquare: number) => {
 		const kingToCheck = turn == 'white' ? KingB : KingW;
@@ -49,7 +50,7 @@
 				alert('Game over king is check mate');
 			}
 			selectedSquare = kingLocation;
-			$allowedMoves = pieceCheck(selectedPiece!, selectedSquare, $boardArr, turn)!;
+			allowedMoves = pieceCheck(selectedPiece!, selectedSquare, $boardArr, turn)!;
 			return;
 		}
 
@@ -64,7 +65,7 @@
 		) {
 			selectedSquare = newSquare;
 			selectedPiece = $boardArr[selectedSquare].occupier.component;
-			$allowedMoves = pieceCheck(
+			allowedMoves = pieceCheck(
 				$boardArr[selectedSquare].occupier.component!,
 				selectedSquare,
 				$boardArr,
@@ -106,12 +107,12 @@
 		});
 		$boardArr = $boardArr;
 		selectedSquare = -1;
-		$allowedMoves = [];
+		allowedMoves = [];
 		changeTurn();
 	};
 
 	const handleSelectAndMove = (newSquare: number) => {
-		if ($allowedMoves.includes(newSquare)) {
+		if (allowedMoves.includes(newSquare)) {
 			if (!isKingCastling(newSquare, $boardArr, turn)) {
 				movePiece(newSquare);
 				changeTurn();
@@ -145,7 +146,7 @@
 				<div
 					class="square"
 					style="background-color:
-					{$allowedMoves.includes(i)
+					{allowedMoves.includes(i)
 						? 'var(--possibleMove)'
 						: i == selectedSquare
 						? 'var(--selectedSquare)'
