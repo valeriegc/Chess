@@ -46,7 +46,7 @@ export const kingChecked = (board: Square[], king: typeof SvelteComponent, index
 	let isChecked = false;
 	let pawnThreat: number[];
 	let pawnThreat2: number[];
-	console.log(index);
+
 	if (king == KingB) {
 		pawnThreat = pawnCheck(index, board, colorToCheck, pawnToCheckInCheck);
 		pawnThreat2 = pawnThreat.filter((n) => n > index && n < 63 && n > 0 && n !== index + 8);
