@@ -8,8 +8,6 @@
 	import KingW from '../pieces/King_W.svelte';
 	import { isKingCastling } from '../global';
 	import type { SvelteComponent } from 'svelte';
-	import { s } from 'vitest/dist/index-5aad25c1';
-	import { empty } from 'svelte/internal';
 
 	let turn = 'white';
 	let selectedSquare = -1;
