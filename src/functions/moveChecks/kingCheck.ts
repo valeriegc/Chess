@@ -4,7 +4,6 @@ import {
 	lastColumn,
 	row,
 	columnFinder,
-	smallestSquare,
 	biggestSquare,
 	hasOwnPiece
 } from '../../global';
@@ -53,8 +52,6 @@ export const kingCheck = (targetSquare: number, board: Square[], turn: string) =
 	const tower = turn == 'black' ? TowerB : TowerW;
 	const castleArr = castlingCheck(king, tower, board);
 	castleArr?.forEach((n) => tempArrayLimited.push(n));
-	const tempArray = tempArrayLimited.filter(
-		(n) => (n > smallestSquare && n < biggestSquare) || n == 0
-	);
+	const tempArray = tempArrayLimited.filter((n) => n >= 0 && n < biggestSquare);
 	return tempArray.filter((n) => castleArr?.includes(n) || !hasOwnPiece(n, board, turn));
 };

@@ -1,5 +1,5 @@
 import type { SvelteComponent } from 'svelte';
-import { row, rowFinder, hasOwnPiece, hasOpponentPiece } from '../../global';
+import { rowFinder, hasOwnPiece, hasOpponentPiece } from '../../global';
 import type { Square } from '../../stores';
 import PawnB from '../../pieces/Pawn_B.svelte';
 
@@ -11,45 +11,31 @@ export const pawnCheck = (
 ) => {
 	const tempArray: number[] = [];
 	const rowNumber = rowFinder(targetSquare);
-	console.log(turn, targetSquare);
-	if (movingPiece == PawnB) {
-		if (!board[targetSquare + row].occupier.component) {
-			tempArray.push(targetSquare + row);
-		}
-		if (hasOpponentPiece(targetSquare + row + 1, board, turn)) {
-			tempArray.push(targetSquare + row + 1);
-		}
-		if (hasOpponentPiece(targetSquare + row - 1, board, turn)) {
-			tempArray.push(targetSquare + row - 1);
-		}
-		if (
-			rowNumber == 2 &&
-			!hasOwnPiece(targetSquare + 2 * row, board, turn) &&
-			!hasOwnPiece(targetSquare + row, board, turn) &&
-			!hasOpponentPiece(targetSquare + 2 * row, board, turn)
-		) {
-			tempArray.push(targetSquare + 2 * row);
-		}
-	} else {
-		if (!board[targetSquare - row].occupier.component) {
-			tempArray.push(targetSquare - row);
-		}
+	const rowForward = movingPiece == PawnB ? 8 : -8;
 
-		if (hasOpponentPiece(targetSquare - row + 1, board, turn)) {
-			tempArray.push(targetSquare - row + 1);
-		}
-
-		if (hasOpponentPiece(targetSquare - row - 1, board, turn)) {
-			tempArray.push(targetSquare - row - 1);
-		}
-		if (
-			rowNumber == 7 &&
-			!hasOwnPiece(targetSquare - 2 * row, board, turn) &&
-			!hasOwnPiece(targetSquare - row, board, turn) &&
-			!hasOpponentPiece(targetSquare - 2 * row, board, turn)
-		) {
-			tempArray.push(targetSquare - 2 * row);
-		}
+	if (!board[targetSquare + rowForward].occupier.component) {
+		tempArray.push(targetSquare + rowForward);
 	}
+	if (hasOpponentPiece(targetSquare + rowForward + 1, board, turn)) {
+		tempArray.push(targetSquare + rowForward + 1);
+	}
+	if (hasOpponentPiece(targetSquare + rowForward - 1, board, turn)) {
+		tempArray.push(targetSquare + rowForward - 1);
+	}
+	if (
+		movingPiece == PawnB &&
+		rowNumber == 2 &&
+		board[targetSquare + 2 * rowForward].occupier.component == null &&
+		board[targetSquare + rowForward].occupier.component == null
+	) {
+		tempArray.push(targetSquare + 2 * rowForward);
+	} else if (
+		rowNumber == 7 &&
+		board[targetSquare + 2 * rowForward].occupier.component == null &&
+		board[targetSquare + rowForward].occupier.component == null
+	) {
+		tempArray.push(targetSquare + 2 * rowForward);
+	}
+
 	return tempArray;
 };
