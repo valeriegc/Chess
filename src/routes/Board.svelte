@@ -8,6 +8,8 @@
 	import KingW from '../pieces/King_W.svelte';
 	import { isKingCastling } from '../global';
 	import type { SvelteComponent } from 'svelte';
+	import { s } from 'vitest/dist/index-5aad25c1';
+	import { empty } from 'svelte/internal';
 
 	let turn = 'white';
 	let selectedSquare = -1;
@@ -20,14 +22,24 @@
 		turn == 'white' ? (turn = 'black') : (turn = 'white');
 	};
 
+	interface FillSquare {
+		component: typeof SvelteComponent;
+		color: string;
+		square: number;
+	}
+
+	const fillSquare = ({ component, color, square }: FillSquare) => {
+		boardArr[square].occupier.component = component;
+		boardArr[square].occupier.color = color;
+	};
+	const emptySquare = (square: number) => {
+		boardArr[square].occupier.component = null;
+		boardArr[square].occupier.color = '';
+	};
+
 	const movePiece = (newSquare: number) => {
-		//fill new square
-		boardArr[newSquare].occupier.component = selectedPiece;
-		boardArr[newSquare].occupier.color = turn;
-		//reset old square
-		boardArr[selectedSquare].occupier.component = null;
-		boardArr[selectedSquare].occupier.color = '';
-		boardArr = boardArr;
+		fillSquare({ component: selectedPiece!, color: turn, square: newSquare });
+		emptySquare(selectedSquare);
 		$moves.push({
 			pre: selectedSquare,
 			post: newSquare,
@@ -63,38 +75,37 @@
 		)!;
 	};
 
-	const castleTheKing = (newSquare: number) => {
+	const castleTheKing = (targetTowerLoc: number) => {
 		let newKingLoc: number;
 		let newTowerLoc: number;
-		if (newSquare > selectedSquare) {
-			newKingLoc = newSquare - 1;
-			newTowerLoc = newSquare - 2;
+		const castleToLeft = targetTowerLoc > selectedSquare;
+
+		if (castleToLeft) {
+			newKingLoc = targetTowerLoc - 1;
+			newTowerLoc = targetTowerLoc - 2;
 		} else {
-			newKingLoc = newSquare + 1;
-			newTowerLoc = newSquare + 2;
+			newKingLoc = targetTowerLoc + 1;
+			newTowerLoc = targetTowerLoc + 2;
 		}
 		//move king
-		boardArr[newKingLoc].occupier.component = selectedPiece;
-		boardArr[newKingLoc].occupier.color = turn;
+		fillSquare({ component: selectedPiece!, color: turn, square: newKingLoc });
 		// move tower
-		boardArr[newTowerLoc].occupier.component = boardArr[newSquare].occupier.component;
-		boardArr[newTowerLoc].occupier.color = turn;
+		const movingTower = boardArr[targetTowerLoc].occupier.component;
+		fillSquare({ component: movingTower!, color: turn, square: targetTowerLoc });
 		//empty old parts
-		boardArr[selectedSquare].occupier.component = null;
-		boardArr[selectedSquare].occupier.color = '';
-		boardArr[newSquare].occupier.component = null;
-		boardArr[newSquare].occupier.color = '';
+		emptySquare(selectedSquare);
+		emptySquare(targetTowerLoc);
+
 		$moves.push({
 			pre: selectedSquare,
 			post: newKingLoc,
 			component: selectedPiece
 		});
 		$moves.push({
-			pre: newSquare,
+			pre: targetTowerLoc,
 			post: newTowerLoc,
-			component: boardArr[newSquare].occupier.component
+			component: movingTower
 		});
-		boardArr = boardArr;
 		selectedSquare = -1;
 		allowedMoves = [];
 		changeTurn();
