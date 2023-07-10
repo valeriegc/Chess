@@ -37,5 +37,5 @@ export const pawnCheck = (
 		tempArray.push(targetSquare + 2 * rowForward);
 	}
 
-	return tempArray;
+	return tempArray.filter((n) => n < 64 && n >= 0);
 };
