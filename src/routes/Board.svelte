@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { moves } from '../stores';
+	import { moves, type Square } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -38,11 +38,7 @@
 	const movePiece = (newSquare: number) => {
 		fillSquare({ component: selectedPiece!, color: turn, square: newSquare });
 		emptySquare(selectedSquare);
-		$moves.push({
-			pre: selectedSquare,
-			post: newSquare,
-			component: selectedPiece
-		});
+		addMoves(selectedSquare, newSquare, selectedPiece!);
 		selectedSquare = -1;
 		allowedMoves = [];
 	};
@@ -73,10 +69,18 @@
 		)!;
 	};
 
-	const castleTheKing = (oldTowerLoc: number) => {
+	const addMoves = (previouspos: number, newpos: number, piece: typeof SvelteComponent) => {
+		$moves.push({
+			pre: previouspos,
+			post: newpos,
+			component: piece
+		});
+	};
+
+	const castleTheKing = (oldKingLoc: number, oldTowerLoc: number, board: Square[]) => {
 		let newKingLoc: number;
 		let newTowerLoc: number;
-		const castleToLeft = oldTowerLoc > selectedSquare;
+		const castleToLeft = oldTowerLoc > oldKingLoc;
 
 		if (castleToLeft) {
 			newKingLoc = oldTowerLoc - 1;
@@ -85,25 +89,15 @@
 			newKingLoc = oldTowerLoc + 1;
 			newTowerLoc = oldTowerLoc + 2;
 		}
-		//move king
-		fillSquare({ component: selectedPiece!, color: turn, square: newKingLoc });
-		// move tower
-		const movingTower = boardArr[oldTowerLoc].occupier.component;
-		fillSquare({ component: movingTower!, color: turn, square: newTowerLoc });
-		//empty old parts
-		emptySquare(selectedSquare);
-		emptySquare(oldTowerLoc);
 
-		$moves.push({
-			pre: selectedSquare,
-			post: newKingLoc,
-			component: selectedPiece
-		});
-		$moves.push({
-			pre: oldTowerLoc,
-			post: newTowerLoc,
-			component: movingTower
-		});
+		const movingKing = board[oldKingLoc].occupier.component!;
+		fillSquare({ component: movingKing!, color: turn, square: newKingLoc });
+		emptySquare(oldKingLoc);
+		const movingTower = board[oldTowerLoc].occupier.component!;
+		fillSquare({ component: movingTower!, color: turn, square: newTowerLoc });
+		emptySquare(oldTowerLoc);
+		addMoves(oldKingLoc, newKingLoc, movingKing);
+		addMoves(oldTowerLoc, newTowerLoc, movingTower);
 	};
 
 	const handleSelectAndMove = (newSquare: number) => {
@@ -112,7 +106,7 @@
 			return;
 		}
 		if (isKingCastling(newSquare, boardArr, turn)) {
-			castleTheKing(newSquare);
+			castleTheKing(selectedSquare, newSquare, boardArr);
 		} else {
 			movePiece(newSquare);
 		}

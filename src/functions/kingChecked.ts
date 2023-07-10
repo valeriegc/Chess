@@ -16,74 +16,68 @@ import BishopB from '../pieces/Bishop_B.svelte';
 import TowerB from '../pieces/Tower_B.svelte';
 import HorseB from '../pieces/Horse_B.svelte';
 import KingB from '../pieces/King_B.svelte';
+import { row } from '../global';
 
-export const kingChecked = (board: Square[], king: typeof SvelteComponent, index: number) => {
-	const colorToCheck = king == KingB ? 'white' : 'black';
-	const bishopCheckDefiner = king == KingB ? 'black' : 'white';
+export const kingChecked = (
+	board: Square[],
+	king: typeof SvelteComponent,
+	kingLocation: number
+) => {
+	const opponent = king == KingB ? 'white' : 'black';
+	let ownColor: string;
+	let ownPawn: typeof SvelteComponent;
+	let opponentPawn: typeof SvelteComponent;
+	let opponentBishop: typeof SvelteComponent;
+	let opponentTower: typeof SvelteComponent;
+	let opponentHorse: typeof SvelteComponent;
+	let opponentQueen: typeof SvelteComponent;
 
-	let pawnToCheckInCheck: typeof SvelteComponent;
-	let pawnToFilter: typeof SvelteComponent;
-	let bishopToFilter: typeof SvelteComponent;
-	let towerToFilter: typeof SvelteComponent;
-	let horseToFilter: typeof SvelteComponent;
-	let queenToFilter: typeof SvelteComponent;
-
-	if (colorToCheck == 'white') {
-		pawnToCheckInCheck = PawnB;
-		pawnToFilter = PawnW;
-		bishopToFilter = BishopW;
-		towerToFilter = TowerW;
-		horseToFilter = HorseW;
-		queenToFilter = QueenW;
+	if (opponent == 'white') {
+		ownColor = 'black';
+		ownPawn = PawnB;
+		opponentPawn = PawnW;
+		opponentBishop = BishopW;
+		opponentTower = TowerW;
+		opponentHorse = HorseW;
+		opponentQueen = QueenW;
 	} else {
-		pawnToCheckInCheck = PawnW;
-		pawnToFilter = PawnB;
-		bishopToFilter = BishopB;
-		towerToFilter = TowerB;
-		horseToFilter = HorseB;
-		queenToFilter = QueenB;
+		ownPawn = PawnW;
+		ownColor = 'white';
+		opponentPawn = PawnB;
+		opponentBishop = BishopB;
+		opponentTower = TowerB;
+		opponentHorse = HorseB;
+		opponentQueen = QueenB;
 	}
-	let isChecked = false;
-	let pawnThreat: number[];
-	let pawnThreat2: number[];
+	let isKingChecked = false;
 
-	if (king == KingB) {
-		pawnThreat = pawnCheck(index, board, colorToCheck, pawnToCheckInCheck);
-		pawnThreat2 = pawnThreat.filter((n) => n > index && n < 63 && n > 0 && n !== index + 8);
-		pawnThreat2.forEach((n) => {
-			if (board[n].occupier.component == PawnW) isChecked = true;
+	const checkForOpponent = (threatArr: number[], piece: typeof SvelteComponent) => {
+		threatArr.forEach((n) => {
+			if (board[n].occupier.component == piece) isKingChecked = true;
 		});
-	} else {
-		pawnThreat = pawnCheck(index, board, colorToCheck, pawnToCheckInCheck);
-		pawnThreat2 = pawnThreat.filter((n) => n < index && n < 63 && n > 0 && n !== index - 8);
-		pawnThreat2.forEach((n) => {
-			if (board[n].occupier.component == PawnB) isChecked = true;
-		});
-	}
+	};
 
-	const bishopThreat = bishopCheck(index, board, bishopCheckDefiner);
-	bishopThreat.forEach((n) => {
-		if (
-			board[n].occupier.component == bishopToFilter ||
-			board[n].occupier.component == queenToFilter
-		)
-			isChecked = true;
-	});
-	const towerThreat = towerCheck(index, board, colorToCheck);
-	towerThreat.forEach((n) => {
-		if (
-			board[n].occupier.component == towerToFilter ||
-			board[n].occupier.component == queenToFilter
-		)
-			isChecked = true;
-	});
-	const horseThreat = horseCheck(index, board, colorToCheck);
-	horseThreat.forEach((n) => {
-		if (board[n].occupier.component == horseToFilter) isChecked = true;
-	});
-	if (isChecked) return true;
-	else return false;
+	const pawnThreat = pawnCheck(kingLocation, board, opponent, ownPawn);
+	const pawnThreatFinal = pawnThreat.filter(
+		(n) => n !== kingLocation + row && n !== kingLocation - row
+	);
+	checkForOpponent(pawnThreatFinal, opponentPawn);
+
+	const bishopThreat = bishopCheck(kingLocation, board, ownColor);
+	checkForOpponent(bishopThreat, opponentBishop);
+
+	const towerThreat = towerCheck(kingLocation, board, opponent);
+	checkForOpponent(towerThreat, opponentTower);
+
+	const horseThreat = horseCheck(kingLocation, board, opponent);
+	checkForOpponent(horseThreat, opponentHorse);
+
+	const queenThreat = bishopThreat.concat(towerThreat);
+	checkForOpponent(queenThreat, opponentQueen);
+
+	return isKingChecked;
 };
+
 export const kingCheckMate = (king: typeof SvelteComponent, index: number, board: Square[]) => {
 	let remainingKingMoves = [];
 	let turn = '';
