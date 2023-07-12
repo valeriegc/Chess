@@ -1,35 +1,37 @@
 import { columnFinder, column, hasOwnPiece } from '../../global';
 import type { Square } from '../../stores';
 
-export const horseCheck = (targetSquare: number, boardArr: Square[], turn: string) => {
-	const startColumnNumber = columnFinder(targetSquare);
+export const horseCheck = (currentLoc: number, boardArr: Square[], turn: string) => {
+	const startColumnNumber = columnFinder(currentLoc);
+	let allHorseMoves = [
+		currentLoc - 15,
+		currentLoc + 17,
+		currentLoc - 6,
+		currentLoc + 10,
+		currentLoc - 17,
+		currentLoc + 15,
+		currentLoc + 6,
+		currentLoc - 10
+	];
+	allHorseMoves = allHorseMoves.filter((n) => n >= 0 && n < 64);
 
-	const plusOneRow = [-15, 17];
-	const plusTwoRow = [-6, 10];
-	const minusOneRow = [-17, 15];
-	const minusTwoRow = [6, -10];
-	const tempArray: number[] = [];
+	const columnOnTheBoard = (n: number) => {
+		if (
+			columnFinder(n) == startColumnNumber + 1 ||
+			columnFinder(n) == startColumnNumber + 2 ||
+			columnFinder(n) == startColumnNumber - 1 ||
+			columnFinder(n) == startColumnNumber - 2
+		) {
+			return true;
+		}
+		return false;
+	};
+	let validHorseMoves: number[] = [];
 
-	plusOneRow.forEach((n) => {
-		if (columnFinder(targetSquare + n) == startColumnNumber + column) {
-			tempArray.push(targetSquare + n);
+	allHorseMoves.forEach((n) => {
+		if (columnOnTheBoard(n) && !hasOwnPiece(n, boardArr, turn)) {
+			validHorseMoves.push(n);
 		}
 	});
-	plusTwoRow.forEach((n) => {
-		if (columnFinder(targetSquare + n) == startColumnNumber + 2 * column) {
-			tempArray.push(targetSquare + n);
-		}
-	});
-	minusOneRow.forEach((n) => {
-		if (columnFinder(targetSquare + n) == startColumnNumber - column) {
-			tempArray.push(targetSquare + n);
-		}
-	});
-	minusTwoRow.forEach((n) => {
-		if (columnFinder(targetSquare + n) == startColumnNumber - 2 * column) {
-			tempArray.push(targetSquare + n);
-		}
-	});
-	const tempArrayLimited = tempArray.filter((n) => n > 0 && n < 64);
-	return tempArrayLimited.filter((n) => !hasOwnPiece(n, boardArr, turn));
+	return validHorseMoves;
 };

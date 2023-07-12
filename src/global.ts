@@ -16,6 +16,7 @@ export const diagonalRowNW = -9;
 export const diagonalRowNE = -7;
 export const diagonalRowSW = 7;
 export const diagonalRowSE = 9;
+export const boardSphere = 8;
 
 export const columnFinder = (targetSquare: number) => {
 	targetSquare += 1;
@@ -54,4 +55,30 @@ export const isKingCastling = (targetSquare: number, board: Square[], turn: stri
 		return true;
 	}
 	return false;
+};
+
+export const onBoardEdge = (direction: string, currentSquare: number) => {
+	let edge = true;
+	switch (direction) {
+		case 'southWest':
+			if (columnFinder(currentSquare) !== firstColumn && rowFinder(currentSquare) !== lastRow) {
+				edge = false;
+			}
+			break;
+		case 'southEast':
+			if (rowFinder(currentSquare) !== lastRow && columnFinder(currentSquare) !== lastColumn) {
+				edge = false;
+			}
+			break;
+		case 'northEast':
+			if (rowFinder(currentSquare) !== firstRow && columnFinder(currentSquare) !== lastColumn) {
+				edge = false;
+			}
+			break;
+		case 'northWest':
+			if (columnFinder(currentSquare) !== firstColumn && rowFinder(currentSquare) !== firstRow) {
+				edge = false;
+			}
+	}
+	return edge;
 };

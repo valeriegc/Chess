@@ -2,8 +2,6 @@ import { get } from 'svelte/store';
 import { moves, type Square } from '../../stores';
 import KingB from '../../pieces/King_B.svelte';
 import type { SvelteComponent } from 'svelte';
-import KingW from '../../pieces/King_W.svelte';
-import { kingCheck } from './kingCheck';
 import { kingChecked } from '../kingChecked';
 
 export const castlingCheck = (
@@ -11,57 +9,63 @@ export const castlingCheck = (
 	tower: typeof SvelteComponent,
 	board: Square[]
 ) => {
+	let leftRoute = [];
+	let rightRoute = [];
+	let castleRight: number;
+	let castleLeft: number;
 	let castleSquares: number[];
+	let leftTowerNotMoved;
+	let rightTowerNotMoved;
 	castleSquares = [];
 	const pastMoves = get(moves);
-	if (pastMoves.find((n) => n.component == king)) return castleSquares;
+
 	if (king == KingB) {
-		if (!pastMoves.find((n) => n.component == tower && n.pre == 0)) {
-			if (
-				board[1].occupier.component == null &&
-				board[2].occupier.component == null &&
-				board[3].occupier.component == null
-			) {
-				if (
-					!kingChecked(board, king, 1) &&
-					!kingChecked(board, king, 2) &&
-					!kingChecked(board, king, 3)
-				) {
-					castleSquares.push(0);
-				}
-			}
-			if (!pastMoves.find((n) => n.component == tower && n.pre == 7)) {
-				if (board[5].occupier.component == null && board[6].occupier.component == null) {
-					if (!kingChecked(board, king, 5) && !kingChecked(board, king, 6)) {
-						castleSquares.push(7);
-					}
-				}
-			}
-		}
+		leftRoute = [1, 2, 3];
+		rightRoute = [5, 6];
+		castleRight = 7;
+		castleLeft = 0;
+		leftTowerNotMoved = !pastMoves.find((n) => n.component == tower && n.pre == 0);
+		rightTowerNotMoved = !pastMoves.find((n) => n.component == tower && n.pre == 7);
+	} else {
+		leftRoute = [57, 58, 59];
+		rightRoute = [61, 62];
+		castleRight = 63;
+		castleLeft = 56;
+		leftTowerNotMoved = !pastMoves.find((n) => n.component == tower && n.pre == 56);
+		rightTowerNotMoved = !pastMoves.find((n) => n.component == tower && n.pre == 63);
 	}
-	if (king == KingW) {
-		if (!pastMoves.find((n) => n.component == tower && n.pre == 56)) {
-			if (
-				board[57].occupier.component == null &&
-				board[58].occupier.component == null &&
-				board[59].occupier.component == null
-			) {
-				if (
-					!kingChecked(board, king, 57) &&
-					!kingChecked(board, king, 58) &&
-					!kingChecked(board, king, 59)
-				) {
-					castleSquares.push(56);
-				}
+	const kingAlreadyMoved = pastMoves.find((n) => n.component == king);
+
+	if (kingAlreadyMoved) return;
+
+	const isRouteEmpty = (route: number[]) => {
+		let empty = true;
+		route.forEach((n) => {
+			if (board[n].occupier.component !== null) {
+				empty = false;
 			}
-			if (!pastMoves.find((n) => n.component == tower && n.pre == 63)) {
-				if (board[61].occupier.component == null && board[62].occupier.component == null) {
-					if (!kingChecked(board, king, 61) && !kingChecked(board, king, 62)) {
-						castleSquares.push(63);
-					}
-				}
-			}
-		}
+		});
+		return empty;
+	};
+
+	const kingCheckedOnRoute = (route: number[]) => {
+		let checked = false;
+		route.forEach((n) => {
+			if (kingChecked(board, king, n)) checked = true;
+		});
+		return checked;
+	};
+	const canCastleLeft =
+		leftTowerNotMoved && isRouteEmpty(leftRoute) && !kingCheckedOnRoute(leftRoute);
+
+	if (canCastleLeft) {
+		castleSquares.push(castleLeft);
+	}
+	const canCastleRight =
+		rightTowerNotMoved && isRouteEmpty(rightRoute) && !kingCheckedOnRoute(rightRoute);
+
+	if (canCastleRight) {
+		castleSquares.push(castleRight);
 	}
 
 	return castleSquares;
