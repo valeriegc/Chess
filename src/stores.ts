@@ -11,5 +11,7 @@ export interface Move {
 	pre: number;
 	post: number;
 	component: typeof SvelteComponent | null;
+	preCoord: string;
+	postCoord: string;
 }
 export const moves = writable<Move[]>([]);
