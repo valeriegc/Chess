@@ -6,7 +6,7 @@
 	import { kingCheckMate, kingChecked } from '../functions/kingChecked';
 	import KingB from '../pieces/King_B.svelte';
 	import KingW from '../pieces/King_W.svelte';
-	import { isKingCastling } from '../global';
+	import { alphaCalc, isKingCastling, letters } from '../global';
 	import type { SvelteComponent } from 'svelte';
 
 	let turn = 'white';
@@ -41,6 +41,7 @@
 		addMoves(selectedSquare, newSquare, selectedPiece!);
 		selectedSquare = -1;
 		allowedMoves = [];
+		console.log($moves);
 	};
 	const updateSelection = (newSquare: number) => {
 		const kingToCheck = turn == 'white' ? KingB : KingW;
@@ -70,11 +71,16 @@
 	};
 
 	const addMoves = (previouspos: number, newpos: number, piece: typeof SvelteComponent) => {
+		const preAlph = alphaCalc(previouspos);
+		const postAlph = alphaCalc(newpos);
 		$moves.push({
 			pre: previouspos,
 			post: newpos,
-			component: piece
+			component: piece,
+			preCoord: preAlph,
+			postCoord: postAlph
 		});
+		$moves = $moves;
 	};
 
 	const castleTheKing = (oldKingLoc: number, oldTowerLoc: number, board: Square[]) => {
@@ -114,8 +120,6 @@
 		selectedSquare = -1;
 		allowedMoves = [];
 	};
-
-	const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
 	const darkSquares = [
 		1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23, 24, 26, 28, 30, 33, 35, 37, 39, 40, 42, 44, 46, 49,
@@ -180,7 +184,7 @@
 		height: 680px;
 		width: 680px;
 		margin: auto;
-		color: black;
+		color: var(--darkSquare);
 	}
 	.boardX {
 		display: flex;

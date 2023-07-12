@@ -82,3 +82,12 @@ export const onBoardEdge = (direction: string, currentSquare: number) => {
 	}
 	return edge;
 };
+
+export const alphaCalc = (i: number) => {
+	let rowNumber = rowFinder(i).toString();
+	let columnId = columnFinder(i) - 1;
+	let correctLetter = letters[columnId];
+	return correctLetter + rowNumber;
+};
+export const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+export const numbers = [1, 2, 3, 4, 5, 6, 7, 8];
