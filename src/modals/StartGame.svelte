@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 	import Dialog from './Dialog.svelte';
 	import { onMount } from 'svelte';
 	let showModal = true;
-	let url = '';
+	let url: string;
+	let confirmation = false;
 
 	onMount(() => (url = window.location.href));
 
@@ -19,6 +20,14 @@
 		}
 		url = url + params;
 	};
+
+	const handleCopy = () => {
+		{
+			() => navigator.clipboard.writeText(url);
+		}
+		confirmation = true;
+		setTimeout(() => (confirmation = false), 1000);
+	};
 </script>
 
 <Dialog bind:showModal>
@@ -30,7 +39,10 @@
 	<div class="choices" slot="choices">
 		<button on:click={() => queryParamGenerator()}>Generate link </button>
 		<input value={url} />
-		<button>Copy</button>
+		<button on:click={() => handleCopy()}>Copy</button>
+		{#if confirmation}
+			<div class="copied">Copied!</div>
+		{/if}
 	</div></Dialog
 >
 
@@ -43,23 +55,29 @@
 		color: var(--darkSquare);
 		margin-inline: 2rem;
 	}
+	.copied {
+		font-size: medium;
+		color: var(--darkSquare);
+		margin-left: 1rem;
+		margin-top: 0.5rem;
+	}
 	.choices {
 		margin-top: 1rem;
 		margin-left: 2rem;
 		display: flex;
 	}
 	input {
-		margin-left: 3em;
-		margin-right: 1em;
+		margin-left: 3rem;
+		margin-right: 1rem;
 		width: 16rem;
 		border-radius: 10px;
 		border: solid var(--darkSquare) 1px;
 		color: var(--darkSquare);
-		padding-inline: 1em;
+		padding-inline: 1rem;
 	}
 	button {
 		border: transparent solid 1px;
-		padding: 0.5em;
+		padding: 0.5rem;
 		border-radius: 10px;
 		background-color: var(--darkSquare);
 		color: white;
@@ -67,7 +85,7 @@
 	}
 	button:hover {
 		background-color: var(--lightSquare);
-		transition: 3ms;
+		transition: 3000;
 		border: solid var(--darkSquare) 1px;
 		color: var(--darkSquare);
 	}
