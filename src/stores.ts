@@ -15,3 +15,5 @@ export interface Move {
 	postCoord: string;
 }
 export const moves = writable<Move[]>([]);
+export let startOpen = writable('true');
+export const url = writable('');

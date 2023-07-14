@@ -8,6 +8,7 @@
 	import KingW from '../pieces/King_W.svelte';
 	import { alphaCalc, isKingCastling, letters } from '../global';
 	import type { SvelteComponent } from 'svelte';
+	import StartGame from '../modals/StartGame.svelte';
 
 	let turn = 'white';
 	let selectedSquare = -1;
@@ -127,6 +128,7 @@
 	];
 </script>
 
+<StartGame />
 <div class="boardOuterWrap">
 	<div class="boardX">
 		{#each letters as letter}
