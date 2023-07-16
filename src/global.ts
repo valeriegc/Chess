@@ -91,3 +91,11 @@ export const alphaCalc = (i: number) => {
 };
 export const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 export const numbers = [1, 2, 3, 4, 5, 6, 7, 8];
+
+export const passwordInvalid = (password: string) => {
+	if (password.length < 8) return true;
+	return false;
+};
+export const emailInvalid = (email: string) => {
+	return false;
+};

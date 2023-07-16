@@ -20,19 +20,8 @@ export interface Move {
 export const moves = writable<Move[]>([]);
 export let startOpen = writable('true');
 export const url = writable('');
-export const authentificated = writable({
+export const authenticated = writable({
 	data: {},
 	user: null,
 	fetching: true
 });
-export const authMethods = {
-	loginUser: async (email: string, password: string) => {
-		await signInWithEmailAndPassword(auth, email, password);
-	},
-	logOutUser: async () => {
-		await signOut(auth);
-	},
-	createUser: async (email: string, password: string) => {
-		await createUserWithEmailAndPassword(auth, email, password);
-	}
-};
