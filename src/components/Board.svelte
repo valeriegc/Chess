@@ -8,7 +8,7 @@
 	import KingW from '../pieces/King_W.svelte';
 	import { alphaCalc, isKingCastling, letters } from '../global';
 	import type { SvelteComponent } from 'svelte';
-	import StartGame from '../modals/StartGame.svelte';
+	import StartGame from './StartGame.svelte';
 
 	let turn = 'white';
 	let selectedSquare = -1;

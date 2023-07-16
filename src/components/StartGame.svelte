@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Dialog from './Dialog.svelte';
 	import { onMount } from 'svelte';
+	import Dialog from '../modals/Dialog.svelte';
 	let showModal = true;
 	let url: string;
 	let confirmation = false;
