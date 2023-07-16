@@ -1,24 +1,38 @@
 <script lang="ts">
-	import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+	import {
+		getAuth,
+		createUserWithEmailAndPassword,
+		signInWithEmailAndPassword,
+		onAuthStateChanged
+	} from 'firebase/auth';
+	import { emailInvalid, passwordInvalid } from '../global';
+	import { goto } from '$app/navigation';
+
 	let email = '';
 	let password = '';
 	let confirmationPassword = '';
 	let loginError = '';
+	let loginErrorText = '';
 	let signUpError = false;
 	let signUpErrorText = '';
 	let createAccount = false;
 	const auth = getAuth();
 
+	const loginDirector = () => {
+		if (!createAccount) signInValidator();
+		else signUpValidator();
+	};
+
 	const signUpValidator = () => {
 		signUpError = false;
 		signUpErrorText = '';
 		const emailArr = [email.matchAll(/.@/g)];
-		if (emailArr.length < 1) {
+		if (emailInvalid(email)) {
 			signUpErrorText = 'Please provide a valid email address.';
 			signUpError = true;
 			return;
 		}
-		if (password.length < 8) {
+		if (passwordInvalid(password)) {
 			signUpErrorText = 'The password needs to contain minimum 8 characters';
 			signUpError = true;
 			return;
@@ -31,9 +45,32 @@
 		createUserWithEmailAndPassword(auth, email, password);
 	};
 
+	const signInValidator = () => {
+		if (emailInvalid(email)) {
+			loginErrorText = 'The email format is invalid';
+			return;
+		}
+		if (passwordInvalid(password)) {
+			loginErrorText = 'The password format is invalid';
+			return;
+		}
+		signInWithEmailAndPassword(auth, email, password);
+	};
+
+	signInWithEmailAndPassword(auth, email, password)
+		.then((userCredential) => {
+			// Signed in
+			const user = userCredential.user;
+			console.log('sign in successfull');
+			// ...
+		})
+		.catch((error) => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+		});
+
 	createUserWithEmailAndPassword(auth, email, password)
 		.then((userCredential) => {
-			window.location.pathname = '/game';
 			const user = userCredential.user;
 			// ...
 		})
@@ -42,6 +79,17 @@
 			const errorMessage = error.message;
 			// ..
 		});
+
+	onAuthStateChanged(auth, (user) => {
+		if (user) {
+			const uid = user.uid;
+			goto('/profile');
+			// ...
+		} else {
+			// User is signed out
+			// ...
+		}
+	});
 </script>
 
 <div class="loginWrap">
@@ -65,7 +113,7 @@
 	{#if signUpError}
 		<p style="color:pink">{signUpErrorText}</p>
 	{/if}
-	<button on:click={() => signUpValidator()} type="submit"
+	<button on:click={() => loginDirector()} type="submit"
 		>{createAccount ? 'SIGN UP' : 'LOGIN'}</button
 	>
 	<div class="choices">
