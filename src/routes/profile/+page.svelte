@@ -22,18 +22,28 @@
 	//friends, logout, user picture setter,
 </script>
 
-<div class="grid">
-	<Details />
-	<GameDetails />
-	<Settings />
+<div class="gridWrap">
+	<div class="grid">
+		<Details />
+		<GameDetails />
+		<Settings />
+	</div>
 </div>
 
 <style>
+	* {
+		margin: 0;
+	}
+	.gridWrap {
+		display: flex;
+		justify-content: center;
+		padding: 3rem;
+	}
 	.grid {
-		background: linear-gradient(to right, var(--lightSquare), rgb(165, 141, 103));
 		display: grid;
-		gap: 3rem;
-		grid-template-columns: 20rem 20rem 20rem;
-		grid-template-rows: 10rem 10rem;
+		gap: 2rem;
+		grid-template-columns: 40rem 20rem;
+		grid-template-rows: 18rem 18rem;
+		height: 62rem;
 	}
 </style>

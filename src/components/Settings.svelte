@@ -18,7 +18,6 @@
 		width: 40rem;
 		color: var(--darkSquare);
 		padding: 2rem;
-		height: 16rem;
 	}
 	.themeBox {
 		display: flex;

@@ -21,6 +21,11 @@
 		border: solid 1px var(--darkSquare);
 		border-radius: 30px;
 		color: var(--darkSquare);
+		padding: 2rem;
+		grid-column-start: 2;
+		grid-column-end: 3;
+		grid-row-start: 1;
+		grid-row-end: 3;
 	}
 	button {
 		background-color: var(--lightSquare);
