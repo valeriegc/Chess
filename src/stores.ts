@@ -1,8 +1,6 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import type { SvelteComponent } from 'svelte';
 import { writable } from 'svelte/store';
-import { auth } from './firebase/firebase';
-
 export interface Square {
 	coords: string;
 	occupier: {
