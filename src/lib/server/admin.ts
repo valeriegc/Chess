@@ -1,7 +1,12 @@
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { C_CLIENT_EMAIL, C_PROJECT_ID, C_PRIVATE_KEY } from '$env/static/private';
-import pkg from 'firebase-admin';
+import {
+	C_CLIENT_EMAIL,
+	C_PROJECT_ID,
+	C_PRIVATE_KEY,
+	C_FIREBASE_SERVICE_ACCOUNT
+} from '$env/static/private';
+import pkg, { initializeApp } from 'firebase-admin';
 
 try {
 	pkg.initializeApp({
