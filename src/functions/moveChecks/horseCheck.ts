@@ -1,4 +1,4 @@
-import { columnFinder, column, hasOwnPiece } from '../../global';
+import { columnFinder, hasOwnPiece } from '../../global';
 import type { Square } from '../../stores';
 
 export const horseCheck = (currentLoc: number, boardArr: Square[], turn: string) => {
