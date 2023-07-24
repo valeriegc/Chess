@@ -1,11 +1,19 @@
 <script lang="ts">
-	import { auth } from '$lib/firebase/firebase';
+	import { auth, user } from '$lib/firebase/firebase';
 	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 
-	const googleSingIn = async () => {
+	const singInWithGoogle = async () => {
 		const provider = new GoogleAuthProvider();
-		const user = await signInWithPopup(auth, provider);
-		console.log(user);
+		const credential = await signInWithPopup(auth, provider);
+		const idToken = await credential.user.getIdToken();
+
+		const res = await fetch('/api/signin', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ idToken })
+		});
 	};
 
 	let createAccount = false;
@@ -39,7 +47,7 @@
 		<p style="color:pink">{signUpErrorText}</p>
 	{/if}
 	<button type="submit">{createAccount ? 'SIGN UP' : 'LOGIN'}</button>
-	<button on:click={googleSingIn} style="margin-top: 0.75rem"
+	<button on:click={singInWithGoogle} style="margin-top: 0.75rem"
 		>SIGN {createAccount ? 'UP' : 'IN'} WITH GOOGLE</button
 	>
 	<div class="choices">
