@@ -1,4 +1,13 @@
 <script lang="ts">
+	import { auth } from '$lib/firebase/firebase';
+	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+
+	const googleSingIn = async () => {
+		const provider = new GoogleAuthProvider();
+		const user = await signInWithPopup(auth, provider);
+		console.log(user);
+	};
+
 	let createAccount = false;
 	let email = '';
 	let password = '';
@@ -30,6 +39,9 @@
 		<p style="color:pink">{signUpErrorText}</p>
 	{/if}
 	<button type="submit">{createAccount ? 'SIGN UP' : 'LOGIN'}</button>
+	<button on:click={googleSingIn} style="margin-top: 0.75rem"
+		>SIGN {createAccount ? 'UP' : 'IN'} WITH GOOGLE</button
+	>
 	<div class="choices">
 		<a href="/game">Continue without registering</a>
 		<p on:click={() => (createAccount ? (createAccount = false) : (createAccount = true))}>
@@ -89,7 +101,7 @@
 	}
 	button {
 		width: 15rem;
-		margin: 1rem;
+		margin-bottom: 1rem;
 		border-radius: 10px;
 		height: 2.75rem;
 		border: none;
