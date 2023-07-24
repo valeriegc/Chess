@@ -19,7 +19,7 @@ export const storage = getStorage();
 
 const userStore = () => {
 	let unsubscribe: () => void;
-
+	console.log('this ran');
 	if (!auth || !globalThis.window) {
 		console.warn('Auth is not initialized or not in browser');
 		const { subscribe } = writable<User | null>(null);

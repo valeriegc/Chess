@@ -1,4 +1,4 @@
-import { getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase/firestore';
 import {
 	C_CLIENT_EMAIL,

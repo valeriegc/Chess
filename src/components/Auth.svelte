@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { auth, user } from '$lib/firebase/firebase';
 	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 
@@ -14,6 +15,7 @@
 			},
 			body: JSON.stringify({ idToken })
 		});
+		goto('/profile');
 	};
 
 	let createAccount = false;
