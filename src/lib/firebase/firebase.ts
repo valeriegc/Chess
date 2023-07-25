@@ -1,8 +1,10 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { writable } from 'svelte/store';
+import { goto } from '$app/navigation';
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyBvp1CgRFHZU5WQB8MuX_UUBvPqXDln1Vw',
@@ -12,14 +14,14 @@ const firebaseConfig = {
 	messagingSenderId: '587967618814',
 	appId: '1:587967618814:web:299748f262dcb55d1d8faf'
 };
+
 export const app = initializeApp(firebaseConfig);
-export const db = getFirestore();
 export const auth = getAuth();
+export const db = getFirestore();
 export const storage = getStorage();
 
 const userStore = () => {
 	let unsubscribe: () => void;
-	console.log('this ran');
 	if (!auth || !globalThis.window) {
 		console.warn('Auth is not initialized or not in browser');
 		const { subscribe } = writable<User | null>(null);
@@ -41,3 +43,4 @@ const userStore = () => {
 	};
 };
 export const user = userStore();
+console.log(user);

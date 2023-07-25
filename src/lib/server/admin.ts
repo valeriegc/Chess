@@ -6,7 +6,7 @@ import {
 	C_PRIVATE_KEY,
 	C_FIREBASE_SERVICE_ACCOUNT
 } from '$env/static/private';
-import pkg, { initializeApp } from 'firebase-admin';
+import pkg from 'firebase-admin';
 
 try {
 	pkg.initializeApp({
@@ -17,7 +17,8 @@ try {
 		})
 	});
 } catch (err: any) {
-	if (!/already exists/u.test(err.message)) {
+	console.log(err);
+	if (!/already exists/.test(err.message)) {
 		console.error('Firebase Admin Error: ', err.stack);
 	}
 }
