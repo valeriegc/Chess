@@ -1,4 +1,4 @@
-import { getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase/firestore';
 import {
 	C_CLIENT_EMAIL,
@@ -6,7 +6,7 @@ import {
 	C_PRIVATE_KEY,
 	C_FIREBASE_SERVICE_ACCOUNT
 } from '$env/static/private';
-import pkg, { initializeApp } from 'firebase-admin';
+import pkg from 'firebase-admin';
 
 try {
 	pkg.initializeApp({
@@ -17,7 +17,7 @@ try {
 		})
 	});
 } catch (err: any) {
-	if (!/already exists/u.test(err.message)) {
+	if (!/already exists/.test(err.message)) {
 		console.error('Firebase Admin Error: ', err.stack);
 	}
 }
