@@ -1,5 +1,3 @@
-import { auth } from '$lib/firebase/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
 import type { SvelteComponent } from 'svelte';
 import { writable } from 'svelte/store';
 export interface Square {
@@ -16,6 +14,7 @@ export interface Move {
 	preCoord: string;
 	postCoord: string;
 }
+
 export const moves = writable<Move[]>([]);
 export let startOpen = writable('true');
 export const url = writable('');

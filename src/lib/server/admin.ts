@@ -17,7 +17,6 @@ try {
 		})
 	});
 } catch (err: any) {
-	console.log(err);
 	if (!/already exists/.test(err.message)) {
 		console.error('Firebase Admin Error: ', err.stack);
 	}
