@@ -89,8 +89,8 @@ export const alphaCalc = (i: number) => {
 	let correctLetter = letters[columnId];
 	return correctLetter + rowNumber;
 };
-export const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-export const numbers = [1, 2, 3, 4, 5, 6, 7, 8];
+export const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] as const;
+export const numbers = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 
 export const passwordInvalid = (password: string) => {
 	if (password.length < 8) return true;
