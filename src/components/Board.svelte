@@ -9,12 +9,13 @@
 	import { alphaCalc, isKingCastling, letters } from '../global';
 	import type { SvelteComponent } from 'svelte';
 	import StartGame from './StartGame.svelte';
+	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
 
 	let turn = 'white';
 	let selectedSquare = -1;
 	let allowedMoves: number[] = [];
 	let boardArr = initPieces();
-
+	let allAllowedMoves;
 	let selectedPiece: null | typeof SvelteComponent = null;
 
 	const changeTurn = () => {
@@ -42,33 +43,47 @@
 		addMoves(selectedSquare, newSquare, selectedPiece!);
 		selectedSquare = -1;
 		allowedMoves = [];
-		console.log($moves);
 	};
-	const updateSelection = (newSquare: number) => {
-		const kingToCheck = turn == 'white' ? KingB : KingW;
-		const kingLocation = boardArr.findIndex((n) => n.occupier.component == kingToCheck);
 
-		if (kingChecked(boardArr, kingToCheck, kingLocation)) {
-			if (kingCheckMate(kingToCheck, kingLocation, boardArr)) {
-				alert('Game over king is check mate');
-			}
-			selectedSquare = kingLocation;
-			allowedMoves = pieceCheck(selectedPiece!, selectedSquare, boardArr, turn)!;
-			return;
-		}
+	const updateSelection = (newSquare: number) => {
 		const emptySquare = boardArr[newSquare].occupier.component == null;
 		const opponentPiece = boardArr[newSquare].occupier.color !== turn;
 
 		if (emptySquare || opponentPiece) return;
 
-		selectedSquare = newSquare;
-		selectedPiece = boardArr[selectedSquare].occupier.component;
-		allowedMoves = pieceCheck(
-			boardArr[selectedSquare].occupier.component!,
-			selectedSquare,
-			boardArr,
-			turn
-		)!;
+		const kingToCheck = turn == 'white' ? KingW : KingB;
+		const kingLocation = boardArr.findIndex((n) => n.occupier.component == kingToCheck);
+
+		if (kingChecked(boardArr, kingToCheck, kingLocation)) {
+			console.log('king still checked');
+			selectedSquare = newSquare;
+			selectedPiece = boardArr[selectedSquare].occupier.component;
+			allAllowedMoves = pieceCheck(selectedPiece!, selectedSquare, boardArr, turn)!;
+			allowedMoves = allAllowedMoves.filter((n: number) => {
+				let banana = moveAllowedWhileCheck(
+					boardArr,
+					n,
+					selectedSquare,
+					kingToCheck,
+					kingLocation,
+					selectedPiece!
+				);
+				console.log(banana);
+				return banana;
+			});
+			if (kingCheckMate(kingToCheck, kingLocation, boardArr)) {
+				alert('Game over king is check mate');
+			}
+		} else {
+			selectedSquare = newSquare;
+			selectedPiece = boardArr[selectedSquare].occupier.component;
+			allowedMoves = pieceCheck(
+				boardArr[selectedSquare].occupier.component!,
+				selectedSquare,
+				boardArr,
+				turn
+			)!;
+		}
 	};
 
 	const addMoves = (previouspos: number, newpos: number, piece: typeof SvelteComponent) => {
