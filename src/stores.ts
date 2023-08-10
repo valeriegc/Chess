@@ -1,7 +1,9 @@
 import { writable } from 'svelte/store';
 
+export const pieceList = ['pawn', 'tower', 'horse', 'bishop', 'queen', 'king'] as const;
+export type PieceType = (typeof pieceList)[number];
 export interface Piece {
-	type: (typeof pieceList)[number];
+	type: PieceType;
 	color: 'black' | 'white';
 }
 export interface Square {
@@ -24,4 +26,3 @@ export const authenticated = writable({
 	user: null,
 	fetching: true
 });
-export const pieceList = ['pawn', 'tower', 'horse', 'bishop', 'queen', 'king'] as const;
