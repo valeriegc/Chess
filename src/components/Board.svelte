@@ -10,6 +10,7 @@
 	import type { SvelteComponent } from 'svelte';
 	import StartGame from './StartGame.svelte';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
+	import { getPiececomponent } from '../functions/getPieceComponent';
 
 	let turn = 'white';
 	let selectedSquare = -1;
@@ -173,9 +174,9 @@
 						: 'var(--lightSquare)'}"
 					on:click={() => handleSelectAndMove(i)}
 				>
-					{#if square.occupier !== null}
+					{#if square.piece !== null}
 						<div in:fly={{ duration: 1000 }} out:fade>
-							<svelte:component this={square.occupier.component} />
+							<svelte:component this={getPiececomponent(square.piece)} />
 						</div>
 					{/if}
 				</div>
