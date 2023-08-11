@@ -7,18 +7,12 @@ import {
 	biggestSquare,
 	hasOwnPiece
 } from '../../global';
-import KingB from '../../pieces/King_B.svelte';
-import KingW from '../../pieces/King_W.svelte';
-import TowerB from '../../pieces/Tower_B.svelte';
-import TowerW from '../../pieces/Tower_W.svelte';
 import type { Square } from '../../stores';
 import { castlingCheck } from './castlingCheck';
 
 export const kingCheck = (kingLoc: number, board: Square[], turn: string) => {
 	const kingColumn = columnFinder(kingLoc);
 	let kingArray = [];
-	const king = turn == 'black' ? KingB : KingW;
-	const tower = turn == 'black' ? TowerB : TowerW;
 	const allKingMoves = [
 		kingLoc - column,
 		kingLoc + column,
@@ -35,17 +29,16 @@ export const kingCheck = (kingLoc: number, board: Square[], turn: string) => {
 
 	if (kingColumn == firstColumn) {
 		kingArray = kingMovesOnBoard.filter(
-			(n) => columnFinder(n) !== lastColumn && !hasOwnPiece(n, board, turn)
+			(n) => columnFinder(n) !== lastColumn && !hasOwnPiece(board[n].piece, turn)
 		);
 	} else if (kingColumn == lastColumn) {
 		kingArray = kingMovesOnBoard.filter(
-			(n) => columnFinder(n) !== firstColumn && !hasOwnPiece(n, board, turn)
+			(n) => columnFinder(n) !== firstColumn && !hasOwnPiece(board[n].piece, turn)
 		);
 	} else {
-		kingArray = kingMovesOnBoard.filter((n) => !hasOwnPiece(n, board, turn));
+		kingArray = kingMovesOnBoard.filter((n) => !hasOwnPiece(board[n].piece, turn));
 	}
-	const castleSquares = castlingCheck(king, tower, board);
-	console.log(kingArray);
+	const castleSquares = castlingCheck(board, turn);
 	castleSquares?.forEach((n) => kingArray.push(n));
 	return kingArray;
 };

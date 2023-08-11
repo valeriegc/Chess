@@ -1,8 +1,4 @@
-import KingB from './pieces/King_B.svelte';
-import KingW from './pieces/King_W.svelte';
-import TowerB from './pieces/Tower_B.svelte';
-import TowerW from './pieces/Tower_W.svelte';
-import type { Square } from './stores';
+import type { Piece } from './stores';
 
 export const lastColumn = 8;
 export const firstColumn = 1;
@@ -29,32 +25,20 @@ export const rowFinder = (targetSquare: number) => {
 	return Math.ceil(targetSquare / 8);
 };
 
-export const hasOwnPiece = (targetSquare: number, board: Square[], turn: string) => {
-	if (
-		board[targetSquare].occupier.color == turn ||
-		board[targetSquare].occupier.component == KingB ||
-		board[targetSquare].occupier.component == KingW
-	) {
-		return true;
-	}
-	return false;
+export const hasOwnPiece = (squareContent: Piece | null, turn: string) => {
+	if (!squareContent) return false;
+	else if (squareContent.color !== turn) return false;
+	return true;
 };
-export const hasOpponentPiece = (targetSquare: number, board: Square[], turn: string) => {
-	if (
-		(board[targetSquare].occupier.color == 'black' && turn == 'white') ||
-		(board[targetSquare].occupier.color == 'white' && turn == 'black')
-	) {
-		return true;
-	}
-	return false;
+export const hasOpponentPiece = (squareContent: Piece | null, turn: string) => {
+	if (!squareContent) return false;
+	else if (squareContent.color == turn) return false;
+	return true;
 };
-export const isKingCastling = (targetSquare: number, board: Square[], turn: string) => {
-	if (turn == 'black') {
-		if (board[targetSquare].occupier.component == TowerB) return true;
-	} else if (board[targetSquare].occupier.component == TowerW) {
-		return true;
-	}
-	return false;
+export const isKingCastling = (squareContent: Piece | null, turn: string) => {
+	if (squareContent == null) return false;
+	if (squareContent.type == 'tower' && squareContent.color == turn) return true;
+	else return false;
 };
 
 export const onBoardEdge = (direction: string, currentSquare: number) => {

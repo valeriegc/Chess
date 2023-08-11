@@ -17,8 +17,8 @@ export const bishopCheck = (currentLoc: number, board: Square[], turn: string) =
 			for (let i = 0; i < boardSphere; i++) {
 				currentLoc = currentLoc + diagonalDistance;
 				if (onBoardEdge(direction, currentLoc)) i = boardSphere;
-				if (hasOwnPiece(currentLoc, board, turn)) break;
-				if (hasOpponentPiece(currentLoc, board, turn)) {
+				if (hasOwnPiece(board[currentLoc].piece, turn)) break;
+				if (hasOpponentPiece(board[currentLoc].piece, turn)) {
 					tempArray.push(currentLoc);
 					break;
 				}
