@@ -34,7 +34,6 @@
 	};
 
 	const movePiece = (newSquare: number) => {
-		console.log('pieceMove Ran');
 		fillSquare({ piece: selectedPiece!, square: newSquare });
 		emptySquare(selectedSquare);
 		addMoves(selectedSquare, newSquare, selectedPiece!);
@@ -57,7 +56,7 @@
 			selectedPiece = boardArr[selectedSquare].piece!; // FIX
 			allAllowedMoves = pieceCheck(selectedPiece!, selectedSquare, boardArr, turn)!;
 			allowedMoves = allAllowedMoves.filter((n: number) => {
-				let banana = moveAllowedWhileCheck(
+				return moveAllowedWhileCheck(
 					boardArr,
 					n,
 					selectedSquare,
@@ -65,8 +64,6 @@
 					selectedPiece!,
 					turn
 				);
-				console.log(banana);
-				return banana;
 			});
 			if (kingCheckMate({ type: 'king', color: turn }, kingLocation, boardArr)) {
 				alert('Game over king is check mate');

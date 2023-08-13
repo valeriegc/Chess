@@ -6,18 +6,18 @@ export const moveAllowedWhileCheck = (
 	newLoc: number,
 	currentLoc: number,
 	kingLoc: number,
-	movingComponent: Piece,
+	movingPiece: Piece,
 	turn: 'black' | 'white'
 ) => {
 	let testBoard = JSON.parse(JSON.stringify(board));
-	let movingColor = testBoard[currentLoc].piece.color;
+	testBoard[currentLoc].piece = null;
+	testBoard[newLoc].piece = { type: movingPiece.type, color: movingPiece.color };
 
-	testBoard[currentLoc].occupier.color = '';
-	testBoard[currentLoc].occupier.component = null;
-
-	testBoard[newLoc].occupier.color = movingColor;
-	testBoard[newLoc].occupier.component = movingComponent;
-
-	if (kingChecked(testBoard, { type: 'king', color: turn }, kingLoc)) return false;
-	return true;
+	if (movingPiece.type == 'king') {
+		if (kingChecked(testBoard, { type: 'king', color: turn }, newLoc)) return false;
+		else return true;
+	} else {
+		if (kingChecked(testBoard, { type: 'king', color: turn }, kingLoc)) return false;
+		else return true;
+	}
 };

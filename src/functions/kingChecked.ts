@@ -26,7 +26,6 @@ export const kingChecked = (board: Square[], king: Piece, kingLocation: number) 
 	checkForOpponent(pawnThreatFinal, { type: 'pawn', color: opponentColor });
 
 	const bishopThreat = bishopCheck(kingLocation, board, ownColor);
-	console.log(bishopThreat);
 	checkForOpponent(bishopThreat, { type: 'bishop', color: opponentColor });
 
 	const towerThreat = towerCheck(kingLocation, board, ownColor);
@@ -37,7 +36,6 @@ export const kingChecked = (board: Square[], king: Piece, kingLocation: number) 
 
 	const queenThreat = bishopThreat.concat(towerThreat);
 	checkForOpponent(queenThreat, { type: 'queen', color: opponentColor });
-	console.log(isKingChecked);
 	return isKingChecked;
 }; //3MNGFY2D9QFA5
 
