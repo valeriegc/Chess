@@ -15,6 +15,8 @@
 	let boardArr = initPieces();
 	let allAllowedMoves;
 	let selectedPiece: Piece;
+	let checked = false;
+	let kingLocation = -1;
 
 	const changeTurn = () => {
 		turn == 'white' ? (turn = 'black') : (turn = 'white');
@@ -34,6 +36,7 @@
 	};
 
 	const movePiece = (newSquare: number) => {
+		checked = false;
 		fillSquare({ piece: selectedPiece!, square: newSquare });
 		emptySquare(selectedSquare);
 		addMoves(selectedSquare, newSquare, selectedPiece!);
@@ -47,11 +50,8 @@
 		const opponentPiece = boardArr[newSquare].piece?.color !== turn; //ask Alex: possibly null => best solution?
 
 		if (emptySquare || opponentPiece) return;
-		const kingLocation = boardArr.findIndex(
-			(n) => n.piece?.type == 'king' && n.piece.color == turn
-		);
 
-		if (kingChecked(boardArr, { type: 'king', color: turn }, kingLocation)) {
+		if (checked) {
 			selectedSquare = newSquare;
 			selectedPiece = boardArr[selectedSquare].piece!; // FIX
 			allAllowedMoves = pieceCheck(selectedPiece!, selectedSquare, boardArr, turn)!;
@@ -125,6 +125,8 @@
 		changeTurn();
 		selectedSquare = -1;
 		allowedMoves = [];
+		kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
+		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
 	};
 
 	const darkSquares = [
@@ -153,8 +155,11 @@
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div
 					class="square"
-					style="background-color:
-					{allowedMoves.includes(i)
+					style="background-color:{checked &&
+					turn == square.piece?.color &&
+					square.piece.type == 'king'
+						? 'red'
+						: allowedMoves.includes(i)
 						? 'var(--possibleMove)'
 						: i == selectedSquare
 						? 'var(--selectedSquare)'
