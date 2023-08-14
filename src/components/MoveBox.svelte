@@ -1,4 +1,5 @@
 <script>
+	import { getPiececomponent } from '../functions/getPieceComponent';
 	import { moves } from '../stores';
 </script>
 
@@ -8,7 +9,7 @@
 		{#each $moves as move}
 			<div class="moveLine">
 				<div class="pieceBox">
-					<svelte:component this={move.component} />
+					<svelte:component this={getPiececomponent(move.piece)} />
 				</div>
 
 				<p>

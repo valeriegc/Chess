@@ -1,14 +1,8 @@
 import { get } from 'svelte/store';
 import { moves, type Square } from '../../stores';
-import KingB from '../../pieces/King_B.svelte';
-import type { SvelteComponent } from 'svelte';
 import { kingChecked } from '../kingChecked';
 
-export const castlingCheck = (
-	king: typeof SvelteComponent,
-	tower: typeof SvelteComponent,
-	board: Square[]
-) => {
+export const castlingCheck = (board: Square[], turn: 'black' | 'white') => {
 	let leftRoute = [];
 	let rightRoute = [];
 	let castleRight: number;
@@ -19,29 +13,29 @@ export const castlingCheck = (
 	castleSquares = [];
 	const pastMoves = get(moves);
 
-	if (king == KingB) {
+	if (turn == 'black') {
 		leftRoute = [1, 2, 3];
 		rightRoute = [5, 6];
 		castleRight = 7;
 		castleLeft = 0;
-		leftTowerNotMoved = !pastMoves.find((n) => n.component == tower && n.pre == 0);
-		rightTowerNotMoved = !pastMoves.find((n) => n.component == tower && n.pre == 7);
+		leftTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'tower' && n.pre == 0);
+		rightTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'tower' && n.pre == 7);
 	} else {
 		leftRoute = [57, 58, 59];
 		rightRoute = [61, 62];
 		castleRight = 63;
 		castleLeft = 56;
-		leftTowerNotMoved = !pastMoves.find((n) => n.component == tower && n.pre == 56);
-		rightTowerNotMoved = !pastMoves.find((n) => n.component == tower && n.pre == 63);
+		leftTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'tower' && n.pre == 56);
+		rightTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'tower' && n.pre == 63);
 	}
-	const kingAlreadyMoved = pastMoves.find((n) => n.component == king);
+	const kingAlreadyMoved = pastMoves.find((n) => n.piece.type == 'king' && n.piece.color == turn);
 
 	if (kingAlreadyMoved) return;
 
 	const isRouteEmpty = (route: number[]) => {
 		let empty = true;
 		route.forEach((n) => {
-			if (board[n].occupier.component !== null) {
+			if (board[n].piece) {
 				empty = false;
 			}
 		});
@@ -51,7 +45,7 @@ export const castlingCheck = (
 	const kingCheckedOnRoute = (route: number[]) => {
 		let checked = false;
 		route.forEach((n) => {
-			if (kingChecked(board, king, n)) checked = true;
+			if (kingChecked(board, { type: 'king', color: turn }, n)) checked = true;
 		});
 		return checked;
 	};

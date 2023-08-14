@@ -29,7 +29,7 @@ export const horseCheck = (currentLoc: number, boardArr: Square[], turn: string)
 	let validHorseMoves: number[] = [];
 
 	allHorseMoves.forEach((n) => {
-		if (columnOnTheBoard(n) && !hasOwnPiece(n, boardArr, turn)) {
+		if (columnOnTheBoard(n) && !hasOwnPiece(boardArr[n].piece, turn)) {
 			validHorseMoves.push(n);
 		}
 	});

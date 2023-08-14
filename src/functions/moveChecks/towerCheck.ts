@@ -18,8 +18,8 @@ export const towerCheck = (targetSquare: number, board: Square[], turn: string) 
 	//left
 
 	for (let i = columnNumber; i > firstColumn; i--) {
-		if (hasOwnPiece(targetSquare - counter, board, turn)) break;
-		else if (hasOpponentPiece(targetSquare - counter, board, turn)) {
+		if (hasOwnPiece(board[targetSquare - counter].piece, turn)) break;
+		else if (hasOpponentPiece(board[targetSquare - counter].piece, turn)) {
 			tempArray.push(targetSquare - counter);
 			break;
 		} else tempArray.push(targetSquare - counter);
@@ -29,8 +29,8 @@ export const towerCheck = (targetSquare: number, board: Square[], turn: string) 
 	//right
 	counter = 1;
 	for (let i = columnNumber; i < lastColumn; i++) {
-		if (hasOwnPiece(targetSquare + counter, board, turn)) break;
-		else if (hasOpponentPiece(targetSquare + counter, board, turn)) {
+		if (hasOwnPiece(board[targetSquare + counter].piece, turn)) break;
+		else if (hasOpponentPiece(board[targetSquare + counter].piece, turn)) {
 			tempArray.push(targetSquare + counter);
 			break;
 		} else tempArray.push(targetSquare + counter);
@@ -39,16 +39,16 @@ export const towerCheck = (targetSquare: number, board: Square[], turn: string) 
 
 	//up
 	for (let i = targetSquare - rowLength; i > smallestSquare; i -= rowLength) {
-		if (hasOwnPiece(i, board, turn)) break;
-		else if (hasOpponentPiece(i, board, turn)) {
+		if (hasOwnPiece(board[i].piece, turn)) break;
+		else if (hasOpponentPiece(board[i].piece, turn)) {
 			tempArray.push(i);
 			break;
 		} else tempArray.push(i);
 	}
-	//up
+	//down
 	for (let i = targetSquare + rowLength; i < biggestSquare; i += rowLength) {
-		if (hasOwnPiece(i, board, turn)) break;
-		else if (hasOpponentPiece(i, board, turn)) {
+		if (hasOwnPiece(board[i].piece, turn)) break;
+		else if (hasOpponentPiece(board[i].piece, turn)) {
 			tempArray.push(i);
 			break;
 		} else tempArray.push(i);

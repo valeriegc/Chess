@@ -1,44 +1,43 @@
 <script lang="ts">
-	import { moves, type Square } from '../stores';
+	import { moves, type Piece, type PieceType, type Square } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
 	import { kingCheckMate, kingChecked } from '../functions/kingChecked';
-	import KingB from '../pieces/King_B.svelte';
-	import KingW from '../pieces/King_W.svelte';
 	import { alphaCalc, isKingCastling, letters } from '../global';
-	import type { SvelteComponent } from 'svelte';
 	import StartGame from './StartGame.svelte';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
+	import { getPiececomponent } from '../functions/getPieceComponent';
 
-	let turn = 'white';
+	let turn: 'black' | 'white' = 'white';
 	let selectedSquare = -1;
 	let allowedMoves: number[] = [];
 	let boardArr = initPieces();
 	let allAllowedMoves;
-	let selectedPiece: null | typeof SvelteComponent = null;
+	let selectedPiece: Piece;
+	let checked = false;
+	let kingLocation = -1;
 
 	const changeTurn = () => {
 		turn == 'white' ? (turn = 'black') : (turn = 'white');
 	};
 
 	interface FillSquare {
-		component: typeof SvelteComponent;
-		color: string;
+		piece: Piece;
 		square: number;
 	}
 
-	const fillSquare = ({ component, color, square }: FillSquare) => {
-		boardArr[square].occupier.component = component;
-		boardArr[square].occupier.color = color;
+	const fillSquare = ({ piece, square }: FillSquare) => {
+		//ask Alex : prop syntax
+		boardArr[square].piece = piece;
 	};
 	const emptySquare = (square: number) => {
-		boardArr[square].occupier.component = null;
-		boardArr[square].occupier.color = '';
+		boardArr[square].piece = null;
 	};
 
 	const movePiece = (newSquare: number) => {
-		fillSquare({ component: selectedPiece!, color: turn, square: newSquare });
+		checked = false;
+		fillSquare({ piece: selectedPiece!, square: newSquare });
 		emptySquare(selectedSquare);
 		addMoves(selectedSquare, newSquare, selectedPiece!);
 		selectedSquare = -1;
@@ -46,53 +45,43 @@
 	};
 
 	const updateSelection = (newSquare: number) => {
-		const emptySquare = boardArr[newSquare].occupier.component == null;
-		const opponentPiece = boardArr[newSquare].occupier.color !== turn;
+		const emptySquare = boardArr[newSquare].piece == null;
+		//check for opponent piece, if the square is not empty
+		const opponentPiece = boardArr[newSquare].piece?.color !== turn; //ask Alex: possibly null => best solution?
 
 		if (emptySquare || opponentPiece) return;
 
-		const kingToCheck = turn == 'white' ? KingW : KingB;
-		const kingLocation = boardArr.findIndex((n) => n.occupier.component == kingToCheck);
-
-		if (kingChecked(boardArr, kingToCheck, kingLocation)) {
-			console.log('king still checked');
+		if (checked) {
 			selectedSquare = newSquare;
-			selectedPiece = boardArr[selectedSquare].occupier.component;
+			selectedPiece = boardArr[selectedSquare].piece!; // FIX
 			allAllowedMoves = pieceCheck(selectedPiece!, selectedSquare, boardArr, turn)!;
 			allowedMoves = allAllowedMoves.filter((n: number) => {
-				let banana = moveAllowedWhileCheck(
+				return moveAllowedWhileCheck(
 					boardArr,
 					n,
 					selectedSquare,
-					kingToCheck,
 					kingLocation,
-					selectedPiece!
+					selectedPiece!,
+					turn
 				);
-				console.log(banana);
-				return banana;
 			});
-			if (kingCheckMate(kingToCheck, kingLocation, boardArr)) {
+			if (kingCheckMate({ type: 'king', color: turn }, kingLocation, boardArr)) {
 				alert('Game over king is check mate');
 			}
 		} else {
 			selectedSquare = newSquare;
-			selectedPiece = boardArr[selectedSquare].occupier.component;
-			allowedMoves = pieceCheck(
-				boardArr[selectedSquare].occupier.component!,
-				selectedSquare,
-				boardArr,
-				turn
-			)!;
+			selectedPiece = boardArr[selectedSquare].piece!; //FIX
+			allowedMoves = pieceCheck(boardArr[selectedSquare].piece!, selectedSquare, boardArr, turn)!; // Ask alex can I use exclamation
 		}
 	};
 
-	const addMoves = (previouspos: number, newpos: number, piece: typeof SvelteComponent) => {
+	const addMoves = (previouspos: number, newpos: number, piece: Piece) => {
 		const preAlph = alphaCalc(previouspos);
 		const postAlph = alphaCalc(newpos);
 		$moves.push({
 			pre: previouspos,
 			post: newpos,
-			component: piece,
+			piece: piece,
 			preCoord: preAlph,
 			postCoord: postAlph
 		});
@@ -112,11 +101,12 @@
 			newTowerLoc = oldTowerLoc + 2;
 		}
 
-		const movingKing = board[oldKingLoc].occupier.component!;
-		fillSquare({ component: movingKing!, color: turn, square: newKingLoc });
+		const movingKing = board[oldKingLoc].piece!;
+		fillSquare({ piece: movingKing!, square: newKingLoc });
 		emptySquare(oldKingLoc);
-		const movingTower = board[oldTowerLoc].occupier.component!;
-		fillSquare({ component: movingTower!, color: turn, square: newTowerLoc });
+
+		const movingTower = board[oldTowerLoc].piece!;
+		fillSquare({ piece: movingTower!, square: newTowerLoc });
 		emptySquare(oldTowerLoc);
 		addMoves(oldKingLoc, newKingLoc, movingKing);
 		addMoves(oldTowerLoc, newTowerLoc, movingTower);
@@ -127,7 +117,7 @@
 			updateSelection(newSquare);
 			return;
 		}
-		if (isKingCastling(newSquare, boardArr, turn)) {
+		if (isKingCastling(boardArr[newSquare].piece, turn)) {
 			castleTheKing(selectedSquare, newSquare, boardArr);
 		} else {
 			movePiece(newSquare);
@@ -135,6 +125,8 @@
 		changeTurn();
 		selectedSquare = -1;
 		allowedMoves = [];
+		kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
+		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
 	};
 
 	const darkSquares = [
@@ -163,8 +155,11 @@
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div
 					class="square"
-					style="background-color:
-					{allowedMoves.includes(i)
+					style="background-color:{checked &&
+					turn == square.piece?.color &&
+					square.piece.type == 'king'
+						? 'red'
+						: allowedMoves.includes(i)
 						? 'var(--possibleMove)'
 						: i == selectedSquare
 						? 'var(--selectedSquare)'
@@ -173,9 +168,9 @@
 						: 'var(--lightSquare)'}"
 					on:click={() => handleSelectAndMove(i)}
 				>
-					{#if square.occupier !== null}
+					{#if square.piece !== null}
 						<div in:fly={{ duration: 1000 }} out:fade>
-							<svelte:component this={square.occupier.component} />
+							<svelte:component this={getPiececomponent(square.piece)} />
 						</div>
 					{/if}
 				</div>
