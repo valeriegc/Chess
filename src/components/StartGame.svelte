@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Dialog from '../modals/Dialog.svelte';
-	import { getFirestore, addDoc, collection, doc, setDoc } from 'firebase/firestore';
+	import { getFirestore, doc, setDoc } from 'firebase/firestore';
 	import { app } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
 	export const db = getFirestore(app);
@@ -38,7 +38,6 @@
 			params = params + randomLetter;
 		}
 		url = url + '/' + params;
-		params = params;
 	};
 
 	const handleCopy = () => {

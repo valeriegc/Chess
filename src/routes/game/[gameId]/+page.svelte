@@ -1,6 +1,6 @@
 <script>
-	import Board from '../../components/Board.svelte';
-	import MoveBox from '../../components/MoveBox.svelte';
+	import Board from '../../../components/Board.svelte';
+	import MoveBox from '../../../components/MoveBox.svelte';
 </script>
 
 <div class="container">
