@@ -4,6 +4,8 @@
 	import { getFirestore, doc, setDoc } from 'firebase/firestore';
 	import { app } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
+	import { gameStarted } from '../stores';
+	import { goto } from '$app/navigation';
 	export const db = getFirestore(app);
 
 	let showModal = true;
@@ -25,6 +27,10 @@
 			console.error('Error adding document: ', e);
 		}
 		showModal = false;
+		$gameStarted = true;
+		$gameStarted = $gameStarted;
+		let link = '/game/' + params;
+		goto(link);
 	};
 
 	const queryParamGenerator = () => {

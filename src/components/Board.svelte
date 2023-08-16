@@ -5,7 +5,6 @@
 	import { pieceCheck } from '../functions/pieceCheck';
 	import { kingCheckMate, kingChecked } from '../functions/kingChecked';
 	import { alphaCalc, isKingCastling, letters } from '../global';
-	import StartGame from './StartGame.svelte';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
 	import { getPiececomponent } from '../functions/getPieceComponent';
 
@@ -135,7 +134,6 @@
 	];
 </script>
 
-<StartGame />
 <div class="boardOuterWrap">
 	<div class="boardX">
 		{#each letters as letter}
