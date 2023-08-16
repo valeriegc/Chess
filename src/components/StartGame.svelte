@@ -1,15 +1,34 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Dialog from '../modals/Dialog.svelte';
+	import { getFirestore, addDoc, collection, doc, setDoc } from 'firebase/firestore';
+	import { app } from '$lib/firebase/firebase';
+	import { initPieces } from '../functions/initPieces';
+	export const db = getFirestore(app);
+
 	let showModal = true;
 	let url: string;
 	let confirmation = false;
+	let params = '';
 
 	onMount(() => (url = window.location.href));
 
+	const createGame = async () => {
+		let boardArray = initPieces();
+		let turn = 'white';
+		try {
+			const docRef = await setDoc(doc(db, 'games', params), {
+				board: boardArray,
+				player: turn
+			});
+		} catch (e) {
+			console.error('Error adding document: ', e);
+		}
+		showModal = false;
+	};
+
 	const queryParamGenerator = () => {
 		url = window.location.href;
-		let params = '';
 		const charCodes = Array.from(Array(26)).map((e, i) => i + 65);
 		const alphabet = charCodes.map((n) => String.fromCharCode(n));
 		for (let i = 0; i < 10; i++) {
@@ -18,7 +37,8 @@
 			if (randomInt % 2 == 0) randomLetter = randomLetter.toLowerCase();
 			params = params + randomLetter;
 		}
-		url = url + params;
+		url = url + '/' + params;
+		params = params;
 	};
 
 	const handleCopy = () => {
@@ -43,6 +63,7 @@
 		{#if confirmation}
 			<div class="copied">Copied!</div>
 		{/if}
+		<button on:click={() => createGame()}>Start</button>
 	</div></Dialog
 >
 
