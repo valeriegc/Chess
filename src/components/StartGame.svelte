@@ -7,8 +7,7 @@
 	import { gameStarted } from '../stores';
 	import { goto } from '$app/navigation';
 	export const db = getFirestore(app);
-
-	let showModal = true;
+	let showModal: boolean = true;
 	let url: string;
 	let confirmation = false;
 	let params = '';

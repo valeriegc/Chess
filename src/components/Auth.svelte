@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { auth, user } from '$lib/firebase/firebase';
+	import { auth } from '$lib/firebase/firebase';
 	import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 
 	const singInWithGoogle = async () => {
