@@ -16,7 +16,6 @@
 	const gameRef = doc(db, 'games', $gameId);
 
 	console.log($player, turn);
-	console.log($player == turn);
 
 	const unsub = onSnapshot(doc(db, 'games', $gameId), (doc) => {
 		const allData = doc.data();
@@ -24,7 +23,6 @@
 		turn = allData?.player;
 	});
 
-	console.log(turn);
 	let selectedSquare = -1;
 	let allowedMoves: number[] = [];
 

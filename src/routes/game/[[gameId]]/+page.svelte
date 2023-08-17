@@ -5,9 +5,13 @@
 	import StartGame from '../../../components/StartGame.svelte';
 	import { gameId, player } from '../../../stores';
 	export let data;
-	if ($page.params.gameId !== 'NoIdYet') {
+
+	if ($page.params.gameId) {
 		$gameId = $page.params.gameId;
 		$player = 'white';
+	} else {
+		$gameId = 'NoIdYet';
+		$player = 'black';
 	}
 </script>
 

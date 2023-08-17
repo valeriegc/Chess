@@ -10,7 +10,8 @@
 	let showModal: boolean = true;
 	let url: string;
 	let confirmation = false;
-	let params = '';
+	let initialParams = '';
+	let gameParams = '';
 
 	onMount(() => (url = window.location.href));
 
@@ -18,7 +19,7 @@
 		let boardArray = initPieces();
 		let turn = 'white';
 		try {
-			const docRef = await setDoc(doc(db, 'games', params), {
+			const docRef = await setDoc(doc(db, 'games', gameParams), {
 				board: boardArray,
 				player: turn
 			});
@@ -28,8 +29,7 @@
 		showModal = false;
 		$gameStarted = true;
 		$gameStarted = $gameStarted;
-		let link = '/game/' + params;
-		goto(link);
+		goto(url);
 	};
 
 	const queryParamGenerator = () => {
@@ -40,9 +40,12 @@
 			let randomInt = Math.floor(Math.random() * (26 - 1 + 1) + 1);
 			let randomLetter = alphabet[randomInt];
 			if (randomInt % 2 == 0) randomLetter = randomLetter.toLowerCase();
-			params = params + randomLetter;
+			initialParams = initialParams + randomLetter;
 		}
-		url = url + '/' + params;
+		//2 values for params, so that url never renders empty params but can be changed
+		gameParams = initialParams;
+		url = url + '/' + gameParams;
+		initialParams = '';
 	};
 
 	const handleCopy = () => {
