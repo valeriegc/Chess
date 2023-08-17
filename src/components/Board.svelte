@@ -1,18 +1,31 @@
 <script lang="ts">
-	import { moves, type Piece, type PieceType, type Square } from '../stores';
+	import { gameId, moves, type Piece, type Square, player } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
 	import { kingCheckMate, kingChecked } from '../functions/kingChecked';
 	import { alphaCalc, isKingCastling, letters } from '../global';
-	import StartGame from './StartGame.svelte';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
 	import { getPiececomponent } from '../functions/getPieceComponent';
+	import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
+	import { db } from '$lib/firebase/firebase';
 
+	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
+
+	const gameRef = doc(db, 'games', $gameId);
+
+	console.log($player, turn);
+
+	const unsub = onSnapshot(doc(db, 'games', $gameId), (doc) => {
+		const allData = doc.data();
+		boardArr = allData?.board;
+		turn = allData?.player;
+	});
+
 	let selectedSquare = -1;
 	let allowedMoves: number[] = [];
-	let boardArr = initPieces();
+
 	let allAllowedMoves;
 	let selectedPiece: Piece;
 	let checked = false;
@@ -20,6 +33,7 @@
 
 	const changeTurn = () => {
 		turn == 'white' ? (turn = 'black') : (turn = 'white');
+		return turn;
 	};
 
 	interface FillSquare {
@@ -35,16 +49,23 @@
 		boardArr[square].piece = null;
 	};
 
-	const movePiece = (newSquare: number) => {
+	const movePiece = async (newSquare: number) => {
+		if (turn !== $player) return;
 		checked = false;
 		fillSquare({ piece: selectedPiece!, square: newSquare });
 		emptySquare(selectedSquare);
 		addMoves(selectedSquare, newSquare, selectedPiece!);
 		selectedSquare = -1;
 		allowedMoves = [];
+		changeTurn();
+		await updateDoc(gameRef, {
+			board: boardArr,
+			player: turn
+		});
 	};
 
 	const updateSelection = (newSquare: number) => {
+		if (turn !== $player) return;
 		const emptySquare = boardArr[newSquare].piece == null;
 		//check for opponent piece, if the square is not empty
 		const opponentPiece = boardArr[newSquare].piece?.color !== turn; //ask Alex: possibly null => best solution?
@@ -122,7 +143,6 @@
 		} else {
 			movePiece(newSquare);
 		}
-		changeTurn();
 		selectedSquare = -1;
 		allowedMoves = [];
 		kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
@@ -135,7 +155,6 @@
 	];
 </script>
 
-<StartGame />
 <div class="boardOuterWrap">
 	<div class="boardX">
 		{#each letters as letter}

@@ -26,3 +26,6 @@ export const authenticated = writable({
 	user: null,
 	fetching: true
 });
+export const gameStarted = writable(false);
+export const gameId = writable('NoIdYet');
+export const player = writable('white');
