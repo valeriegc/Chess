@@ -11,7 +11,7 @@
 		margin: 0;
 	}
 	.pageWrap {
-		background: linear-gradient(to right, var(--lightSquare), rgb(165, 141, 103));
+		background: white;
 		min-height: 100vh;
 		display: flex;
 	}

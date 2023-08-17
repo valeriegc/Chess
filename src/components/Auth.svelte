@@ -28,7 +28,7 @@
 </script>
 
 <div class="loginWrap">
-	<p class="login" style="hover:color:var(--lightsquare)">{createAccount ? 'SIGN UP' : 'LOGIN'}</p>
+	<p class="login" style="padding-bottom:1rem">Log in or create an account.</p>
 	<form>
 		<label>
 			<input type="email" placeholder="email" bind:value={email} />
@@ -43,21 +43,31 @@
 		{/if}
 	</form>
 	{#if loginError}
-		<p style="color:pink">{loginError}</p>
+		<p style="color:gray">{loginError}</p>
 	{/if}
 	{#if signUpError}
-		<p style="color:pink">{signUpErrorText}</p>
+		<p style="color:gray">{signUpErrorText}</p>
 	{/if}
-	<button type="submit">{createAccount ? 'SIGN UP' : 'LOGIN'}</button>
-	<button on:click={singInWithGoogle} style="margin-top: 0.75rem"
-		>SIGN {createAccount ? 'UP' : 'IN'} WITH GOOGLE</button
+	<button type="submit">Submit</button>
+	<div class="orTextLine">
+		<p class="orText">OR</p>
+	</div>
+	<button on:click={singInWithGoogle} class="signInBtn"
+		><div style="margin-right:1rem">
+			<img src="googleLogo.png" width="20" height="20" alt="logo of google" />
+		</div>
+		Sign {createAccount ? 'up' : 'in'} with Google</button
 	>
-	<div class="choices">
-		<a href="/game">Continue without registering</a>
-		<p on:click={() => (createAccount ? (createAccount = false) : (createAccount = true))}>
+	<div>
+		<a class="choices" href="/game">Continue without registering</a>
+		<p
+			class="choices"
+			style="padding:0.5rem"
+			on:click={() => (createAccount ? (createAccount = false) : (createAccount = true))}
+		>
 			{createAccount ? 'Back to login' : 'Create an account'}
 		</p>
-		<p>Forgot your password?</p>
+		<p class="choices">Forgot your password?</p>
 	</div>
 </div>
 
@@ -67,16 +77,16 @@
 	}
 
 	.loginWrap {
-		background: linear-gradient(to right, var(--darkSquare), rgb(133, 94, 49));
+		background: transparent;
 		padding: 2rem;
-		padding-inline: 2.5rem;
+		padding-inline: 6rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		border-radius: 30px;
-		color: var(--lightSquare);
-		max-width: 25rem;
+		color: black;
 		margin: auto;
+
+		box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 	}
 	.login {
 		font-size: 3rem;
@@ -90,43 +100,52 @@
 	}
 	input:focus-within,
 	input:hover {
-		border: 1.5px white solid;
+		border: 2px black solid;
 	}
 
 	input {
-		width: 15rem;
-		border-radius: 10px;
-		border: var(--lightSquare) 1px solid;
+		width: 18rem;
+		border: darkgray 1px solid;
 		height: 2.5rem;
 		background-color: transparent;
-		color: var(--lightSquare);
+		color: black;
 		font-size: large;
 		padding-inline: 0.5rem;
 	}
 	input::placeholder {
-		color: var(--lightSquare);
+		color: darkgrey;
 	}
 	input:focus {
 		outline: none;
 	}
 	button {
-		width: 15rem;
+		width: 18rem;
 		margin-bottom: 1rem;
-		border-radius: 10px;
 		height: 2.75rem;
 		border: none;
-		background-color: var(--lightSquare);
+		background-color: black;
 		cursor: pointer;
 		font-size: 1.25rem;
 		font-weight: 900;
-		color: var(--darkSquare);
+		color: white;
 	}
 	button:hover {
 		transition-duration: 0.5;
 		background-color: white;
+		border: black 2px solid;
+		color: black;
+	}
+	.signInBtn {
+		margin-top: 0.75rem;
+		background: white;
+		border: black solid 1px;
+		color: black;
+		display: flex;
+		justify-content: center;
+		padding: 0.5rem;
 	}
 	a {
-		color: white;
+		color: black;
 		font-weight: bold;
 		font-size: large;
 		text-decoration: none;
@@ -137,8 +156,24 @@
 		flex-direction: column;
 		gap: 0.5rem;
 	}
-	p:hover {
-		color: white;
+
+	.choices:hover {
 		cursor: pointer;
+		color: darkgray;
+	}
+	.orText {
+		font-size: 1.25rem;
+		background-color: white;
+		padding-inline: 0.75rem;
+	}
+	.orTextLine {
+		height: 1px;
+		width: 18rem;
+		overflow: visible;
+		background-color: black;
+		display: flex;
+		margin: 1.5rem;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
