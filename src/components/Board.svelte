@@ -215,7 +215,6 @@
 		height: 680px;
 		width: 680px;
 		margin: auto;
-		color: var(--darkSquare);
 	}
 	.boardX {
 		display: flex;
@@ -223,7 +222,7 @@
 		padding-inline: 40px;
 	}
 	.letters {
-		width: 75px;
+		width: 70px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -236,15 +235,16 @@
 		width: 40px;
 	}
 	.numbers {
-		height: 75px;
+		height: 70px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
 	.boardGrid {
-		height: 600px;
-		width: 600px;
+		height: 550px;
+		width: 550px;
 		display: grid;
+		border: solid lightgray 1px;
 		grid-template-columns: repeat(8, 1fr);
 		grid-template-rows: repeat(8, 1fr);
 	}

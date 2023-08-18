@@ -1,11 +1,16 @@
 * {
 	box-sizing: border-box;
-	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-family: "Crimson text"
 }
 
 :root {
-	--lightSquare: rgb(249, 223, 175);
-	--darkSquare: rgb(159, 114, 64);
-	--selectedSquare: lightgray;
+	--darkSquare: rgb(153, 153, 153);
+	--lightSquare: white;
+	--selectedSquare: lightblue;
 	--possibleMove: lightgreen;
 }
+
+
+
+/**--lightSquare: rgb(249, 223, 175);
+	--darkSquare: rgb(159, 114, 64);**/

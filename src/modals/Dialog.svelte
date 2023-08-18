@@ -17,20 +17,21 @@
 
 <style>
 	hr {
-		background-color: var(--darkSquare);
+		background-color: black;
 		height: 0.5px;
 		border: none;
 	}
 	dialog {
 		width: 38em;
-		border-radius: 30px;
-		background-color: var(--lightSquare);
-		border: solid 2px var(--darkSquare);
+		padding: 2.5rem;
+		background-color: whitesmoke;
 		position: relative;
+		border: none;
+		box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
 	}
 
 	dialog::backdrop {
-		background-color: RGBA(255, 255, 255, 0.5);
+		background-color: RGBA(0, 0, 0, 0.7);
 		backdrop-filter: blur(2px);
 	}
 	.close {
@@ -39,13 +40,11 @@
 		top: 1rem;
 		color: white;
 		font-size: x-large;
-		border: 2px solid var(--darkSquare);
-		border-radius: 100%;
 		width: 2rem;
 		height: 2rem;
-		padding: 0;
-		font-weight: bold;
-		background-color: var(--darkSquare);
+		background-color: black;
 		cursor: pointer;
+		border: none;
+		text-align: center;
 	}
 </style>

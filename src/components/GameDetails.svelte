@@ -17,10 +17,8 @@
 
 <style>
 	.selectWrap {
-		background-color: var(--darkSquare);
-		border: solid 1px var(--darkSquare);
-		border-radius: 30px;
-		color: var(--darkSquare);
+		background-color: whitesmoke;
+		box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 		padding: 2rem;
 		grid-column-start: 2;
 		grid-column-end: 3;
@@ -28,21 +26,22 @@
 		grid-row-end: 3;
 	}
 	button {
-		background-color: var(--lightSquare);
+		background-color: black;
 		border: none;
 		border-radius: 5px;
 		padding: 1rem;
 		padding-inline: 4rem;
 		font-size: 1rem;
 		font-style: bold;
-		color: var(--darkSquare);
+		color: white;
 	}
 	button:hover {
 		background-color: white;
+		color: black;
 		cursor: pointer;
-		transition: 2000;
+		transition: 2ms;
 	}
 	p {
-		color: var(--lightSquare);
+		color: black;
 	}
 </style>
