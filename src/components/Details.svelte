@@ -1,23 +1,22 @@
 <script>
-	let email = '';
+	let email = 'testEmail';
 	let password = '';
 </script>
 
 <div class="detailWrap">
 	<div style="margin-inline:auto">
-		<p style="margin:0; font-size:1.25rem;font-style:bold">User details</p>
+		<p style="margin:0; font-size:1.75rem;font-weight:200">User details</p>
 		<div class="innerContainer">
 			<div>
 				<label>
 					<p>Email</p>
-					<input value={email} placeholder="User email displayed here" />
+					<p style="font-weight:200">{email}</p>
 				</label>
-				<button>Edit</button>
 				<label>
 					<p>Password</p>
 					<input value={password} placeholder="Password hidden here" />
 				</label>
-				<button>Edit</button>
+				<img src="editDark" />
 			</div>
 			<div class="pictureContainer">
 				<p>Picture</p>
@@ -42,21 +41,18 @@
 		justify-content: space-around;
 	}
 	input {
-		width: 20rem;
+		width: 18rem;
 		border: solid darkgrey 1px;
-		height: 1.5rem;
-		padding: 0.5rem;
+		height: 1.6rem;
+		margin: 0;
+	}
+	p {
+		font-weight: 700;
 	}
 	.userPic {
 		height: 8rem;
 		width: 8rem;
 		background-color: white;
 		box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-	}
-	button {
-		background-color: black;
-		color: white;
-		border: none;
-		cursor: pointer;
 	}
 </style>
