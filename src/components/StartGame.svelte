@@ -75,17 +75,17 @@
 >
 
 <style>
+	* {
+		color: black;
+	}
 	h2 {
 		text-align: center;
-		color: var(--darkSquare);
 	}
 	p {
-		color: var(--darkSquare);
 		margin-inline: 2rem;
 	}
 	.copied {
 		font-size: medium;
-		color: var(--darkSquare);
 		margin-left: 1rem;
 		margin-top: 0.5rem;
 	}
@@ -98,23 +98,20 @@
 		margin-left: 3rem;
 		margin-right: 1rem;
 		width: 16rem;
-		border-radius: 10px;
-		border: solid var(--darkSquare) 1px;
-		color: var(--darkSquare);
+		border: solid darkgray 1px;
 		padding-inline: 1rem;
 	}
 	button {
-		border: transparent solid 1px;
 		padding: 0.5rem;
-		border-radius: 10px;
-		background-color: var(--darkSquare);
+		background-color: black;
+		border: 1px solid transparent;
 		color: white;
 		cursor: pointer;
 	}
 	button:hover {
-		background-color: var(--lightSquare);
 		transition: 3000;
-		border: solid var(--darkSquare) 1px;
-		color: var(--darkSquare);
+		color: black;
+		border: 1px solid black;
+		background-color: white;
 	}
 </style>
