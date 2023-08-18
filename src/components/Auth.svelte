@@ -31,14 +31,17 @@
 	<p class="login" style="padding-bottom:1rem">Log in or create an account.</p>
 	<form>
 		<label>
-			<input type="email" placeholder="email" bind:value={email} />
+			<p class={email ? 'filling' : 'notFilled'}>Email</p>
+			<input type="email" placeholder="Email" bind:value={email} />
 		</label>
 		<label>
-			<input type="password" placeholder="password" bind:value={password} />
+			<p class={password ? 'filling' : 'notFilled'}>Password</p>
+			<input type="password" placeholder="Password" bind:value={password} />
 		</label>
 		{#if createAccount}
 			<label>
-				<input type="password" placeholder="confirm password" bind:value={confirmationPassword} />
+				<p class={confirmationPassword ? 'filling' : 'notFilled'}>Confirm Password</p>
+				<input type="password" placeholder="Confirm Password" bind:value={confirmationPassword} />
 			</label>
 		{/if}
 	</form>
@@ -98,6 +101,7 @@
 		gap: 1rem;
 		margin: 1rem;
 	}
+
 	input:focus-within,
 	input:hover {
 		border: 2px black solid;
