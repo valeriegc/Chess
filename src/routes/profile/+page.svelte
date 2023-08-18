@@ -33,7 +33,8 @@
 		justify-content: center;
 		padding: 3rem;
 		position: relative;
-		background: linear-gradient(to right, var(--lightSquare), rgb(165, 141, 103));
+		background: white;
+		/**linear-gradient(to right, var(--lightSquare), rgb(165, 141, 103));**/
 	}
 	.grid {
 		display: grid;
@@ -46,11 +47,10 @@
 		position: absolute;
 		right: 5rem;
 		cursor: pointer;
-		padding: 1rem;
-		border-radius: 10px;
+		padding: 0.5rem;
 		border: none;
-		background-color: var(--lightSquare);
-		color: var(--darkSquare);
+		background-color: black;
+		color: white;
 		font-weight: bold;
 	}
 </style>
