@@ -29,3 +29,4 @@ export const authenticated = writable({
 export const gameStarted = writable(false);
 export const gameId = writable('NoIdYet');
 export const player = writable('white');
+export const theme = writable('bw');
