@@ -43,4 +43,3 @@ const userStore = () => {
 	};
 };
 export const user = userStore();
-console.log(user);
