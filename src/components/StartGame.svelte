@@ -2,24 +2,23 @@
 	import { onMount } from 'svelte';
 	import Dialog from '../modals/Dialog.svelte';
 	import { getFirestore, doc, setDoc } from 'firebase/firestore';
-	import { app } from '$lib/firebase/firebase';
+	import { db } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
-	import { gameStarted } from '../stores';
+	import { gameId, gameStarted } from '../stores';
 	import { goto } from '$app/navigation';
-	export const db = getFirestore(app);
 	let showModal: boolean = true;
 	let url: string;
 	let confirmation = false;
 	let initialParams = '';
-	let gameParams = '';
 
 	onMount(() => (url = window.location.href));
 
 	const createGame = async () => {
+		$gameId = initialParams;
 		let boardArray = initPieces();
 		let turn = 'white';
 		try {
-			const docRef = await setDoc(doc(db, 'games', gameParams), {
+			await setDoc(doc(db, 'games', $gameId), {
 				board: boardArray,
 				player: turn
 			});
@@ -33,19 +32,17 @@
 	};
 
 	const queryParamGenerator = () => {
-		url = window.location.href;
+		initialParams = '';
 		const charCodes = Array.from(Array(26)).map((e, i) => i + 65);
 		const alphabet = charCodes.map((n) => String.fromCharCode(n));
 		for (let i = 0; i < 10; i++) {
-			let randomInt = Math.floor(Math.random() * (26 - 1 + 1) + 1);
+			let randomInt = Math.floor(Math.random() * (25 - 1 + 1) + 1);
 			let randomLetter = alphabet[randomInt];
-			if (randomInt % 2 == 0) randomLetter = randomLetter.toLowerCase();
 			initialParams = initialParams + randomLetter;
 		}
-		//2 values for params, so that url never renders empty params but can be changed
-		gameParams = initialParams;
-		url = url + '/' + gameParams;
-		initialParams = '';
+		initialParams = initialParams.toLowerCase();
+		url += '/' + initialParams;
+		return url;
 	};
 
 	const handleCopy = () => {

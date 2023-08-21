@@ -3,7 +3,6 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { writable } from 'svelte/store';
-import { goto } from '$app/navigation';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
