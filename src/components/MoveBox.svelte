@@ -6,19 +6,21 @@
 <div class="outerMove">
 	<div class="moveBox">
 		<h3>Moves</h3>
-		{#each $moves as move}
-			<div class="moveLine">
-				<div class="pieceBox">
-					<svelte:component this={getPiececomponent(move.piece)} />
-				</div>
+		{#if $moves}
+			{#each $moves as move}
+				<div class="moveLine">
+					<div class="pieceBox">
+						<svelte:component this={getPiececomponent(move.piece)} />
+					</div>
 
-				<p>
-					Moved from <strong>{move.postCoord}</strong>
-					to
-					<strong>{move.preCoord}</strong>
-				</p>
-			</div>
-		{/each}
+					<p>
+						Moved from <strong>{move.postCoord}</strong>
+						to
+						<strong>{move.preCoord}</strong>
+					</p>
+				</div>
+			{/each}
+		{/if}
 	</div>
 </div>
 

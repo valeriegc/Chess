@@ -4,7 +4,7 @@
 	import { getFirestore, doc, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
-	import { gameId, gameStarted } from '../stores';
+	import { gameId, gameStarted, moves } from '../stores';
 	import { goto } from '$app/navigation';
 	let showModal: boolean = true;
 	let url: string;
@@ -20,7 +20,8 @@
 		try {
 			await setDoc(doc(db, 'games', $gameId), {
 				board: boardArray,
-				player: turn
+				player: turn,
+				moves: $moves
 			});
 		} catch (e) {
 			console.error('Error adding document: ', e);

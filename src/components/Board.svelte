@@ -13,8 +13,6 @@
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
 
-	const gameRef = doc(db, 'games', $gameId);
-
 	let selectedSquare = -1;
 	let allowedMoves: number[] = [];
 
@@ -50,9 +48,10 @@
 		selectedSquare = -1;
 		allowedMoves = [];
 		changeTurn();
-		await updateDoc(gameRef, {
+		await updateDoc(doc(db, 'games', $gameId), {
 			board: boardArr,
-			player: turn
+			player: turn,
+			moves: $moves
 		});
 	};
 
@@ -145,14 +144,16 @@
 		1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23, 24, 26, 28, 30, 33, 35, 37, 39, 40, 42, 44, 46, 49,
 		51, 53, 55, 56, 58, 60, 62, 64
 	];
-
-	const unsub = onSnapshot(doc(db, 'games', $gameId), (doc) => {
-		const allData = doc.data();
-		if (allData) {
-			boardArr = allData?.board;
-			turn = allData?.player;
-		}
-	});
+	$: if ($gameId !== 'noIdYet') {
+		onSnapshot(doc(db, 'games', $gameId), (doc) => {
+			const allData = doc.data();
+			if (allData) {
+				boardArr = allData?.board;
+				turn = allData?.player;
+				$moves = allData?.moves;
+			}
+		});
+	}
 </script>
 
 <div class="boardOuterWrap">
