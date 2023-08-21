@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { gameId, moves, type Piece, type Square, player } from '../stores';
+	import { gameId, type Piece, type Square, player, moves } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -14,14 +14,6 @@
 	let turn: 'black' | 'white' = 'white';
 
 	const gameRef = doc(db, 'games', $gameId);
-
-	console.log($player, turn);
-
-	const unsub = onSnapshot(doc(db, 'games', $gameId), (doc) => {
-		const allData = doc.data();
-		boardArr = allData?.board;
-		turn = allData?.player;
-	});
 
 	let selectedSquare = -1;
 	let allowedMoves: number[] = [];
@@ -153,6 +145,14 @@
 		1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23, 24, 26, 28, 30, 33, 35, 37, 39, 40, 42, 44, 46, 49,
 		51, 53, 55, 56, 58, 60, 62, 64
 	];
+
+	const unsub = onSnapshot(doc(db, 'games', $gameId), (doc) => {
+		const allData = doc.data();
+		if (allData) {
+			boardArr = allData?.board;
+			turn = allData?.player;
+		}
+	});
 </script>
 
 <div class="boardOuterWrap">
