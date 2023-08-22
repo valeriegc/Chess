@@ -5,21 +5,21 @@
 </script>
 
 <dialog bind:this={dialog} on:close={() => (showModal = false)}>
-	<div>
+	<div class="headerline">
+		<slot name="logoOne" />
 		<slot name="header" />
-		<hr />
-		<slot name="text" />
-		<hr />
-		<slot name="choices" />
-		<button class="close" on:click={() => dialog.close()}>x</button>
+		<slot name="logoTwo" />
 	</div>
+	<slot name="text" />
+	<slot name="choices" />
 </dialog>
 
 <style>
-	hr {
-		background-color: black;
-		height: 0.5px;
-		border: none;
+	.headerline {
+		display: flex;
+		gap: 1.5rem;
+		align-items: center;
+		margin: auto;
 	}
 	dialog {
 		width: 38em;
@@ -27,24 +27,15 @@
 		background-color: whitesmoke;
 		position: relative;
 		border: none;
-		box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+		box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+			rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
 
 	dialog::backdrop {
 		background-color: RGBA(0, 0, 0, 0.7);
 		backdrop-filter: blur(2px);
-	}
-	.close {
-		position: absolute;
-		right: 1rem;
-		top: 1rem;
-		color: white;
-		font-size: x-large;
-		width: 2rem;
-		height: 2rem;
-		background-color: black;
-		cursor: pointer;
-		border: none;
-		text-align: center;
 	}
 </style>
