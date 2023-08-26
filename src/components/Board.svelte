@@ -13,9 +13,11 @@
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
 
+	$: black = $player == 'black';
+	$: console.log(black);
 	let selectedSquare = -1;
 	let allowedMoves: number[] = [];
-
+	$: console.log(turn);
 	let allAllowedMoves;
 	let selectedPiece: Piece;
 	let checked = false;
@@ -141,6 +143,7 @@
 	};
 
 	const handleSelectAndMove = (newSquare: number) => {
+		console.log('test');
 		if (!allowedMoves.includes(newSquare)) {
 			updateSelection(newSquare);
 			return;
@@ -186,11 +189,12 @@
 				{/each}
 			</div>
 		</div>
-		<div class="boardGrid">
+		<div class="boardGrid" class:black>
 			{#each boardArr as square, i}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div
 					class="square"
+					class:black
 					style="background-color:{checked &&
 					turn == square.piece?.color &&
 					square.piece.type == 'king'
@@ -269,5 +273,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+	.black {
+		transform: scaleY(-1);
 	}
 </style>

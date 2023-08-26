@@ -7,7 +7,6 @@
 	import { gameId, player } from '../../../stores';
 	export let data;
 	let visible = true;
-
 	onMount(() => {
 		if ($page.params.gameId) {
 			$gameId = $page.params.gameId;
@@ -16,6 +15,7 @@
 			$gameId = 'NoIdYet';
 			$player = 'black';
 		}
+		console.log($player);
 	});
 </script>
 
