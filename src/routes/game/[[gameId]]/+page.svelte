@@ -6,6 +6,7 @@
 	import StartGame from '../../../components/StartGame.svelte';
 	import { gameId, player } from '../../../stores';
 	export let data;
+	let visible = true;
 
 	onMount(() => {
 		if ($page.params.gameId) {
@@ -19,8 +20,8 @@
 </script>
 
 <div class="container">
-	{#if !data.id.game.gameId}
-		<StartGame />
+	{#if !data.id.game.gameId && visible}
+		<StartGame bind:visible />
 	{/if}
 	<MoveBox />
 	<Board />

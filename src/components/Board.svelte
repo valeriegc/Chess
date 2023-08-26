@@ -82,8 +82,24 @@
 			}
 		} else {
 			selectedSquare = newSquare;
-			selectedPiece = boardArr[selectedSquare].piece!; //FIX
-			allowedMoves = pieceCheck(boardArr[selectedSquare].piece!, selectedSquare, boardArr, turn)!; // Ask alex can I use exclamation
+			selectedPiece = boardArr[selectedSquare].piece!;
+			let initialAllowed = pieceCheck(
+				boardArr[selectedSquare].piece!,
+				selectedSquare,
+				boardArr,
+				turn
+			)!;
+			kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
+			allowedMoves = initialAllowed.filter((n: number) => {
+				return moveAllowedWhileCheck(
+					boardArr,
+					n,
+					selectedSquare,
+					kingLocation,
+					selectedPiece!,
+					turn
+				);
+			});
 		}
 	};
 

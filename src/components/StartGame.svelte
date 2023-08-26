@@ -10,6 +10,7 @@
 	let url: string;
 	let confirmation = false;
 	let initialParams = '';
+	export let visible;
 
 	onMount(() => (url = window.location.href));
 
@@ -28,6 +29,7 @@
 		}
 		$gameStarted = true;
 		$gameStarted = $gameStarted;
+		visible = false;
 		goto(url);
 	};
 
