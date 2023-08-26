@@ -13,9 +13,11 @@
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
 
+	$: black = $player == 'black';
+	$: console.log(black);
 	let selectedSquare = -1;
 	let allowedMoves: number[] = [];
-
+	$: console.log(turn);
 	let allAllowedMoves;
 	let selectedPiece: Piece;
 	let checked = false;
@@ -82,8 +84,24 @@
 			}
 		} else {
 			selectedSquare = newSquare;
-			selectedPiece = boardArr[selectedSquare].piece!; //FIX
-			allowedMoves = pieceCheck(boardArr[selectedSquare].piece!, selectedSquare, boardArr, turn)!; // Ask alex can I use exclamation
+			selectedPiece = boardArr[selectedSquare].piece!;
+			let initialAllowed = pieceCheck(
+				boardArr[selectedSquare].piece!,
+				selectedSquare,
+				boardArr,
+				turn
+			)!;
+			kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
+			allowedMoves = initialAllowed.filter((n: number) => {
+				return moveAllowedWhileCheck(
+					boardArr,
+					n,
+					selectedSquare,
+					kingLocation,
+					selectedPiece!,
+					turn
+				);
+			});
 		}
 	};
 
@@ -125,6 +143,7 @@
 	};
 
 	const handleSelectAndMove = (newSquare: number) => {
+		console.log('test');
 		if (!allowedMoves.includes(newSquare)) {
 			updateSelection(newSquare);
 			return;
@@ -170,11 +189,12 @@
 				{/each}
 			</div>
 		</div>
-		<div class="boardGrid">
+		<div class="boardGrid" class:black>
 			{#each boardArr as square, i}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div
 					class="square"
+					class:black
 					style="background-color:{checked &&
 					turn == square.piece?.color &&
 					square.piece.type == 'king'
@@ -253,5 +273,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+	.black {
+		transform: scaleY(-1);
 	}
 </style>

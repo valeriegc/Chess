@@ -10,6 +10,7 @@
 	let url: string;
 	let confirmation = false;
 	let initialParams = '';
+	export let visible;
 
 	onMount(() => (url = window.location.href));
 
@@ -28,6 +29,7 @@
 		}
 		$gameStarted = true;
 		$gameStarted = $gameStarted;
+		visible = false;
 		goto(url);
 	};
 
@@ -86,6 +88,8 @@
 		height: 100%;
 		width: 100%;
 		background-color: rgba(0, 0, 0, 0.582);
+		transform: scale(1);
+		z-index: 100;
 	}
 	.modalWrap {
 		width: 38em;
