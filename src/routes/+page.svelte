@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { auth } from '$lib/firebase/firebase';
+	import { auth, db } from '$lib/firebase/firebase';
 	import {
 		GoogleAuthProvider,
 		setPersistence,
@@ -8,6 +8,7 @@
 		signInWithPopup,
 		browserSessionPersistence
 	} from 'firebase/auth';
+	import { doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 
 	let createAccount = false;
 	let email = '';
@@ -15,6 +16,11 @@
 	let confirmationPassword = '';
 	let loginError = false;
 	export let form;
+	export let success: boolean;
+
+	$: if (success) {
+		goto('/profile');
+	}
 
 	const singInWithGoogle = async () => {
 		const provider = new GoogleAuthProvider();
@@ -28,11 +34,29 @@
 			},
 			body: JSON.stringify({ idToken })
 		});
-		goto('/profile');
+		const userObj = auth.currentUser;
+		const uid = userObj.uid;
+		const userRef = doc(db, 'users', uid);
+
+		if (userObj) {
+			const userDoc = await getDoc(userRef);
+			if (userDoc.exists()) {
+				console.log('user exists');
+			} else {
+				await setDoc(doc(db, 'users', userObj.uid), {
+					email: userObj?.email,
+					theme: 'bw',
+					picture: '',
+					played: 0,
+					lost: 0,
+					won: 0
+				});
+			}
+			goto('/profile');
+		}
 	};
 
 	const regularSignIn = async () => {
-		console.log('this ran');
 		setPersistence(auth, browserSessionPersistence);
 		try {
 			const { user } = await signInWithEmailAndPassword(auth, email, password);
@@ -44,6 +68,7 @@
 				},
 				body: JSON.stringify({ idToken })
 			});
+
 			goto('/profile');
 		} catch (error) {
 			//TO DO: Find a correct error type

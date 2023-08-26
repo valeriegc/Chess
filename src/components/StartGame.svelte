@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Dialog from '../modals/Dialog.svelte';
-	import { getFirestore, doc, setDoc } from 'firebase/firestore';
+	import { doc, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
 	import { gameId, gameStarted, moves } from '../stores';
 	import { goto } from '$app/navigation';
-	let showModal: boolean = true;
+	import KingB from '../pieces/King_B.svelte';
+	import KingW from '../pieces/King_W.svelte';
 	let url: string;
 	let confirmation = false;
 	let initialParams = '';
@@ -26,7 +26,6 @@
 		} catch (e) {
 			console.error('Error adding document: ', e);
 		}
-		showModal = false;
 		$gameStarted = true;
 		$gameStarted = $gameStarted;
 		goto(url);
@@ -55,56 +54,90 @@
 	};
 </script>
 
-<Dialog bind:showModal>
-	<h2 slot="header">CHESS</h2>
-	<p slot="text">
-		In order to start the game, use the button below to generate a link. Copy the link and send it
-		to your opponent. Once you are done, you can close this window and wait for your opponent.
-	</p>
-	<div class="choices" slot="choices">
-		<button on:click={() => queryParamGenerator()}>Generate link </button>
-		<input value={url} />
-		<button on:click={() => handleCopy()}>Copy</button>
-		{#if confirmation}
-			<div class="copied">Copied!</div>
-		{/if}
-		<button on:click={() => createGame()}>Start</button>
-	</div></Dialog
->
+<div class="modalContainer">
+	<div class="modalWrap">
+		<div class="headerWrap">
+			<div><KingB /></div>
+			<h2>CHESS</h2>
+			<div><KingW /></div>
+		</div>
+		<p>
+			In order to start the game, use the button below to generate a link. Copy the link and send it
+			to your opponent. Once you are done, click start and wait for your opponent.
+		</p>
+		<div class="choices">
+			<button on:click={() => queryParamGenerator()}>Generate link </button>
+			<input value={url} />
+			<button class="copyBtn" on:click={() => handleCopy()}>Copy</button>
+			<button class="startBtn" on:click={() => createGame()}>Start</button>
+		</div>
+	</div>
+</div>
 
 <style>
 	* {
 		color: black;
+		margin: 0;
 	}
+	.modalContainer {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0, 0, 0, 0.582);
+	}
+	.modalWrap {
+		width: 38em;
+		padding: 2.5rem;
+		background-color: whitesmoke;
+		box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+			rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+		margin: auto;
+	}
+
 	h2 {
 		text-align: center;
 	}
-	p {
-		margin-inline: 2rem;
+	.headerWrap {
+		display: flex;
+		gap: 1.5rem;
+		align-items: center;
+		justify-content: center;
+		margin: 1rem;
 	}
-	.copied {
-		font-size: medium;
+	p {
+		margin: 2rem;
+	}
+	.copyBtn {
+		margin: 0;
+	}
+	.startBtn {
+		background-color: white;
+		color: black;
+		border: 1px solid black;
 		margin-left: 1rem;
-		margin-top: 0.5rem;
 	}
 	.choices {
 		margin-top: 1rem;
 		margin-left: 2rem;
-		display: flex;
 	}
 	input {
-		margin-left: 3rem;
-		margin-right: 1rem;
+		margin-left: 1rem;
+		margin-right: 0;
+		padding: 0.2rem;
 		width: 16rem;
 		border: solid darkgray 1px;
 		padding-inline: 1rem;
 	}
 	button {
-		padding: 0.5rem;
+		padding: 0.2rem;
+		padding-inline: 0.5rem;
 		background-color: black;
 		border: 1px solid transparent;
 		color: white;
 		cursor: pointer;
+		border-radius: 0;
 	}
 	button:hover {
 		transition: 3000;

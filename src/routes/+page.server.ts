@@ -1,5 +1,8 @@
+import { goto } from '$app/navigation';
+import { db } from '$lib/firebase/firebase.js';
 import { adminAuth } from '$lib/server/admin.js';
 import { fail } from '@sveltejs/kit';
+import { doc, setDoc } from 'firebase/firestore';
 
 export const actions = {
 	default: async ({ request }) => {
@@ -16,8 +19,16 @@ export const actions = {
 				email: email,
 				password: password
 			})
-			.then((userRecord) => {
-				console.log('user created with id:', userRecord.uid);
+			.then(async (userRecord) => {
+				await setDoc(doc(db, 'users', userRecord.uid), {
+					email: userRecord.email,
+					theme: 'bw',
+					picture: '',
+					played: 0,
+					lost: 0,
+					won: 0
+				});
+				return { success: true };
 			})
 			.catch((error) => {
 				console.log('Error creating new user:', error);
