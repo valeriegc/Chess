@@ -16,6 +16,11 @@
 	let confirmationPassword = '';
 	let loginError = false;
 	export let form;
+	export let success: boolean;
+
+	$: if (success) {
+		goto('/profile');
+	}
 
 	const singInWithGoogle = async () => {
 		const provider = new GoogleAuthProvider();

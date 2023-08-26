@@ -19,7 +19,7 @@
 </script>
 
 <div class="container">
-	{#if $gameId == 'NoIdYet'}
+	{#if !data.id.game.gameId}
 		<StartGame />
 	{/if}
 	<MoveBox />
@@ -27,12 +27,8 @@
 </div>
 
 <style>
-	* {
-		box-sizing: content-box;
-	}
 	.container {
 		display: flex;
 		flex-direction: row;
-		padding: 2rem;
 	}
 </style>

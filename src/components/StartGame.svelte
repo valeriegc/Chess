@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Dialog from '../modals/Dialog.svelte';
 	import { doc, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
@@ -8,7 +7,6 @@
 	import { goto } from '$app/navigation';
 	import KingB from '../pieces/King_B.svelte';
 	import KingW from '../pieces/King_W.svelte';
-	let showModal: boolean = true;
 	let url: string;
 	let confirmation = false;
 	let initialParams = '';
@@ -28,7 +26,6 @@
 		} catch (e) {
 			console.error('Error adding document: ', e);
 		}
-		showModal = false;
 		$gameStarted = true;
 		$gameStarted = $gameStarted;
 		goto(url);
@@ -57,31 +54,60 @@
 	};
 </script>
 
-<Dialog bind:showModal>
-	<div slot="logoOne"><KingB /></div>
-	<h2 slot="header">CHESS</h2>
-	<div slot="logoTwo"><KingW /></div>
-	<p slot="text">
-		In order to start the game, use the button below to generate a link. Copy the link and send it
-		to your opponent. Once you are done, click start and wait for your opponent.
-	</p>
-	<div class="choices" slot="choices">
-		<button on:click={() => queryParamGenerator()}>Generate link </button>
-		<input value={url} />
-		<button class="copyBtn" on:click={() => handleCopy()}>Copy</button>
-		<button class="startBtn" on:click={() => createGame()}>Start</button>
-	</div></Dialog
->
+<div class="modalContainer">
+	<div class="modalWrap">
+		<div class="headerWrap">
+			<div><KingB /></div>
+			<h2>CHESS</h2>
+			<div><KingW /></div>
+		</div>
+		<p>
+			In order to start the game, use the button below to generate a link. Copy the link and send it
+			to your opponent. Once you are done, click start and wait for your opponent.
+		</p>
+		<div class="choices">
+			<button on:click={() => queryParamGenerator()}>Generate link </button>
+			<input value={url} />
+			<button class="copyBtn" on:click={() => handleCopy()}>Copy</button>
+			<button class="startBtn" on:click={() => createGame()}>Start</button>
+		</div>
+	</div>
+</div>
 
 <style>
 	* {
 		color: black;
+		margin: 0;
 	}
+	.modalContainer {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0, 0, 0, 0.582);
+	}
+	.modalWrap {
+		width: 38em;
+		padding: 2.5rem;
+		background-color: whitesmoke;
+		box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+			rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+		margin: auto;
+	}
+
 	h2 {
 		text-align: center;
 	}
+	.headerWrap {
+		display: flex;
+		gap: 1.5rem;
+		align-items: center;
+		justify-content: center;
+		margin: 1rem;
+	}
 	p {
-		margin-inline: 2rem;
+		margin: 2rem;
 	}
 	.copyBtn {
 		margin: 0;

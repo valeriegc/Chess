@@ -28,6 +28,7 @@ export const actions = {
 					lost: 0,
 					won: 0
 				});
+				return { success: true };
 			})
 			.catch((error) => {
 				console.log('Error creating new user:', error);

@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 
+export const gameId = writable('NoIdYet');
 export const pieceList = ['pawn', 'tower', 'horse', 'bishop', 'queen', 'king'] as const;
 export type PieceType = (typeof pieceList)[number];
 export interface Piece {
@@ -37,7 +38,6 @@ export const authenticated = writable({
 	fetching: true
 });
 export const gameStarted = writable(false);
-export const gameId = writable('NoIdYet');
 export const player = writable('white');
 export const theme = writable('bw');
 export const user = writable<User | null>(null);
