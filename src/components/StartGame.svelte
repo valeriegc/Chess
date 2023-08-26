@@ -29,8 +29,6 @@
 		}
 		$gameStarted = true;
 		$gameStarted = $gameStarted;
-		visible = false;
-		goto(url);
 	};
 
 	const queryParamGenerator = () => {
@@ -54,6 +52,14 @@
 		confirmation = true;
 		setTimeout(() => (confirmation = false), 1000);
 	};
+	const closeModal = () => {
+		visible = false;
+		goto(url);
+	};
+	onMount(() => {
+		queryParamGenerator();
+		createGame();
+	});
 </script>
 
 <div class="modalContainer">
@@ -63,15 +69,11 @@
 			<h2>CHESS</h2>
 			<div><KingW /></div>
 		</div>
-		<p>
-			In order to start the game, use the button below to generate a link. Copy the link and send it
-			to your opponent. Once you are done, click start and wait for your opponent.
-		</p>
+		<p>Copy the link below and send it to your opponent. Then press start to start the game.</p>
 		<div class="choices">
-			<button on:click={() => queryParamGenerator()}>Generate link </button>
 			<input value={url} />
 			<button class="copyBtn" on:click={() => handleCopy()}>Copy</button>
-			<button class="startBtn" on:click={() => createGame()}>Start</button>
+			<button class="startBtn" on:click={() => closeModal()}>Start</button>
 		</div>
 	</div>
 </div>
