@@ -3,7 +3,6 @@ import { horseCheck } from './moveChecks/horseCheck';
 import { pawnCheck } from './moveChecks/pawnCheck';
 import { towerCheck } from './moveChecks/towerCheck';
 import { bishopCheck } from './moveChecks/bishopCheck';
-import { kingCheck } from './moveChecks/kingCheck';
 import { row } from '../global';
 
 export const kingChecked = (board: Square[], king: Piece, kingLocation: number) => {
@@ -36,19 +35,4 @@ export const kingChecked = (board: Square[], king: Piece, kingLocation: number) 
 	const queenThreat = bishopThreat.concat(towerThreat);
 	checkForOpponent(queenThreat, { type: 'queen', color: opponentColor });
 	return isKingChecked;
-};
-
-export const kingCheckMate = (king: Piece, index: number, board: Square[]) => {
-	let remainingKingMoves = [];
-	let turn = king.color;
-	if ((turn = 'black')) {
-		remainingKingMoves = kingCheck(index, board, turn);
-		const allowedKingMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n));
-		if (allowedKingMoves.length == 0) return true;
-	} else {
-		remainingKingMoves = kingCheck(index, board, turn);
-		const allowedKingMoves = remainingKingMoves.filter((n) => !kingChecked(board, king, n));
-		if (allowedKingMoves.length == 0) return true;
-	}
-	return false;
 };

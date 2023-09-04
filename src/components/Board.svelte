@@ -3,7 +3,7 @@
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
-	import { kingCheckMate, kingChecked } from '../functions/kingChecked';
+	import { kingChecked } from '../functions/kingChecked';
 	import {
 		alphaCalc,
 		isKingCastling,
@@ -43,7 +43,6 @@
 	};
 
 	const fillSquare = ({ piece, square }: FillSquare) => {
-		//ask Alex : prop syntax
 		boardArr[square].piece = piece;
 	};
 	const emptySquare = (square: number) => {
@@ -60,17 +59,12 @@
 
 	const movePiece = async (newSquare: number) => {
 		checked = false;
-
 		emptySquare(selectedSquare);
 		fillSquare({ piece: selectedPiece!, square: newSquare });
-
 		addMoves(selectedSquare, newSquare, selectedPiece!);
-
 		resetSelection();
 		resetAllowedMoves();
-
 		changeTurn();
-
 		updateFirebase();
 	};
 
