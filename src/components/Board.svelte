@@ -3,8 +3,17 @@
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
-	import { kingCheckMate, kingChecked } from '../functions/kingChecked';
-	import { alphaCalc, isKingCastling, letters } from '../global';
+	import { kingChecked } from '../functions/kingChecked';
+	import {
+		alphaCalc,
+		isKingCastling,
+		letters,
+		darkSquares,
+		type FillSquare,
+		getCastleLocations,
+		invalidSelection,
+		findKing
+	} from '../global';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
 	import { getPiececomponent } from '../functions/getPieceComponent';
 	import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
@@ -15,39 +24,33 @@
 
 	$: black = $player == 'black';
 	let selectedSquare = -1;
+	let kingLocation = -1;
 	let allowedMoves: number[] = [];
 	let allAllowedMoves;
 	let selectedPiece: Piece;
 	let checked = false;
-	let kingLocation = -1;
+
+	const resetSelection = () => {
+		selectedSquare = -1;
+	};
+	const resetAllowedMoves = () => {
+		allowedMoves = [];
+		allAllowedMoves = [];
+	};
 
 	const changeTurn = () => {
 		turn == 'white' ? (turn = 'black') : (turn = 'white');
 		return turn;
 	};
 
-	interface FillSquare {
-		piece: Piece;
-		square: number;
-	}
-
 	const fillSquare = ({ piece, square }: FillSquare) => {
-		//ask Alex : prop syntax
 		boardArr[square].piece = piece;
 	};
 	const emptySquare = (square: number) => {
 		boardArr[square].piece = null;
 	};
 
-	const movePiece = async (newSquare: number) => {
-		if (turn !== $player) return;
-		checked = false;
-		fillSquare({ piece: selectedPiece!, square: newSquare });
-		emptySquare(selectedSquare);
-		addMoves(selectedSquare, newSquare, selectedPiece!);
-		selectedSquare = -1;
-		allowedMoves = [];
-		changeTurn();
+	const updateFirebase = async () => {
 		await updateDoc(doc(db, 'games', $gameId), {
 			board: boardArr,
 			player: turn,
@@ -55,52 +58,31 @@
 		});
 	};
 
-	const updateSelection = (newSquare: number) => {
-		if (turn !== $player) return;
-		const emptySquare = boardArr[newSquare].piece == null;
-		//check for opponent piece, if the square is not empty
-		const opponentPiece = boardArr[newSquare].piece?.color !== turn; //ask Alex: possibly null => best solution?
+	const movePiece = async (newSquare: number) => {
+		checked = false;
+		emptySquare(selectedSquare);
+		fillSquare({ piece: selectedPiece!, square: newSquare });
+		addMoves(selectedSquare, newSquare, selectedPiece!);
+		resetSelection();
+		resetAllowedMoves();
+		changeTurn();
+		updateFirebase();
+	};
 
-		if (emptySquare || opponentPiece) return;
-
-		if (checked) {
-			selectedSquare = newSquare;
-			selectedPiece = boardArr[selectedSquare].piece!; // FIX
-			allAllowedMoves = pieceCheck(selectedPiece!, selectedSquare, boardArr, turn)!;
-			allowedMoves = allAllowedMoves.filter((n: number) => {
-				return moveAllowedWhileCheck(
-					boardArr,
-					n,
-					selectedSquare,
-					kingLocation,
-					selectedPiece!,
-					turn
-				);
-			});
-			if (kingCheckMate({ type: 'king', color: turn }, kingLocation, boardArr)) {
-				alert('Game over king is check mate');
-			}
-		} else {
-			selectedSquare = newSquare;
-			selectedPiece = boardArr[selectedSquare].piece!;
-			let initialAllowed = pieceCheck(
-				boardArr[selectedSquare].piece!,
-				selectedSquare,
-				boardArr,
-				turn
-			)!;
-			kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
-			allowedMoves = initialAllowed.filter((n: number) => {
-				return moveAllowedWhileCheck(
-					boardArr,
-					n,
-					selectedSquare,
-					kingLocation,
-					selectedPiece!,
-					turn
-				);
-			});
-		}
+	const updateSelection = (clickedSquare: number) => {
+		if (invalidSelection(boardArr, clickedSquare, turn)) return;
+		selectedSquare = clickedSquare;
+		selectedPiece = boardArr[selectedSquare].piece!;
+		let initialAllowed = pieceCheck(
+			boardArr[selectedSquare].piece!,
+			selectedSquare,
+			boardArr,
+			turn
+		)!;
+		kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
+		allowedMoves = initialAllowed.filter((n: number) => {
+			return moveAllowedWhileCheck(boardArr, n, selectedSquare, kingLocation, selectedPiece!, turn);
+		});
 	};
 
 	const addMoves = (previouspos: number, newpos: number, piece: Piece) => {
@@ -116,51 +98,43 @@
 		$moves = $moves;
 	};
 
-	const castleTheKing = (oldKingLoc: number, oldTowerLoc: number, board: Square[]) => {
-		let newKingLoc: number;
-		let newTowerLoc: number;
-		const castleToLeft = oldTowerLoc > oldKingLoc;
-
-		if (castleToLeft) {
-			newKingLoc = oldTowerLoc - 1;
-			newTowerLoc = oldTowerLoc - 2;
-		} else {
-			newKingLoc = oldTowerLoc + 1;
-			newTowerLoc = oldTowerLoc + 2;
-		}
-
+	const castleKing = (oldKingLoc: number, oldTowerLoc: number, board: Square[]) => {
 		const movingKing = board[oldKingLoc].piece!;
-		fillSquare({ piece: movingKing!, square: newKingLoc });
-		emptySquare(oldKingLoc);
-
 		const movingTower = board[oldTowerLoc].piece!;
-		fillSquare({ piece: movingTower!, square: newTowerLoc });
+		const newLocations = getCastleLocations(oldTowerLoc, oldKingLoc);
+
+		emptySquare(oldKingLoc);
 		emptySquare(oldTowerLoc);
-		addMoves(oldKingLoc, newKingLoc, movingKing);
-		addMoves(oldTowerLoc, newTowerLoc, movingTower);
+
+		fillSquare({ piece: movingKing!, square: newLocations.king });
+		fillSquare({ piece: movingTower!, square: newLocations.tower });
+
+		addMoves(oldKingLoc, newLocations.king, movingKing);
+		addMoves(oldTowerLoc, newLocations.tower, movingTower);
 	};
 
-	const handleSelectAndMove = (newSquare: number) => {
-		console.log('test');
-		if (!allowedMoves.includes(newSquare)) {
-			updateSelection(newSquare);
+	const handleSelectAndMove = (clickedSquare: number) => {
+		const playersTurn = turn == $player;
+		if (!playersTurn) return;
+
+		const moveAllowed = allowedMoves.includes(clickedSquare);
+
+		if (moveAllowed) {
+			if (isKingCastling(boardArr[clickedSquare].piece, turn)) {
+				castleKing(selectedSquare, clickedSquare, boardArr);
+			} else {
+				movePiece(clickedSquare);
+			}
+		} else {
+			updateSelection(clickedSquare);
 			return;
 		}
-		if (isKingCastling(boardArr[newSquare].piece, turn)) {
-			castleTheKing(selectedSquare, newSquare, boardArr);
-		} else {
-			movePiece(newSquare);
-		}
-		selectedSquare = -1;
-		allowedMoves = [];
-		kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
+		resetSelection();
+		resetAllowedMoves();
+		kingLocation = findKing(boardArr, turn);
 		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
 	};
 
-	const darkSquares = [
-		1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23, 24, 26, 28, 30, 33, 35, 37, 39, 40, 42, 44, 46, 49,
-		51, 53, 55, 56, 58, 60, 62, 64
-	];
 	$: if ($gameId !== 'noIdYet') {
 		onSnapshot(doc(db, 'games', $gameId), (doc) => {
 			const allData = doc.data();
