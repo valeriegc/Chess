@@ -1,14 +1,3 @@
-* {
-	box-sizing: border-box;
-	font-family: "Crimson text";
-	color: var(--primary)
-}
-
-button {
-	color: var(--secondary);
-	cursor:pointer;
-}
-
 :root {
 	--darkSquare: rgb(153, 153, 153);
 	--lightSquare: white;
@@ -20,7 +9,30 @@ button {
 	--modalBg: rgba(0, 0, 0, 0.582);
 }
 
+* {
+	box-sizing: border-box;
+	font-family: "Crimson text";
+	color: var(--primary);
+}
 
 
+[data-theme="darkmode"]{
+	--primary: rgb(255,255,255);
+	--secondary: rgb(0,0,0);
+}
 
+[data-theme="traditional"]{
+	--primary: rgb(159, 114, 64);
+	--secondary: rgb(249, 223, 175);
+}
 
+[data-theme="bw"]{
+	--primary: rgb(0,0,0);
+	--secondary: rgb(255,255,255);
+}
+
+button {
+	color: var(--secondary);
+	background-color: var(--primary);
+	cursor:pointer;
+}

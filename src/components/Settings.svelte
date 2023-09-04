@@ -1,27 +1,26 @@
 <script lang="ts">
-	import { db } from '$lib/firebase/firebase';
+	import { db, user } from '$lib/firebase/firebase';
 	import { userStore } from '../stores';
 	import { doc, updateDoc } from 'firebase/firestore';
 
 	const changeTheme = async (newTheme: string) => {
-		if ($userStore) {
-			const docRef = doc(db, 'users', userStore.uid);
+		/**if ($userStore) {
+			const docRef = doc(db, 'users', user.uid);
 			$userStore.theme = newTheme;
 			await updateDoc(docRef, {
 				theme: newTheme
 			});
-		}
+		}**/
 		switch (newTheme) {
 			case 'bw':
-				document.documentElement.style.setProperty('--primary', '0,0,0');
-				document.documentElement.style.setProperty('--secondary', '255,255,255');
+				document.documentElement.dataset.theme = 'bw';
 				break;
 			case 'traditional':
-				document.documentElement.style.setProperty('--primary', '159, 114, 64');
-				document.documentElement.style.setProperty('--secondary', '249, 223, 175');
+				document.documentElement.dataset.theme = 'traditional';
+				break;
 			case 'darkmode':
-				document.documentElement.style.setProperty('--primary', '255,255,255');
-				document.documentElement.style.setProperty('--secondary', '0,0,0');
+				document.documentElement.dataset.theme = 'darkmode';
+				break;
 		}
 	};
 </script>

@@ -11,6 +11,7 @@
 	} from 'firebase/auth';
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
 	import { userStore } from '../stores.js';
+	import { onMount } from 'svelte';
 
 	let createAccount = false;
 	let email = '';
@@ -19,6 +20,10 @@
 	let loginError = false;
 	export let form;
 	export let success: boolean;
+
+	onMount(() => {
+		document.documentElement.dataset.theme = 'traditional';
+	});
 
 	$: if (success) {
 		goto('/profile');
@@ -53,9 +58,10 @@
 						lost: userData.lost,
 						won: userData.won,
 						played: userData.played,
-						uid: uid
+						uid: userObj.uid
 					};
 				}
+				document.documentElement.dataset.theme = 'traditional';
 			} else {
 				await setDoc(doc(db, 'users', userObj.uid), {
 					email: userObj?.email,
@@ -97,8 +103,10 @@
 							theme: userData.theme,
 							lost: userData.lost,
 							won: userData.won,
-							played: userData.played
+							played: userData.played,
+							uid: userData.uid
 						};
+						document.documentElement.dataset.theme = 'traditional';
 					}
 				}
 			}
