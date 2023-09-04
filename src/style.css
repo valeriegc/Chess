@@ -1,6 +1,12 @@
 * {
 	box-sizing: border-box;
-	font-family: "Crimson text"
+	font-family: "Crimson text";
+	color: var(--primary)
+}
+
+button {
+	color: var(--secondary);
+	cursor:pointer;
 }
 
 :root {
@@ -8,9 +14,13 @@
 	--lightSquare: white;
 	--selectedSquare: lightblue;
 	--possibleMove: lightgreen;
+	--primary: black;
+	--secondary: white; 
+	--tertiary: darkgray;
+	--modalBg: rgba(0, 0, 0, 0.582);
 }
 
 
 
-/**--lightSquare: rgb(249, 223, 175);
-	--darkSquare: rgb(159, 114, 64);**/
+
+

@@ -34,7 +34,7 @@
 	.moveBox {
 		height: 400px;
 		width: 350px;
-		background-color: whitesmoke;
+		background-color: var(--secondary);
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
 			rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 		overflow-y: scroll;
@@ -44,10 +44,9 @@
 		margin-bottom: 1rem;
 	}
 	.moveLine {
-		border-bottom: solid 1px black;
+		border-bottom: solid 1px var(--primary);
 		display: flex;
 		flex-direction: row;
-		color: black;
 		padding-left: 3rem;
 	}
 	p {
@@ -66,13 +65,13 @@
 
 	/* Handle */
 	::-webkit-scrollbar-thumb {
-		background: var(--darkSquare);
+		background: var(--primary);
 		-webkit-border-radius: 10px;
 		border-radius: 10px;
 	}
 
 	/* Handle on hover */
 	::-webkit-scrollbar-thumb:hover {
-		background: white;
+		background: var(--secondary);
 	}
 </style>

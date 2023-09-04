@@ -22,8 +22,7 @@
 	.innerAuthWrap {
 		margin: auto;
 		text-align: center;
-		color: var(--darkSquare);
-		background-color: var(--lightSquare);
+		background-color: var(--secondary);
 		padding: 2.5rem;
 		border-radius: 30px;
 	}
@@ -32,6 +31,5 @@
 	}
 	a {
 		text-decoration: none;
-		color: var(--darkSquare);
 	}
 </style>

@@ -5,6 +5,12 @@
 	import GameDetails from '../../components/GameDetails.svelte';
 	import Settings from '../../components/Settings.svelte';
 	import { goto } from '$app/navigation';
+	import { userStore } from '../../stores';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		console.log($userStore?.theme);
+	});
 
 	const signOutSSR = async () => {
 		const res = await fetch('api/signin', {
@@ -33,7 +39,7 @@
 		justify-content: center;
 		padding: 3rem;
 		position: relative;
-		background: white;
+		background: var(--secondary);
 		/**linear-gradient(to right, var(--lightSquare), rgb(165, 141, 103));**/
 	}
 	.grid {
@@ -49,8 +55,8 @@
 		cursor: pointer;
 		padding: 0.5rem;
 		border: none;
-		background-color: black;
-		color: white;
+		background-color: var(--primary);
+		color: var(--secondary);
 		font-weight: bold;
 	}
 </style>
