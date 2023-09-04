@@ -19,6 +19,11 @@ export const actions = {
 		if (invalidPw) {
 			return fail(400, { passwordError: invalidPw });
 		}
+		const passwordMismatch = password !== confirmPassword;
+		if (passwordMismatch) {
+			return fail(400, { passwordMismatch: true });
+		}
+
 		adminAuth
 			.createUser({
 				email: email,

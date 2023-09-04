@@ -140,10 +140,13 @@
 				<p style="color:gray">{loginError}</p>
 			{/if}
 			{#if form?.detailsMissing}
-				<p style="color:gray">Please fill in all the fields</p>
+				<p style="color:red">Please fill in all the fields</p>
 			{/if}
 			{#if form?.passwordError}
 				<p style="color:red; width:18rem;">{form?.passwordError}</p>
+			{/if}
+			{#if form?.passwordMismatch}
+				<p style="color:red; width:18rem;">The password and confirmation password do not match.</p>
 			{/if}
 
 			<button
