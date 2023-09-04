@@ -11,7 +11,8 @@
 		darkSquares,
 		type FillSquare,
 		getCastleLocations,
-		invalidSelection
+		invalidSelection,
+		findKing
 	} from '../global';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
 	import { getPiececomponent } from '../functions/getPieceComponent';
@@ -68,9 +69,9 @@
 		updateFirebase();
 	};
 
-	const updateSelection = (newSquare: number) => {
-		if (invalidSelection(boardArr, newSquare, turn)) return;
-		selectedSquare = newSquare;
+	const updateSelection = (clickedSquare: number) => {
+		if (invalidSelection(boardArr, clickedSquare, turn)) return;
+		selectedSquare = clickedSquare;
 		selectedPiece = boardArr[selectedSquare].piece!;
 		let initialAllowed = pieceCheck(
 			boardArr[selectedSquare].piece!,
@@ -112,25 +113,25 @@
 		addMoves(oldTowerLoc, newLocations.tower, movingTower);
 	};
 
-	const handleSelectAndMove = (newSquare: number) => {
+	const handleSelectAndMove = (clickedSquare: number) => {
 		const playersTurn = turn == $player;
 		if (!playersTurn) return;
 
-		const moveAllowed = allowedMoves.includes(newSquare);
+		const moveAllowed = allowedMoves.includes(clickedSquare);
 
 		if (moveAllowed) {
-			if (isKingCastling(boardArr[newSquare].piece, turn)) {
-				castleKing(selectedSquare, newSquare, boardArr);
+			if (isKingCastling(boardArr[clickedSquare].piece, turn)) {
+				castleKing(selectedSquare, clickedSquare, boardArr);
 			} else {
-				movePiece(newSquare);
+				movePiece(clickedSquare);
 			}
 		} else {
-			updateSelection(newSquare);
+			updateSelection(clickedSquare);
 			return;
 		}
 		resetSelection();
 		resetAllowedMoves();
-		kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
+		kingLocation = findKing(boardArr, turn);
 		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
 	};
 
