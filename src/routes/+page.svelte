@@ -10,6 +10,7 @@
 		browserSessionPersistence
 	} from 'firebase/auth';
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
+	import { userStore } from '../stores.js';
 
 	let createAccount = false;
 	let email = '';
@@ -42,7 +43,18 @@
 		if (userObj) {
 			const userDoc = await getDoc(userRef);
 			if (userDoc.exists()) {
-				console.log('user exists');
+				const userDetails = await getDoc(userRef);
+				const userData = userDetails.data();
+				if (userData) {
+					$userStore = {
+						email: userData.email,
+						picture: userData.picture,
+						theme: userData.theme,
+						lost: userData.lost,
+						won: userData.won,
+						played: userData.played
+					};
+				}
 			} else {
 				await setDoc(doc(db, 'users', userObj.uid), {
 					email: userObj?.email,

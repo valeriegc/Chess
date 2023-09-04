@@ -19,9 +19,7 @@ export interface Move {
 	postCoord: string;
 }
 export interface User {
-	uid: string;
 	email: string;
-	password: string;
 	picture: string;
 	theme: string;
 	lost: number;
@@ -40,4 +38,4 @@ export const authenticated = writable({
 export const gameStarted = writable(false);
 export const player = writable('white');
 export const theme = writable('bw');
-export const user = writable<User | null>(null);
+export const userStore = writable<User | null>(null);

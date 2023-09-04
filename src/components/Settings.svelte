@@ -55,9 +55,8 @@
 
 <style>
 	.settingWrap {
-		background-color: white;
+		background-color: var(--secondary);
 		width: 40rem;
-		color: black;
 		padding: 2rem;
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 	}
@@ -69,7 +68,7 @@
 	.themeIndicator {
 		height: 8rem;
 		width: 8rem;
-		background-color: white;
+		background-color: var(--secondary);
 		font-size: 1.25rem;
 		text-align: center;
 		cursor: pointer;

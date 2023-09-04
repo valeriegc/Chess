@@ -5,6 +5,12 @@
 	import GameDetails from '../../components/GameDetails.svelte';
 	import Settings from '../../components/Settings.svelte';
 	import { goto } from '$app/navigation';
+	import { userStore } from '../../stores';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		console.log($userStore?.theme);
+	});
 
 	const signOutSSR = async () => {
 		const res = await fetch('api/signin', {
