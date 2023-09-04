@@ -10,7 +10,8 @@
 		letters,
 		darkSquares,
 		type FillSquare,
-		getCastleLocations
+		getCastleLocations,
+		invalidSelection
 	} from '../global';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
 	import { getPiececomponent } from '../functions/getPieceComponent';
@@ -49,15 +50,7 @@
 		boardArr[square].piece = null;
 	};
 
-	const movePiece = async (newSquare: number) => {
-		if (turn !== $player) return;
-		checked = false;
-		emptySquare(selectedSquare);
-		fillSquare({ piece: selectedPiece!, square: newSquare });
-		addMoves(selectedSquare, newSquare, selectedPiece!);
-		resetSelection();
-		resetAllowedMoves();
-		changeTurn();
+	const updateFirebase = async () => {
 		await updateDoc(doc(db, 'games', $gameId), {
 			board: boardArr,
 			player: turn,
@@ -65,11 +58,24 @@
 		});
 	};
 
-	const updateSelection = (newSquare: number) => {
-		const emptySquare = boardArr[newSquare].piece == null;
-		const opponentPiece = boardArr[newSquare].piece?.color !== turn; //ask Alex: possibly null => best solution?
+	const movePiece = async (newSquare: number) => {
+		checked = false;
 
-		if (emptySquare || opponentPiece) return;
+		emptySquare(selectedSquare);
+		fillSquare({ piece: selectedPiece!, square: newSquare });
+
+		addMoves(selectedSquare, newSquare, selectedPiece!);
+
+		resetSelection();
+		resetAllowedMoves();
+
+		changeTurn();
+
+		updateFirebase();
+	};
+
+	const updateSelection = (newSquare: number) => {
+		if (invalidSelection(boardArr, newSquare, turn)) return;
 
 		if (checked) {
 			selectedSquare = newSquare;

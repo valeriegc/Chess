@@ -1,4 +1,6 @@
-import type { Piece } from './stores';
+import { doc, updateDoc } from 'firebase/firestore';
+import type { Piece, Square } from './stores';
+import { db } from '$lib/firebase/firebase';
 
 export const lastColumn = 8;
 export const firstColumn = 1;
@@ -118,4 +120,16 @@ export const getCastleLocations = (oldTowerLoc: number, oldKingLoc: number) => {
 		newTowerLoc = oldTowerLoc + 2;
 	}
 	return { tower: newTowerLoc, king: newKingLoc };
+};
+
+export const invalidSelection = (
+	boardArr: Square[],
+	newSquare: number,
+	turn: 'black' | 'white'
+) => {
+	const emptySquare = boardArr[newSquare].piece == null;
+	const opponentPiece = boardArr[newSquare].piece?.color !== turn;
+
+	if (emptySquare || opponentPiece) return true;
+	else return false;
 };
