@@ -28,20 +28,14 @@
 	button {
 		background-color: var(--primary);
 		border: none;
-		border-radius: 5px;
 		padding: 1rem;
 		padding-inline: 4rem;
 		font-size: 1rem;
 		font-style: bold;
-		color: var(--secondary);
 	}
 	button:hover {
 		background-color: var(--secondary);
 		color: var(--primary);
-		cursor: pointer;
 		transition: 2ms;
-	}
-	p {
-		color: var(--primary);
 	}
 </style>

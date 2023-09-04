@@ -28,10 +28,9 @@
 
 <style>
 	.detailWrap {
-		background-color: white;
+		background-color: var(--secondary);
 		border: none;
 		width: 40rem;
-		color: black;
 		padding: 2rem;
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 	}
@@ -42,7 +41,7 @@
 	}
 	input {
 		width: 18rem;
-		border: solid darkgrey 1px;
+		border: solid var(--tertiary) 1px;
 		height: 1.6rem;
 		margin: 0;
 	}
@@ -52,7 +51,7 @@
 	.userPic {
 		height: 8rem;
 		width: 8rem;
-		background-color: white;
+		background-color: var(--secondary);
 		box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 	}
 </style>

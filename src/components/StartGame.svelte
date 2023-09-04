@@ -78,7 +78,6 @@
 
 <style>
 	* {
-		color: var(--primary);
 		margin: 0;
 	}
 	.modalContainer {
@@ -113,9 +112,7 @@
 	p {
 		margin: 2rem;
 	}
-	.copyBtn {
-		margin: 0;
-	}
+
 	.startBtn {
 		background-color: var(--secondary);
 		color: var(--primary);

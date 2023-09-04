@@ -47,7 +47,6 @@
 		border-bottom: solid 1px var(--primary);
 		display: flex;
 		flex-direction: row;
-		color: var(--primary);
 		padding-left: 3rem;
 	}
 	p {
@@ -66,7 +65,7 @@
 
 	/* Handle */
 	::-webkit-scrollbar-thumb {
-		background: var(--darkSquare);
+		background: var(--primary);
 		-webkit-border-radius: 10px;
 		border-radius: 10px;
 	}

@@ -33,7 +33,7 @@
 		justify-content: center;
 		padding: 3rem;
 		position: relative;
-		background: white;
+		background: var(--secondary);
 		/**linear-gradient(to right, var(--lightSquare), rgb(165, 141, 103));**/
 	}
 	.grid {

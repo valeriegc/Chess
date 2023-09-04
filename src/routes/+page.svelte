@@ -158,7 +158,6 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		color: var(--primary);
 		margin: auto;
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 	}
@@ -183,7 +182,6 @@
 		border: var(--tertiary) 1px solid;
 		height: 2.5rem;
 		background-color: transparent;
-		color: var(--primary);
 		font-size: large;
 		padding-inline: 0.5rem;
 	}
@@ -199,10 +197,8 @@
 		height: 2.75rem;
 		border: none;
 		background-color: var(--primary);
-		cursor: pointer;
 		font-size: 1.25rem;
 		font-weight: 900;
-		color: var(--secondary);
 	}
 	button:hover {
 		transition-duration: 0.5;
@@ -220,7 +216,6 @@
 		padding: 0.5rem;
 	}
 	a {
-		color: var(--primary);
 		font-weight: bold;
 		font-size: large;
 		text-decoration: none;

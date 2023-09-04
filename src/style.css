@@ -1,6 +1,12 @@
 * {
 	box-sizing: border-box;
-	font-family: "Crimson text"
+	font-family: "Crimson text";
+	color: var(--primary)
+}
+
+button {
+	color: var(--secondary);
+	cursor:pointer;
 }
 
 :root {
@@ -13,6 +19,8 @@
 	--tertiary: darkgray;
 	--modalBg: rgba(0, 0, 0, 0.582);
 }
+
+
 
 
 
