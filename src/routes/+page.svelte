@@ -8,7 +8,7 @@
 		signInWithPopup,
 		browserSessionPersistence
 	} from 'firebase/auth';
-	import { doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+	import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 	let createAccount = false;
 	let email = '';
@@ -109,6 +109,10 @@
 			{#if form?.detailsMissing}
 				<p style="color:gray">Please fill in all the fields</p>
 			{/if}
+			{#if form?.passwordError}
+				<p style="color:red; width:18rem;">{form?.passwordError}</p>
+			{/if}
+
 			<button
 				on:click={() => (createAccount ? '' : regularSignIn())}
 				type={createAccount ? 'submit' : 'button'}>Submit</button

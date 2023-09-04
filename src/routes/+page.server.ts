@@ -3,6 +3,7 @@ import { db } from '$lib/firebase/firebase.js';
 import { adminAuth } from '$lib/server/admin.js';
 import { fail } from '@sveltejs/kit';
 import { doc, setDoc } from 'firebase/firestore';
+import { passwordInvalid } from '../global.js';
 
 export const actions = {
 	default: async ({ request }) => {
@@ -13,6 +14,10 @@ export const actions = {
 
 		if (!email || !password || !confirmPassword) {
 			return fail(400, { detailsMissing: true });
+		}
+		const invalidPw = passwordInvalid(password);
+		if (invalidPw) {
+			return fail(400, { passwordError: invalidPw });
 		}
 		adminAuth
 			.createUser({
