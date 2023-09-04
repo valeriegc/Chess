@@ -81,7 +81,25 @@
 				},
 				body: JSON.stringify({ idToken })
 			});
-
+			if (user) {
+				const uid = user.uid;
+				const userRef = doc(db, 'users', uid);
+				const userDoc = await getDoc(userRef);
+				if (userDoc.exists()) {
+					const userDetails = await getDoc(userRef);
+					const userData = userDetails.data();
+					if (userData) {
+						$userStore = {
+							email: userData.email,
+							picture: userData.picture,
+							theme: userData.theme,
+							lost: userData.lost,
+							won: userData.won,
+							played: userData.played
+						};
+					}
+				}
+			}
 			goto('/profile');
 		} catch (error) {
 			//TO DO: Find a correct error type
