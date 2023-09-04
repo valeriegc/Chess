@@ -79,9 +79,11 @@ export const numbers = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 export const passwordInvalid = (password: string) => {
 	let errors = [];
 	let specialCh = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+	let hasUpper = /[A-Z]/.test(password);
+	let hasLower = /[a-z]/.test(password);
+
 	if (password.length < 8) errors.push('be minimum 8 characters long');
-	if (!/A-Z/.test(password) || !/a-z/.test(password))
-		errors.push('contain both uppercase and lowercase letters');
+	if (!hasUpper || !hasLower) errors.push('contain both uppercase and lowercase letters');
 	if (!specialCh.test(password)) errors.push('contain at least 1 special character');
 	if (errors.length == 0) return false;
 	else if (errors.length == 1) return 'The password must ' + errors[0] + '.';

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { auth, db } from '$lib/firebase/firebase';
 	import {
@@ -87,7 +88,7 @@
 <div class="pageWrap">
 	<div class="loginWrap">
 		<p class="login" style="padding-bottom:1rem">Log in or create an account.</p>
-		<form method="POST">
+		<form method="POST" use:enhance>
 			<label>
 				<p class={email ? 'filling' : 'notFilled'}>Email</p>
 				<input name="email" type="email" placeholder="Email" bind:value={email} />
