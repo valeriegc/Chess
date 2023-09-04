@@ -76,45 +76,18 @@
 
 	const updateSelection = (newSquare: number) => {
 		if (invalidSelection(boardArr, newSquare, turn)) return;
-
-		if (checked) {
-			selectedSquare = newSquare;
-			selectedPiece = boardArr[selectedSquare].piece!; // FIX
-			allAllowedMoves = pieceCheck(selectedPiece!, selectedSquare, boardArr, turn)!;
-			allowedMoves = allAllowedMoves.filter((n: number) => {
-				return moveAllowedWhileCheck(
-					boardArr,
-					n,
-					selectedSquare,
-					kingLocation,
-					selectedPiece!,
-					turn
-				);
-			});
-			if (kingCheckMate({ type: 'king', color: turn }, kingLocation, boardArr)) {
-				alert('Game over king is check mate');
-			}
-		} else {
-			selectedSquare = newSquare;
-			selectedPiece = boardArr[selectedSquare].piece!;
-			let initialAllowed = pieceCheck(
-				boardArr[selectedSquare].piece!,
-				selectedSquare,
-				boardArr,
-				turn
-			)!;
-			kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
-			allowedMoves = initialAllowed.filter((n: number) => {
-				return moveAllowedWhileCheck(
-					boardArr,
-					n,
-					selectedSquare,
-					kingLocation,
-					selectedPiece!,
-					turn
-				);
-			});
-		}
+		selectedSquare = newSquare;
+		selectedPiece = boardArr[selectedSquare].piece!;
+		let initialAllowed = pieceCheck(
+			boardArr[selectedSquare].piece!,
+			selectedSquare,
+			boardArr,
+			turn
+		)!;
+		kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
+		allowedMoves = initialAllowed.filter((n: number) => {
+			return moveAllowedWhileCheck(boardArr, n, selectedSquare, kingLocation, selectedPiece!, turn);
+		});
 	};
 
 	const addMoves = (previouspos: number, newpos: number, piece: Piece) => {
