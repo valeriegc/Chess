@@ -8,8 +8,7 @@ import { row } from '../global';
 
 export const kingChecked = (board: Square[], king: Piece, kingLocation: number) => {
 	const opponentColor = king.color == 'black' ? 'white' : 'black';
-	let ownColor = king.color;
-
+	const ownColor = king.color;
 	let isKingChecked = false;
 
 	const checkForOpponent = (threatArr: number[], piece: Piece) => {
@@ -37,7 +36,7 @@ export const kingChecked = (board: Square[], king: Piece, kingLocation: number) 
 	const queenThreat = bishopThreat.concat(towerThreat);
 	checkForOpponent(queenThreat, { type: 'queen', color: opponentColor });
 	return isKingChecked;
-}; //3MNGFY2D9QFA5
+};
 
 export const kingCheckMate = (king: Piece, index: number, board: Square[]) => {
 	let remainingKingMoves = [];

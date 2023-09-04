@@ -94,3 +94,28 @@ export const passwordInvalid = (password: string) => {
 export const emailInvalid = (email: string) => {
 	return false;
 };
+
+export interface FillSquare {
+	piece: Piece;
+	square: number;
+}
+
+export const darkSquares = [
+	1, 3, 5, 7, 8, 10, 12, 14, 17, 19, 21, 23, 24, 26, 28, 30, 33, 35, 37, 39, 40, 42, 44, 46, 49, 51,
+	53, 55, 56, 58, 60, 62, 64
+];
+
+export const getCastleLocations = (oldTowerLoc: number, oldKingLoc: number) => {
+	let newKingLoc;
+	let newTowerLoc;
+	const castleToRight = oldTowerLoc > oldKingLoc;
+
+	if (castleToRight) {
+		newKingLoc = oldTowerLoc - 1;
+		newTowerLoc = oldTowerLoc - 2;
+	} else {
+		newKingLoc = oldTowerLoc + 1;
+		newTowerLoc = oldTowerLoc + 2;
+	}
+	return { tower: newTowerLoc, king: newKingLoc };
+};

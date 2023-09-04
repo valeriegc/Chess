@@ -15,7 +15,6 @@
 			$gameId = 'NoIdYet';
 			$player = 'black';
 		}
-		console.log($player);
 	});
 </script>
 

@@ -31,8 +31,8 @@ export const getPiececomponent = (piece: Piece) => {
 			king: KingB
 		}
 	};
-	let currentColor = piece.color;
-	let currentType = piece.type;
+	let color = piece.color;
+	let type = piece.type;
 
-	return pieceTree[currentColor][currentType];
+	return pieceTree[color][type];
 };
