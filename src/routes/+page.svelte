@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { auth, db } from '$lib/firebase/firebase';
 	import {
@@ -8,7 +9,7 @@
 		signInWithPopup,
 		browserSessionPersistence
 	} from 'firebase/auth';
-	import { doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+	import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 	let createAccount = false;
 	let email = '';
@@ -87,7 +88,7 @@
 <div class="pageWrap">
 	<div class="loginWrap">
 		<p class="login" style="padding-bottom:1rem">Log in or create an account.</p>
-		<form method="POST">
+		<form method="POST" use:enhance>
 			<label>
 				<p class={email ? 'filling' : 'notFilled'}>Email</p>
 				<input name="email" type="email" placeholder="Email" bind:value={email} />
@@ -109,6 +110,10 @@
 			{#if form?.detailsMissing}
 				<p style="color:gray">Please fill in all the fields</p>
 			{/if}
+			{#if form?.passwordError}
+				<p style="color:red; width:18rem;">{form?.passwordError}</p>
+			{/if}
+
 			<button
 				on:click={() => (createAccount ? '' : regularSignIn())}
 				type={createAccount ? 'submit' : 'button'}>Submit</button
