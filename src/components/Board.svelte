@@ -265,7 +265,7 @@
 		height: 550px;
 		width: 550px;
 		display: grid;
-		border: solid lightgray 1px;
+		border: solid var(--tertiary) 1px;
 		grid-template-columns: repeat(8, 1fr);
 		grid-template-rows: repeat(8, 1fr);
 	}

@@ -49,8 +49,8 @@
 		cursor: pointer;
 		padding: 0.5rem;
 		border: none;
-		background-color: black;
-		color: white;
+		background-color: var(--primary);
+		color: var(--secondary);
 		font-weight: bold;
 	}
 </style>

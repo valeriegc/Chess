@@ -147,7 +147,7 @@
 		margin: 0;
 	}
 	.pageWrap {
-		background: white;
+		background: var(--secondary);
 		min-height: 100vh;
 		display: flex;
 	}
@@ -158,7 +158,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		color: black;
+		color: var(--primary);
 		margin: auto;
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 	}
@@ -175,20 +175,20 @@
 
 	input:focus-within,
 	input:hover {
-		border: 2px black solid;
+		border: 2px var(--primary) solid;
 	}
 
 	input {
 		width: 18rem;
-		border: darkgray 1px solid;
+		border: var(--tertiary) 1px solid;
 		height: 2.5rem;
 		background-color: transparent;
-		color: black;
+		color: var(--primary);
 		font-size: large;
 		padding-inline: 0.5rem;
 	}
 	input::placeholder {
-		color: darkgrey;
+		color: var(--tertiary);
 	}
 	input:focus {
 		outline: none;
@@ -198,29 +198,29 @@
 		margin-bottom: 1rem;
 		height: 2.75rem;
 		border: none;
-		background-color: black;
+		background-color: var(--primary);
 		cursor: pointer;
 		font-size: 1.25rem;
 		font-weight: 900;
-		color: white;
+		color: var(--secondary);
 	}
 	button:hover {
 		transition-duration: 0.5;
-		background-color: white;
-		border: black 2px solid;
-		color: black;
+		background-color: var(--secondary);
+		border: var(--primary) 2px solid;
+		color: var(--primary);
 	}
 	.signInBtn {
 		margin-top: 0.75rem;
-		background: white;
-		border: black solid 1px;
-		color: black;
+		background: var(--secondary);
+		border: var(--primary) solid 1px;
+		color: var(--primary);
 		display: flex;
 		justify-content: center;
 		padding: 0.5rem;
 	}
 	a {
-		color: black;
+		color: var(--primary);
 		font-weight: bold;
 		font-size: large;
 		text-decoration: none;
@@ -234,18 +234,18 @@
 
 	.choices:hover {
 		cursor: pointer;
-		color: darkgray;
+		color: var(--tertiary);
 	}
 	.orText {
 		font-size: 1.25rem;
-		background-color: white;
+		background-color: var(--secondary);
 		padding-inline: 0.75rem;
 	}
 	.orTextLine {
 		height: 1px;
 		width: 18rem;
 		overflow: visible;
-		background-color: black;
+		background-color: var(--primary);
 		display: flex;
 		margin: 1.5rem;
 		justify-content: center;

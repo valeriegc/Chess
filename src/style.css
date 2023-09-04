@@ -8,6 +8,10 @@
 	--lightSquare: white;
 	--selectedSquare: lightblue;
 	--possibleMove: lightgreen;
+	--primary: black;
+	--secondary: white; 
+	--tertiary: darkgray;
+	--modalBg: rgba(0, 0, 0, 0.582);
 }
 
 

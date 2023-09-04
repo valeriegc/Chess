@@ -78,7 +78,7 @@
 
 <style>
 	* {
-		color: black;
+		color: var(--primary);
 		margin: 0;
 	}
 	.modalContainer {
@@ -87,14 +87,14 @@
 		justify-content: center;
 		height: 100%;
 		width: 100%;
-		background-color: rgba(0, 0, 0, 0.582);
+		background-color: var(--modalBg);
 		transform: scale(1);
 		z-index: 100;
 	}
 	.modalWrap {
 		width: 38em;
 		padding: 2.5rem;
-		background-color: whitesmoke;
+		background-color: var(--secondary);
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
 			rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 		margin: auto;
@@ -117,9 +117,9 @@
 		margin: 0;
 	}
 	.startBtn {
-		background-color: white;
-		color: black;
-		border: 1px solid black;
+		background-color: var(--secondary);
+		color: var(--primary);
+		border: 1px solid var(--primary);
 		margin-left: 1rem;
 	}
 	.choices {
@@ -131,22 +131,22 @@
 		margin-right: 0;
 		padding: 0.2rem;
 		width: 16rem;
-		border: solid darkgray 1px;
+		border: solid var(--tertiary) 1px;
 		padding-inline: 1rem;
 	}
 	button {
 		padding: 0.2rem;
 		padding-inline: 0.5rem;
-		background-color: black;
+		background-color: var(--primary);
 		border: 1px solid transparent;
-		color: white;
+		color: var(--secondary);
 		cursor: pointer;
 		border-radius: 0;
 	}
 	button:hover {
 		transition: 3000;
-		color: black;
-		border: 1px solid black;
-		background-color: white;
+		color: var(--primary);
+		border: 1px solid var(--primary);
+		background-color: var(--secondary);
 	}
 </style>
