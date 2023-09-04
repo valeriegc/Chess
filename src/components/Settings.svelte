@@ -4,10 +4,25 @@
 	import { doc, updateDoc } from 'firebase/firestore';
 
 	const changeTheme = async (newTheme: string) => {
-		const docRef = doc(db, 'users', $userStore.uid);
-		await updateDoc(docRef, {
-			theme: newTheme
-		});
+		if ($userStore) {
+			const docRef = doc(db, 'users', userStore.uid);
+			$userStore.theme = newTheme;
+			await updateDoc(docRef, {
+				theme: newTheme
+			});
+		}
+		switch (newTheme) {
+			case 'bw':
+				document.documentElement.style.setProperty('--primary', '0,0,0');
+				document.documentElement.style.setProperty('--secondary', '255,255,255');
+				break;
+			case 'traditional':
+				document.documentElement.style.setProperty('--primary', '159, 114, 64');
+				document.documentElement.style.setProperty('--secondary', '249, 223, 175');
+			case 'darkmode':
+				document.documentElement.style.setProperty('--primary', '255,255,255');
+				document.documentElement.style.setProperty('--secondary', '0,0,0');
+		}
 	};
 </script>
 
@@ -58,7 +73,7 @@
 	.themeIndicator {
 		height: 8rem;
 		width: 8rem;
-		background-color: white;
+		background-color: var(--secondary);
 		font-size: 1.25rem;
 		text-align: center;
 		cursor: pointer;

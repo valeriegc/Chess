@@ -14,10 +14,8 @@
 	let turn: 'black' | 'white' = 'white';
 
 	$: black = $player == 'black';
-	$: console.log(black);
 	let selectedSquare = -1;
 	let allowedMoves: number[] = [];
-	$: console.log(turn);
 	let allAllowedMoves;
 	let selectedPiece: Piece;
 	let checked = false;
