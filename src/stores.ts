@@ -25,6 +25,7 @@ export interface User {
 	lost: number;
 	won: number;
 	played: number;
+	uid: string;
 }
 
 export const moves = writable<Move[]>([]);

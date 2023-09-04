@@ -1,26 +1,14 @@
-<script>
-	import { theme } from '../stores';
+<script lang="ts">
+	import { db } from '$lib/firebase/firebase';
+	import { userStore } from '../stores';
+	import { doc, updateDoc } from 'firebase/firestore';
 
-	let bwSelect = false;
-	let traditionalSelect = false;
-	let darkModeSelect = false;
-
-	$: switch ($theme) {
-		case 'bw':
-			bwSelect = true;
-			traditionalSelect = false;
-			darkModeSelect = false;
-			break;
-		case 'traditional':
-			traditionalSelect = true;
-			bwSelect = false;
-			darkModeSelect = false;
-			break;
-		case 'darkmode':
-			darkModeSelect = true;
-			bwSelect = false;
-			traditionalSelect = false;
-	}
+	const changeTheme = async (newTheme: string) => {
+		const docRef = doc(db, 'users', $userStore.uid);
+		await updateDoc(docRef, {
+			theme: newTheme
+		});
+	};
 </script>
 
 <div class="settingWrap">
@@ -29,24 +17,26 @@
 		<div
 			class="themeIndicator"
 			id="bw"
-			style="border:{bwSelect ? 'solid black 2px' : 'solid white 2px'}"
-			on:click={() => ($theme = 'bw')}
+			style="border:{$userStore?.theme == 'bw' ? 'solid black 2px' : 'solid white 2px'}"
+			on:click={() => changeTheme('bw')}
 		>
 			<p>B & W</p>
 		</div>
 		<div
 			class="themeIndicator"
 			id="traditional"
-			style="border:{traditionalSelect ? 'solid black 2px' : 'solid white 2px'}"
-			on:click={() => ($theme = 'traditional')}
+			style="border:{$userStore?.theme == 'traditional' ? 'solid black 2px' : 'solid white 2px'}"
+			on:click={() => changeTheme('traditional')}
 		>
 			<p>Traditional</p>
 		</div>
 		<div
 			class="themeIndicator"
 			id="darkmode"
-			style="border:{darkModeSelect ? 'solid black 2px' : 'solid white 2px'}"
-			on:click={() => (($theme = 'darkmode'), ($theme = $theme))}
+			style="border:{$userStore?.theme == 'darkmode'
+				? 'solid black 2px'
+				: 'solid white 2px'};color:white;"
+			on:click={() => changeTheme('darkmode')}
 		>
 			<p>Darkmode</p>
 		</div>
@@ -68,7 +58,7 @@
 	.themeIndicator {
 		height: 8rem;
 		width: 8rem;
-		background-color: var(--secondary);
+		background-color: white;
 		font-size: 1.25rem;
 		text-align: center;
 		cursor: pointer;

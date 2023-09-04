@@ -52,7 +52,8 @@
 						theme: userData.theme,
 						lost: userData.lost,
 						won: userData.won,
-						played: userData.played
+						played: userData.played,
+						uid: uid
 					};
 				}
 			} else {
@@ -62,7 +63,8 @@
 					picture: '',
 					played: 0,
 					lost: 0,
-					won: 0
+					won: 0,
+					uid: uid
 				});
 			}
 			goto('/profile');
