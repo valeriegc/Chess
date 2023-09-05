@@ -3,7 +3,7 @@
 	--lightSquare: white;
 	--selectedSquare: lightblue;
 	--possibleMove: lightgreen;
-	--primary: black;
+	--primary:  rgba(33, 39, 52, 0.719);
 	--secondary: white; 
 	--tertiary: darkgray;
 	--modalBg: rgba(0, 0, 0, 0.582);
@@ -14,23 +14,6 @@
 	font-family: "Titillium web";
 	color: var(--primary);
 }
-
-
-[data-theme="darkmode"]{
-	--primary: rgb(255,255,255);
-	--secondary: rgb(0,0,0);
-}
-
-[data-theme="traditional"]{
-	--primary: rgb(159, 114, 64);
-	--secondary: rgb(249, 223, 175);
-}
-
-[data-theme="bw"]{
-	--primary: rgb(0,0,0);
-	--secondary: rgb(255,255,255);
-}
-
 button {
 	color: var(--secondary);
 	background-color: var(--primary);

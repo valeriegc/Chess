@@ -3,7 +3,6 @@
 	import { signOut } from 'firebase/auth';
 	import Details from '../../components/Details.svelte';
 	import GameDetails from '../../components/GameDetails.svelte';
-	import Settings from '../../components/Settings.svelte';
 	import { goto } from '$app/navigation';
 
 	const signOutSSR = async () => {
@@ -20,7 +19,6 @@
 	<div class="grid">
 		<Details />
 		<GameDetails />
-		<Settings />
 	</div>
 </div>
 

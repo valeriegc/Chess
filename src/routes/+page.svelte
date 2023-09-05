@@ -123,46 +123,49 @@
 <div class="pageWrap">
 	<div class="styleHeader">CHESS</div>
 	<img class="bgFront" src="centralPieces.png" />
-	<form method="POST" use:enhance>
-		<input name="email" type="email" placeholder="Email" bind:value={email} />
-		<input name="password" type="password" placeholder="Password" bind:value={password} />
-		{#if createAccount}
-			<input name="confirmPassword" type="password" placeholder="Confirm Password" />
-		{/if}
-
-		{#if loginError}
-			<p style="color:gray">{loginError}</p>
-		{/if}
-		{#if form?.detailsMissing}
-			<p style="color:red">Please fill in all the fields</p>
-		{/if}
-		{#if form?.passwordError}
-			<p style="color:red; width:18rem;">{form?.passwordError}</p>
-		{/if}
-		{#if form?.passwordMismatch}
-			<p style="color:red; width:18rem;">The password and confirmation password do not match.</p>
-		{/if}
-
-		<button
-			on:click={() => (createAccount ? '' : regularSignIn())}
-			type={createAccount ? 'submit' : 'button'}>Log in</button
-		>
-		<button on:click={singInWithGoogle} class="signInBtn" type="button"
-			><div style="margin-right:1rem">
-				<img src="googleLogo.png" width="20" height="20" alt="logo of google" />
+	<div class="formBox">
+		<div class="formFrame">
+			<div class="formChoices">
+				<button class="choiceBtn" on:click={() => (createAccount = false)}>Log in</button>
+				<button class="choiceBtn" on:click={() => (createAccount = true)}>Sign up</button>
 			</div>
-			Sign {createAccount ? 'up' : 'in'} with Google</button
-		>
-		<p
-			class="choices"
-			style="padding:0.5rem"
-			on:click={() => (createAccount ? (createAccount = false) : (createAccount = true))}
-		>
-			{createAccount ? 'Back to login' : 'Create an account'}
-		</p>
-		<p class="choices">Forgot your password?</p>
-	</form>
+			<form method="POST" use:enhance>
+				<input name="email" type="email" placeholder="Email" bind:value={email} />
+				<input name="password" type="password" placeholder="Password" bind:value={password} />
+				{#if createAccount}
+					<input name="confirmPassword" type="password" placeholder="Confirm Password" />
+				{/if}
 
+				{#if loginError}
+					<p style="color:gray">{loginError}</p>
+				{/if}
+				{#if form?.detailsMissing}
+					<p style="color:red">Please fill in all the fields</p>
+				{/if}
+				{#if form?.passwordError}
+					<p style="color:red; width:18rem;">{form?.passwordError}</p>
+				{/if}
+				{#if form?.passwordMismatch}
+					<p style="color:red; width:18rem;">
+						The password and confirmation password do not match.
+					</p>
+				{/if}
+
+				<button
+					on:click={() => (createAccount ? '' : regularSignIn())}
+					type={createAccount ? 'submit' : 'button'}
+					>{createAccount ? ' Sign up' : 'Login'}
+				</button>
+				<button on:click={singInWithGoogle} class="signInBtn" type="button"
+					><div style="margin-right:1rem">
+						<img src="googleLogo.png" width="20" height="20" alt="logo of google" />
+					</div>
+					{createAccount ? ' Sign up' : 'Login'} with Google</button
+				>
+				<p class="choices">Forgot your password?</p>
+			</form>
+		</div>
+	</div>
 	<div />
 </div>
 
@@ -173,12 +176,12 @@
 	.styleHeader {
 		position: absolute;
 		font-size: 10rem;
-		left: 15rem;
-		top: 2rem;
+		left: 18rem;
+		top: 18rem;
 		color: rgba(33, 39, 52, 0.719);
 	}
 	.pageWrap {
-		background: whitesmoke;
+		background: white;
 		min-height: 100vh;
 		display: flex;
 		flex-direction: row;
@@ -186,31 +189,50 @@
 	}
 
 	.bgFront {
-		margin-top: 16rem;
-		margin-left: 8rem;
+		margin-left: 5rem;
+		margin-top: 7rem;
 		height: 20rem;
 		width: 50%;
 	}
-
+	.formBox {
+		width: 26rem;
+		display: flex;
+		flex-direction: column;
+		background-color: whitesmoke;
+		padding: 1rem;
+		margin-left: 2rem;
+	}
+	.formFrame {
+		margin: auto;
+		width: 90%;
+	}
+	.formChoices {
+		margin: 1rem;
+		margin-left: 0;
+	}
+	.choiceBtn {
+		font-weight: normal;
+		font-size: medium;
+		margin: 0;
+		background-color: white;
+		color: rgba(33, 39, 52, 0.719);
+	}
 	form {
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
-		margin: auto;
-		margin-right: 4rem;
 	}
 
 	input:focus-within,
 	input:hover {
-		border: 2px var(--primary) solid;
+		border: 1px var(--primary) solid;
 	}
 
 	input {
-		width: 100%;
-		height: 2.5rem;
-		border: solid 1px rgba(33, 39, 52, 0.719);
+		height: 2rem;
+		border: solid 0.5px rgba(33, 39, 52, 0.719);
 		color: rgba(33, 39, 52, 0.719);
-		font-size: large;
+		font-size: medium;
 		padding-inline: 0.5rem;
 		background-color: transparent;
 	}
@@ -225,17 +247,16 @@
 		border: none;
 		background-color: var(--primary);
 		font-size: 1.25rem;
-		font-weight: 900;
+		font-weight: normal;
 	}
 	button:hover {
 		transition-duration: 0.5;
 		background-color: var(--secondary);
-		border: var(--primary) 2px solid;
+		border: var(--primary) 1px solid;
 		color: var(--primary);
 	}
 	.signInBtn {
 		background: var(--secondary);
-		border: var(--primary) solid 1px;
 		color: var(--primary);
 		display: flex;
 		justify-content: center;
@@ -243,10 +264,10 @@
 		padding: 0.5rem;
 	}
 	.choices {
-		text-align: center;
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+		font-size: small;
 	}
 
 	.choices:hover {
