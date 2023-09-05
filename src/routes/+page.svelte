@@ -11,7 +11,6 @@
 	} from 'firebase/auth';
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
 	import { userStore } from '../stores.js';
-	import { onMount } from 'svelte';
 
 	let createAccount = false;
 	let email = '';
@@ -20,10 +19,6 @@
 	let loginError = false;
 	export let form;
 	export let success: boolean;
-
-	onMount(() => {
-		document.documentElement.dataset.theme = 'traditional';
-	});
 
 	$: if (success) {
 		goto('/profile');
@@ -126,93 +121,83 @@
 </script>
 
 <div class="pageWrap">
-	<div class="loginWrap">
-		<p class="login" style="padding-bottom:1rem">Log in or create an account.</p>
-		<form method="POST" use:enhance>
-			<label>
-				<p class={email ? 'filling' : 'notFilled'}>Email</p>
-				<input name="email" type="email" placeholder="Email" bind:value={email} />
-			</label>
-			<label>
-				<p class={password ? 'filling' : 'notFilled'}>Password</p>
-				<input name="password" type="password" placeholder="Password" bind:value={password} />
-			</label>
-			{#if createAccount}
-				<label>
-					<p class={confirmationPassword ? 'filling' : 'notFilled'}>Confirm Password</p>
-					<input name="confirmPassword" type="password" placeholder="Confirm Password" />
-				</label>
-			{/if}
+	<div class="styleHeader">CHESS</div>
+	<img class="bgFront" src="centralPieces.png" />
+	<form method="POST" use:enhance>
+		<input name="email" type="email" placeholder="Email" bind:value={email} />
+		<input name="password" type="password" placeholder="Password" bind:value={password} />
+		{#if createAccount}
+			<input name="confirmPassword" type="password" placeholder="Confirm Password" />
+		{/if}
 
-			{#if loginError}
-				<p style="color:gray">{loginError}</p>
-			{/if}
-			{#if form?.detailsMissing}
-				<p style="color:red">Please fill in all the fields</p>
-			{/if}
-			{#if form?.passwordError}
-				<p style="color:red; width:18rem;">{form?.passwordError}</p>
-			{/if}
-			{#if form?.passwordMismatch}
-				<p style="color:red; width:18rem;">The password and confirmation password do not match.</p>
-			{/if}
+		{#if loginError}
+			<p style="color:gray">{loginError}</p>
+		{/if}
+		{#if form?.detailsMissing}
+			<p style="color:red">Please fill in all the fields</p>
+		{/if}
+		{#if form?.passwordError}
+			<p style="color:red; width:18rem;">{form?.passwordError}</p>
+		{/if}
+		{#if form?.passwordMismatch}
+			<p style="color:red; width:18rem;">The password and confirmation password do not match.</p>
+		{/if}
 
-			<button
-				on:click={() => (createAccount ? '' : regularSignIn())}
-				type={createAccount ? 'submit' : 'button'}>Submit</button
-			>
-		</form>
-		<div class="orTextLine">
-			<p class="orText">OR</p>
-		</div>
-		<button on:click={singInWithGoogle} class="signInBtn"
+		<button
+			on:click={() => (createAccount ? '' : regularSignIn())}
+			type={createAccount ? 'submit' : 'button'}>Log in</button
+		>
+		<button on:click={singInWithGoogle} class="signInBtn" type="button"
 			><div style="margin-right:1rem">
 				<img src="googleLogo.png" width="20" height="20" alt="logo of google" />
 			</div>
 			Sign {createAccount ? 'up' : 'in'} with Google</button
 		>
-		<div>
-			<a class="choices" href="/game">Continue without registering</a>
-			<p
-				class="choices"
-				style="padding:0.5rem"
-				on:click={() => (createAccount ? (createAccount = false) : (createAccount = true))}
-			>
-				{createAccount ? 'Back to login' : 'Create an account'}
-			</p>
-			<p class="choices">Forgot your password?</p>
-		</div>
-	</div>
+		<p
+			class="choices"
+			style="padding:0.5rem"
+			on:click={() => (createAccount ? (createAccount = false) : (createAccount = true))}
+		>
+			{createAccount ? 'Back to login' : 'Create an account'}
+		</p>
+		<p class="choices">Forgot your password?</p>
+	</form>
+
+	<div />
 </div>
 
 <style>
 	* {
 		margin: 0;
 	}
+	.styleHeader {
+		position: absolute;
+		font-size: 10rem;
+		left: 15rem;
+		top: 2rem;
+		color: rgba(33, 39, 52, 0.719);
+	}
 	.pageWrap {
-		background: var(--secondary);
+		background: whitesmoke;
 		min-height: 100vh;
 		display: flex;
+		flex-direction: row;
+		position: relative;
 	}
-	.loginWrap {
-		background: transparent;
-		padding: 2rem;
-		padding-inline: 6rem;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin: auto;
-		box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+
+	.bgFront {
+		margin-top: 16rem;
+		margin-left: 8rem;
+		height: 20rem;
+		width: 50%;
 	}
-	.login {
-		font-size: 3rem;
-		font-weight: bold;
-	}
+
 	form {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
-		margin: 1rem;
+		gap: 0.75rem;
+		margin: auto;
+		margin-right: 4rem;
 	}
 
 	input:focus-within,
@@ -221,22 +206,21 @@
 	}
 
 	input {
-		width: 18rem;
-		border: var(--tertiary) 1px solid;
+		width: 100%;
 		height: 2.5rem;
-		background-color: transparent;
+		border: solid 1px rgba(33, 39, 52, 0.719);
+		color: rgba(33, 39, 52, 0.719);
 		font-size: large;
 		padding-inline: 0.5rem;
+		background-color: transparent;
 	}
 	input::placeholder {
-		color: var(--tertiary);
+		color: rgba(33, 39, 52, 0.719);
 	}
 	input:focus {
 		outline: none;
 	}
 	button {
-		width: 18rem;
-		margin-bottom: 1rem;
 		height: 2.75rem;
 		border: none;
 		background-color: var(--primary);
@@ -250,18 +234,13 @@
 		color: var(--primary);
 	}
 	.signInBtn {
-		margin-top: 0.75rem;
 		background: var(--secondary);
 		border: var(--primary) solid 1px;
 		color: var(--primary);
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		padding: 0.5rem;
-	}
-	a {
-		font-weight: bold;
-		font-size: large;
-		text-decoration: none;
 	}
 	.choices {
 		text-align: center;
@@ -273,20 +252,5 @@
 	.choices:hover {
 		cursor: pointer;
 		color: var(--tertiary);
-	}
-	.orText {
-		font-size: 1.25rem;
-		background-color: var(--secondary);
-		padding-inline: 0.75rem;
-	}
-	.orTextLine {
-		height: 1px;
-		width: 18rem;
-		overflow: visible;
-		background-color: var(--primary);
-		display: flex;
-		margin: 1.5rem;
-		justify-content: center;
-		align-items: center;
 	}
 </style>
