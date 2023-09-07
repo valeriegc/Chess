@@ -38,6 +38,8 @@
 		width: 350px;
 		overflow: hidden;
 		margin-left: 2rem;
+		background-color: rgba(135, 136, 136, 0.541);
+		border-radius: 5px;
 	}
 	.moveBox {
 		width: 350px;

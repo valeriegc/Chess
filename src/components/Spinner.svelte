@@ -8,12 +8,15 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		justify-content: center;
 		gap: 2.5rem;
+		font-style: italic;
+		margin: 1rem;
 	}
 	.spin {
-		height: 20px;
-		width: 20px;
-		border-radius: 20px;
+		height: 15px;
+		width: 15px;
+		border-radius: 15px;
 		background-color: whitesmoke;
 		animation: spin 1s infinite alternate;
 	}
