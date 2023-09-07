@@ -16,20 +16,23 @@
 <style>
 	.outerAuthWrap {
 		display: flex;
-		background: linear-gradient(to right, var(--lightSquare), rgb(165, 141, 103));
+		background: black;
+		background-image: url('greyBG.jpg');
 		height: 100vh;
 	}
 	.innerAuthWrap {
 		margin: auto;
 		text-align: center;
-		background-color: var(--secondary);
+		background-color: rgba(245, 245, 245, 0.729);
 		padding: 2.5rem;
-		border-radius: 30px;
+		border-radius: 10px;
 	}
 	p {
 		font-size: 1.5rem;
+		color: black;
 	}
 	a {
-		text-decoration: none;
+		color: black;
+		font-size: large;
 	}
 </style>
