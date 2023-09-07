@@ -1,5 +1,15 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { auth } from '$lib/firebase/firebase';
+	import { signOut } from 'firebase/auth';
+
+	const signOutSSR = async () => {
+		const res = await fetch('api/signin', {
+			method: 'DELETE'
+		});
+		await signOut(auth);
+		goto('/');
+	};
 </script>
 
 <div class="selectWrap">
@@ -13,6 +23,7 @@
 		</div>
 		<p style="font-size:1.5rem;">Friends</p>
 	</div>
+	<button on:click={signOutSSR}>Sign out</button>
 </div>
 
 <style>
@@ -26,12 +37,7 @@
 		color: whitesmoke;
 	}
 	button {
-		border: none;
-		padding: 1rem;
-		padding-inline: 4rem;
-		font-size: 1rem;
-		font-style: bold;
-		background-color: rgba(55, 63, 81, 0.798);
+		background-color: rgb(75, 79, 87);
 	}
 	button:hover {
 		background-color: var(--secondary);

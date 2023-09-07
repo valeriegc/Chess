@@ -200,10 +200,10 @@
 	}
 	.header {
 		position: absolute;
-		font-size: 10rem;
+		font-size: 9rem;
 		left: 18rem;
-		top: 18rem;
-		color: rgba(245, 245, 245, 0.839);
+		top: 19rem;
+		color: rgb(245, 245, 245);
 	}
 	.mainImg {
 		margin-left: 5rem;

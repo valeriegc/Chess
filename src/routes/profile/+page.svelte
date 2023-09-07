@@ -1,21 +1,11 @@
 <script>
-	import { auth } from '$lib/firebase/firebase';
 	import { signOut } from 'firebase/auth';
 	import Details from '../../components/Details.svelte';
 	import GameDetails from '../../components/GameDetails.svelte';
 	import { goto } from '$app/navigation';
-
-	const signOutSSR = async () => {
-		const res = await fetch('api/signin', {
-			method: 'DELETE'
-		});
-		await signOut(auth);
-		goto('/');
-	};
 </script>
 
 <div class="gridWrap">
-	<button on:click={signOutSSR}>Log out</button>
 	<div class="grid">
 		<Details />
 		<GameDetails />
@@ -24,9 +14,6 @@
 </div>
 
 <style>
-	* {
-		margin: 0;
-	}
 	.gridWrap {
 		display: flex;
 		justify-content: center;
@@ -44,15 +31,5 @@
 	.themeImg {
 		width: 40rem;
 		height: 18rem;
-	}
-	button {
-		position: absolute;
-		right: 5rem;
-		cursor: pointer;
-		padding: 1rem;
-		border: none;
-		background-color: var(--primary);
-		color: var(--secondary);
-		font-weight: bold;
 	}
 </style>
