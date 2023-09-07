@@ -5,7 +5,6 @@
 	import { initPieces } from '../functions/initPieces';
 	import { gameId, gameStarted, moves } from '../stores';
 	import { goto } from '$app/navigation';
-	import KingB from '../pieces/King_B.svelte';
 	import KingW from '../pieces/King_W.svelte';
 	let url: string;
 	let confirmation = false;
@@ -59,27 +58,23 @@
 <div class="modalContainer">
 	<div class="modalWrap">
 		<div class="headerWrap">
-			<div><KingB /></div>
+			<div><KingW /></div>
 			<h2>CHESS</h2>
 			<div><KingW /></div>
 		</div>
 		<p>
-			In order to start the game, use the button below to generate a link. Copy the link and send it
-			to your opponent. Once you are done, click start and wait for your opponent.
+			In order to start the game, copy the link and send it to your opponent. Once you are done,
+			click start and wait for your opponent.
 		</p>
 		<div class="choices">
-			<button on:click={() => queryParamGenerator()}>Generate link </button>
 			<input value={url} />
-			<button class="copyBtn" on:click={() => handleCopy()}>Copy</button>
-			<button class="startBtn" on:click={() => createGame()}>Start</button>
+			<button on:click={() => handleCopy()}>Copy</button>
+			<button on:click={() => createGame()}>Start</button>
 		</div>
 	</div>
 </div>
 
 <style>
-	* {
-		margin: 0;
-	}
 	.modalContainer {
 		position: absolute;
 		display: flex;
@@ -91,59 +86,47 @@
 		z-index: 100;
 	}
 	.modalWrap {
-		width: 38em;
-		padding: 2.5rem;
-		background-color: whitesmoke;
+		margin: auto;
+		width: 38rem;
+		background-color: white;
+		padding: 2rem;
+		padding-inline: 4rem;
+		border: lightgray solid 0.5px;
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
 			rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
-		margin: auto;
+	}
+	p {
+		color: black;
+		font-size: large;
+	}
+	input {
+		border-color: black;
+		color: black;
 	}
 
 	h2 {
 		text-align: center;
+		color: black;
 	}
 	.headerWrap {
 		display: flex;
 		gap: 1.5rem;
 		align-items: center;
 		justify-content: center;
-		margin: 1rem;
-	}
-	p {
-		margin: 2rem;
-	}
-
-	.startBtn {
-		background-color: var(--secondary);
-		color: var(--primary);
-		border: 1px solid var(--primary);
-		margin-left: 1rem;
 	}
 	.choices {
 		margin-top: 1rem;
 		margin-left: 2rem;
-	}
-	input {
-		margin-left: 1rem;
-		margin-right: 0;
-		padding: 0.2rem;
-		width: 16rem;
-		border: solid var(--tertiary) 1px;
-		padding-inline: 1rem;
+		display: flex;
+		align-items: center;
 	}
 	button {
-		padding: 0.2rem;
-		padding-inline: 0.5rem;
-		background-color: var(--primary);
-		border: 1px solid transparent;
-		color: var(--secondary);
-		cursor: pointer;
-		border-radius: 0;
+		height: 2.5rem;
+		padding-inline: 1rem;
+		margin-right: 0.5rem;
+		border: solid black 1px;
 	}
-	button:hover {
-		transition: 3000;
-		color: var(--primary);
-		border: 1px solid var(--primary);
-		background-color: var(--secondary);
+	input {
+		height: 2.5rem;
 	}
 </style>
