@@ -70,6 +70,7 @@
 			<input value={url} />
 			<button on:click={() => handleCopy()}>Copy</button>
 			<button on:click={() => createGame()}>Start</button>
+			<button on:click={() => queryParamGenerator()} />
 		</div>
 	</div>
 </div>

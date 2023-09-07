@@ -1,11 +1,19 @@
 <script>
 	import { getPiececomponent } from '../functions/getPieceComponent';
-	import { moves } from '../stores';
+	import { moves, waiting } from '../stores';
+	import Spinner from './Spinner.svelte';
 </script>
 
 <div class="outerMove">
 	<div class="moveBox">
 		<h3>Moves</h3>
+		<div class="spinnerWrap">
+			{#if $waiting}
+				<Spinner />
+			{:else}
+				Your turn
+			{/if}
+		</div>
 		{#if $moves}
 			{#each $moves as move}
 				<div class="moveLine">
@@ -30,6 +38,8 @@
 		width: 350px;
 		overflow: hidden;
 		margin-left: 2rem;
+		background-color: rgba(135, 136, 136, 0.541);
+		border-radius: 5px;
 	}
 	.moveBox {
 		width: 350px;

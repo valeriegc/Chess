@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { gameId, type Piece, type Square, player, moves } from '../stores';
+	import { gameId, type Piece, type Square, player, moves, waiting } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -21,6 +21,12 @@
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
+
+	$: if (turn !== $player) {
+		$waiting = true;
+	} else {
+		$waiting = false;
+	}
 
 	$: black = $player == 'black';
 	let selectedSquare = -1;
