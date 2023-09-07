@@ -205,9 +205,8 @@
 	.boardOuterWrap {
 		display: flex;
 		flex-direction: column;
-		height: 680px;
 		width: 680px;
-		margin: auto;
+		margin-left: 3rem;
 	}
 	.boardX {
 		display: flex;
@@ -219,6 +218,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		color: whitesmoke;
 	}
 	.boardInnerWrap {
 		display: flex;
@@ -232,12 +232,12 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		color: whitesmoke;
 	}
 	.boardGrid {
 		height: 550px;
 		width: 550px;
 		display: grid;
-		border: solid var(--tertiary) 1px;
 		grid-template-columns: repeat(8, 1fr);
 		grid-template-rows: repeat(8, 1fr);
 	}

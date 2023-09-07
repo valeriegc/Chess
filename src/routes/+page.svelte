@@ -19,6 +19,7 @@
 	let loginError = false;
 	export let form;
 	export let success: boolean;
+	let showError = true;
 
 	$: if (success) {
 		goto('/profile');
@@ -121,13 +122,21 @@
 </script>
 
 <div class="pageWrap">
-	<div class="styleHeader">CHESS</div>
-	<img class="bgFront" src="centralPieces.png" />
-	<div class="formBox">
-		<div class="formFrame">
+	<div class="header">CHESS</div>
+	<img class="mainImg" src="centralPieces.png" />
+	<div class="formContainer">
+		<div class="formWrap">
 			<div class="formChoices">
-				<button class="choiceBtn" on:click={() => (createAccount = false)}>Log in</button>
-				<button class="choiceBtn" on:click={() => (createAccount = true)}>Sign up</button>
+				<button
+					class="choiceBtn"
+					style="border-bottom:{createAccount ? 'none' : 'solid 1px whitesmoke'}"
+					on:click={() => (createAccount = false)}>Log in</button
+				>
+				<button
+					class="choiceBtn"
+					on:click={() => (createAccount = true)}
+					style="border-bottom:{!createAccount ? 'none' : 'solid 1px whitesmoke'}">Sign up</button
+				>
 			</div>
 			<form method="POST" use:enhance>
 				<input name="email" type="email" placeholder="Email" bind:value={email} />
@@ -136,19 +145,29 @@
 					<input name="confirmPassword" type="password" placeholder="Confirm Password" />
 				{/if}
 
-				{#if loginError}
-					<p style="color:gray">{loginError}</p>
+				{#if loginError && showError}
+					<div class="error">
+						{loginError}
+						<div class="closeError">x</div>
+					</div>
 				{/if}
-				{#if form?.detailsMissing}
-					<p style="color:red">Please fill in all the fields</p>
+				{#if form?.detailsMissing && showError}
+					<div class="error" on:click={() => (showError = false)}>
+						Please fill in all the fields
+						<div class="closeError">x</div>
+					</div>
 				{/if}
-				{#if form?.passwordError}
-					<p style="color:red; width:18rem;">{form?.passwordError}</p>
+				{#if form?.passwordError && showError}
+					<div class="error" on:click={() => (showError = false)}>
+						{form?.passwordError}
+						<div class="closeError">x</div>
+					</div>
 				{/if}
-				{#if form?.passwordMismatch}
-					<p style="color:red; width:18rem;">
+				{#if form?.passwordMismatch && showError}
+					<div class="error" on:click={() => (showError = false)}>
 						The password and confirmation password do not match.
-					</p>
+						<div class="closeError">x</div>
+					</div>
 				{/if}
 
 				<button
@@ -156,13 +175,14 @@
 					type={createAccount ? 'submit' : 'button'}
 					>{createAccount ? ' Sign up' : 'Login'}
 				</button>
-				<button on:click={singInWithGoogle} class="signInBtn" type="button"
-					><div style="margin-right:1rem">
-						<img src="googleLogo.png" width="20" height="20" alt="logo of google" />
-					</div>
+				<button on:click={singInWithGoogle} class="googleBtn" type="button">
+					<img src="googleWhite.png" width="20" height="20" alt="logo of google" />
 					{createAccount ? ' Sign up' : 'Login'} with Google</button
 				>
-				<p class="choices">Forgot your password?</p>
+				<div class="linkBox">
+					<p class="option">Forgot your password?</p>
+					<p class="option">Continue without registration</p>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -170,39 +190,36 @@
 </div>
 
 <style>
-	* {
-		margin: 0;
+	.pageWrap {
+		display: flex;
+		height: 100vh;
+		flex-direction: row;
+		position: relative;
+		background-color: black;
+		background-image: url('greyBG.jpg');
 	}
-	.styleHeader {
+	.header {
 		position: absolute;
 		font-size: 10rem;
 		left: 18rem;
 		top: 18rem;
-		color: rgba(33, 39, 52, 0.719);
+		color: rgba(245, 245, 245, 0.839);
 	}
-	.pageWrap {
-		background: white;
-		min-height: 100vh;
-		display: flex;
-		flex-direction: row;
-		position: relative;
-	}
-
-	.bgFront {
+	.mainImg {
 		margin-left: 5rem;
 		margin-top: 7rem;
 		height: 20rem;
 		width: 50%;
 	}
-	.formBox {
+	.formContainer {
 		width: 26rem;
 		display: flex;
 		flex-direction: column;
-		background-color: whitesmoke;
 		padding: 1rem;
-		margin-left: 2rem;
+		background-color: black;
+		background-image: url('greyBG.jpg');
 	}
-	.formFrame {
+	.formWrap {
 		margin: auto;
 		width: 90%;
 	}
@@ -211,67 +228,44 @@
 		margin-left: 0;
 	}
 	.choiceBtn {
-		font-weight: normal;
-		font-size: medium;
-		margin: 0;
-		background-color: white;
-		color: rgba(33, 39, 52, 0.719);
+		background-color: transparent;
+	}
+	.choiceBtn:hover {
+		background-color: transparent;
 	}
 	form {
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
 	}
-
-	input:focus-within,
-	input:hover {
-		border: 1px var(--primary) solid;
-	}
-
-	input {
-		height: 2rem;
-		border: solid 0.5px rgba(33, 39, 52, 0.719);
-		color: rgba(33, 39, 52, 0.719);
-		font-size: medium;
-		padding-inline: 0.5rem;
-		background-color: transparent;
-	}
-	input::placeholder {
-		color: rgba(33, 39, 52, 0.719);
-	}
-	input:focus {
-		outline: none;
-	}
-	button {
-		height: 2.75rem;
-		border: none;
-		background-color: var(--primary);
-		font-size: 1.25rem;
-		font-weight: normal;
-	}
-	button:hover {
-		transition-duration: 0.5;
-		background-color: var(--secondary);
-		border: var(--primary) 1px solid;
-		color: var(--primary);
-	}
-	.signInBtn {
-		background: var(--secondary);
-		color: var(--primary);
+	.googleBtn {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		padding: 0.5rem;
-	}
-	.choices {
-		display: flex;
-		flex-direction: column;
 		gap: 0.5rem;
-		font-size: small;
 	}
-
-	.choices:hover {
+	.error {
+		color: lightpink;
+		margin: 0;
+		position: relative;
+	}
+	.closeError {
+		color: lightpink;
+		position: absolute;
+		right: 0;
+		top: 0;
+		font-size: medium;
 		cursor: pointer;
-		color: var(--tertiary);
+	}
+	.linkBox {
+		display: flex;
+		flex-direction: row;
+		font-size: small;
+		justify-content: space-between;
+		padding-inline: 0.5rem;
+	}
+	.option:hover {
+		color: darkgray;
+		cursor: pointer;
 	}
 </style>

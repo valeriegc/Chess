@@ -15,10 +15,11 @@
 </script>
 
 <div class="gridWrap">
-	<button on:click={signOutSSR}>SIGN OUT</button>
+	<button on:click={signOutSSR}>Log out</button>
 	<div class="grid">
 		<Details />
 		<GameDetails />
+		<img src="battle.jpg" class="themeImg" />
 	</div>
 </div>
 
@@ -31,8 +32,7 @@
 		justify-content: center;
 		padding: 3rem;
 		position: relative;
-		background: var(--secondary);
-		/**linear-gradient(to right, var(--lightSquare), rgb(165, 141, 103));**/
+		background-image: url('greyBG.jpg');
 	}
 	.grid {
 		display: grid;
@@ -41,11 +41,15 @@
 		grid-template-rows: 18rem 18rem;
 		height: 62rem;
 	}
+	.themeImg {
+		width: 40rem;
+		height: 18rem;
+	}
 	button {
 		position: absolute;
 		right: 5rem;
 		cursor: pointer;
-		padding: 0.5rem;
+		padding: 1rem;
 		border: none;
 		background-color: var(--primary);
 		color: var(--secondary);
