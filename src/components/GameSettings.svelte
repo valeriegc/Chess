@@ -52,17 +52,16 @@
 	</div>
 	{#if settings}
 		<div class="buttonWrap">
-			<button>Resign</button>
-			<button>Suggest a tie</button>
-			<button>Ask for a takeback</button>
+			<button>Resign <img src="/resign.png" class="iconS" /></button>
+			<button>Suggest a tie <img src="/tie.png" class="iconS" /></button>
+			<button>Ask for a takeback <img src="/return.png" class="iconS" /></button>
 		</div>
 	{:else}
 		<div class="messageWrap">
 			<div>
 				{#each messages as { message, sender }}
 					<div class="content">
-						<div class="dot" style="background-color:{sender == 'white' ? 'white' : 'black'}" />
-						<p>{message}</p>
+						<p class={sender == $player ? 'ownMsg' : 'opponentMsg'}>{message}</p>
 					</div>
 				{/each}
 			</div>
@@ -84,6 +83,10 @@
 	}
 	.icon {
 		height: 2rem;
+		width: auto;
+	}
+	.iconS {
+		height: 1.5rem;
 		width: auto;
 	}
 	.buttonWrap {
@@ -121,10 +124,17 @@
 	p {
 		margin: 0;
 	}
-	.dot {
-		height: 5px;
-		width: 5px;
-		border-radius: 100%;
+	.ownMsg {
+		color: grey;
+		text-align: left;
+		width: 100%;
+		margin: 0;
+	}
+	.opponentMsg {
+		color: whitesmoke;
+		text-align: right;
+		width: 100%;
+		margin: 0;
 	}
 	textarea::placeholder {
 		color: lightgrey;

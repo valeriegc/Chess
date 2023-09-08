@@ -25,7 +25,9 @@
 	{/if}
 	<MoveBox />
 	<Board />
-	<GameSettings />
+	{#if $gameId !== 'NoIdYet'}
+		<GameSettings />
+	{/if}
 </div>
 
 <style>
