@@ -34,6 +34,6 @@
 		flex-direction: row;
 		align-items: center;
 		height: 100vh;
-		background-image: url('greyBG.jpg');
+		background-image: url('/greyBG.jpg');
 	}
 </style>

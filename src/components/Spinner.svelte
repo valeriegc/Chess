@@ -1,6 +1,14 @@
+<script>
+	import { waiting } from '../stores';
+</script>
+
 <div class="spinnerBox">
-	<div>Awaiting for opponent</div>
-	<div class="spin" />
+	{#if $waiting}
+		<div>Awaiting for opponent</div>
+		<div class="spin" />
+	{:else}
+		<div>Your turn</div>
+	{/if}
 </div>
 
 <style>
