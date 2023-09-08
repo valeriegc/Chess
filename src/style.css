@@ -35,6 +35,7 @@ input {
 	font-size: medium;
 	padding-inline: 0.5rem;
 	background-color: transparent;
+	outline:none;
 }
 input::placeholder {
 	color: whitesmoke;
