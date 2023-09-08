@@ -9,7 +9,51 @@
 		sender: string;
 	}
 
+	export const controlMenu = (selectedBtn: string) => {
+		switch (selectedBtn) {
+			case 'settings':
+				settings = true;
+				chat = false;
+				giveup = false;
+				tie = false;
+				takeback = false;
+				break;
+			case 'chat':
+				settings = false;
+				chat = true;
+				giveup = false;
+				tie = false;
+				takeback = false;
+				break;
+			case 'giveup':
+				settings = false;
+				chat = false;
+				giveup = true;
+				tie = false;
+				takeback = false;
+				break;
+			case 'tie':
+				settings = false;
+				chat = false;
+				giveup = false;
+				tie = true;
+				takeback = false;
+				break;
+			case 'takeback':
+				settings = false;
+				chat = false;
+				giveup = false;
+				tie = false;
+				takeback = true;
+				break;
+		}
+	};
+
 	let settings = false;
+	let chat = true;
+	let giveup = false;
+	let tie = false;
+	let takeback = false;
 	let msg = '';
 	let messages: Msg[] = [];
 
@@ -43,20 +87,19 @@
 	<div>
 		<button
 			style="border-bottom:{settings ? '2px solid white' : 'none'}"
-			on:click={() => (settings = true)}><img class="icon" src="/settings.png" /></button
+			on:click={() => controlMenu('settings')}><img class="icon" src="/settings.png" /></button
 		>
 		<button
 			style="border-bottom:{!settings ? '2px solid white' : 'none'}"
-			on:click={() => (settings = false)}><img class="icon" src="/chat.png" /></button
+			on:click={() => controlMenu('chat')}><img class="icon" src="/chat.png" /></button
 		>
+		<button on:click={() => controlMenu('giveup')}><img src="/resign.png" class="icon" /></button>
+		<button on:click={() => controlMenu('tie')}><img src="/tie.png" class="icon" /></button>
+		<button on:click={() => controlMenu('takeback')}><img src="/return.png" class="icon" /></button>
 	</div>
 	{#if settings}
-		<div class="buttonWrap">
-			<button>Resign <img src="/resign.png" class="iconS" /></button>
-			<button>Suggest a tie <img src="/tie.png" class="iconS" /></button>
-			<button>Ask for a takeback <img src="/return.png" class="iconS" /></button>
-		</div>
-	{:else}
+		<div class="buttonWrap" />
+	{:else if chat}
 		<div class="messageWrap">
 			<div>
 				{#each messages as { message, sender }}
@@ -73,6 +116,27 @@
 			rows="3"
 			on:keypress={sendMsg}
 		/>
+	{:else if giveup}
+		<div class="messageWrap">
+			<div class="innerWrap">
+				<p>Resign the game?</p>
+				<div><button>Yes</button><button>No</button></div>
+			</div>
+		</div>
+	{:else if tie}
+		<div class="messageWrap">
+			<div class="innerWrap">
+				<p>Suggest a tie?</p>
+				<div><button>Yes</button><button>No</button></div>
+			</div>
+		</div>
+	{:else if takeback}
+		<div class="messageWrap">
+			<div class="innerWrap">
+				<p>Ask opponent for takeback?</p>
+				<div><button>Yes</button><button>No</button></div>
+			</div>
+		</div>
 	{/if}
 </div>
 
@@ -80,15 +144,13 @@
 	.container {
 		height: 400px;
 		width: 300px;
+		margin-right: 5rem;
 	}
 	.icon {
 		height: 2rem;
 		width: auto;
 	}
-	.iconS {
-		height: 1.5rem;
-		width: auto;
-	}
+
 	.buttonWrap {
 		display: flex;
 		flex-direction: column;
@@ -97,6 +159,11 @@
 	button {
 		text-align: left;
 		margin-bottom: 1rem;
+		border: solid transparent 2px;
+	}
+	button:hover {
+		background-color: black;
+		border-bottom: white 2px solid;
 	}
 
 	textarea {
@@ -112,6 +179,15 @@
 		border: solid black 1px;
 		height: 70%;
 		background-color: rgba(0, 0, 0, 0.411);
+		display: flex;
+		flex-direction: column;
+	}
+	.innerWrap {
+		margin: auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
 	}
 	.content {
 		font-size: small;
