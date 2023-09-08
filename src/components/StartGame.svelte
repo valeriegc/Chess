@@ -6,12 +6,23 @@
 	import { gameId, gameStarted, moves } from '../stores';
 	import { goto } from '$app/navigation';
 	import KingW from '../pieces/King_W.svelte';
+	import { invalid_attribute_name_character } from 'svelte/internal';
 	let url: string;
 	let confirmation = false;
 	let initialParams = '';
 	export let visible;
 
 	onMount(() => (url = window.location.href));
+
+	const initiateChat = async () => {
+		try {
+			await setDoc(doc(db, 'chats', $gameId), {
+				chat: []
+			});
+		} catch {
+			console.log('Something went wrong with chat');
+		}
+	};
 
 	const createGame = async () => {
 		$gameId = initialParams;
@@ -29,6 +40,7 @@
 		$gameStarted = true;
 		$gameStarted = $gameStarted;
 		visible = false;
+		initiateChat();
 		goto(url);
 	};
 
