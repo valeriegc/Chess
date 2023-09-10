@@ -7,9 +7,8 @@
 	import { page } from '$app/stores';
 
 	let confirmation = false;
-	let initialParams = '';
 	export let visible;
-	let url = $page.url + '/' + $gameId;
+	let url = $page.url.origin + '/game/' + $gameId;
 
 	const initiateChat = async () => {
 		try {
@@ -22,7 +21,6 @@
 	};
 
 	const createGame = async () => {
-		$gameId = initialParams;
 		let boardArray = initPieces();
 		let turn = 'white';
 		try {
@@ -34,8 +32,6 @@
 		} catch (e) {
 			console.error('Error adding document: ', e);
 		}
-		$gameStarted = true;
-		$gameStarted = $gameStarted;
 		visible = false;
 		initiateChat();
 	};
