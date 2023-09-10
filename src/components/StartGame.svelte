@@ -1,18 +1,15 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { doc, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
 	import { gameId, gameStarted, moves } from '../stores';
-	import { goto } from '$app/navigation';
 	import KingW from '../pieces/King_W.svelte';
-	import { invalid_attribute_name_character } from 'svelte/internal';
-	let url: string;
+	import { page } from '$app/stores';
+
 	let confirmation = false;
 	let initialParams = '';
 	export let visible;
-
-	onMount(() => (url = window.location.href));
+	let url = $page.url + '/' + $gameId;
 
 	const initiateChat = async () => {
 		try {
@@ -41,21 +38,6 @@
 		$gameStarted = $gameStarted;
 		visible = false;
 		initiateChat();
-		goto(url);
-	};
-
-	const queryParamGenerator = () => {
-		initialParams = '';
-		const charCodes = Array.from(Array(26)).map((e, i) => i + 65);
-		const alphabet = charCodes.map((n) => String.fromCharCode(n));
-		for (let i = 0; i < 10; i++) {
-			let randomInt = Math.floor(Math.random() * (25 - 1 + 1) + 1);
-			let randomLetter = alphabet[randomInt];
-			initialParams = initialParams + randomLetter;
-		}
-		initialParams = initialParams.toLowerCase();
-		url += '/' + initialParams;
-		return url;
 	};
 
 	const handleCopy = () => {
@@ -82,7 +64,6 @@
 			<input value={url} />
 			<button on:click={() => handleCopy()}>Copy</button>
 			<button on:click={() => createGame()}>Start</button>
-			<button on:click={() => queryParamGenerator()} />
 		</div>
 	</div>
 </div>

@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const gameId = writable('NoIdYet');
+export const gameId = writable<string>();
 export const pieceList = ['pawn', 'tower', 'horse', 'bishop', 'queen', 'king'] as const;
 export type PieceType = (typeof pieceList)[number];
 export interface Piece {

@@ -32,7 +32,7 @@
 	let selectedSquare = -1;
 	let kingLocation = -1;
 	let allowedMoves: number[] = [];
-	let allAllowedMoves;
+	let allAllowedMoves: number[];
 	let selectedPiece: Piece;
 	let checked = false;
 
@@ -141,7 +141,7 @@
 		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
 	};
 
-	$: if ($gameId !== 'noIdYet') {
+	/**$: if ($gameId !== 'noIdYet') {
 		onSnapshot(doc(db, 'games', $gameId), (doc) => {
 			const allData = doc.data();
 			if (allData) {
@@ -150,7 +150,7 @@
 				$moves = allData?.moves;
 			}
 		});
-	}
+	}**/
 </script>
 
 <div class="boardOuterWrap">
