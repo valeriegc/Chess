@@ -181,7 +181,7 @@
 				>
 				<div class="linkBox">
 					<p class="option">Forgot your password?</p>
-					<p class="option">Continue without registration</p>
+					<p class="option" on:click={() => goto('/game')}>Continue without registration</p>
 				</div>
 			</form>
 		</div>

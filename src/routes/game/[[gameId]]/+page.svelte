@@ -25,7 +25,9 @@
 	{/if}
 	<MoveBox />
 	<Board />
-	<GameSettings />
+	{#if $gameId !== 'NoIdYet'}
+		<GameSettings />
+	{/if}
 </div>
 
 <style>
@@ -34,6 +36,6 @@
 		flex-direction: row;
 		align-items: center;
 		height: 100vh;
-		background-image: url('greyBG.jpg');
+		background-image: url('/greyBG.jpg');
 	}
 </style>

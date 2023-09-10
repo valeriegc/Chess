@@ -93,10 +93,6 @@ export const passwordInvalid = (password: string) => {
 	else return `The password must ${errors[0]}, ${errors[1]} and ${errors[2]}.`;
 };
 
-export const emailInvalid = (email: string) => {
-	return false;
-};
-
 export interface FillSquare {
 	piece: Piece;
 	square: number;
@@ -136,3 +132,5 @@ export const invalidSelection = (
 export const findKing = (board: Square[], turn: 'black' | 'white') => {
 	return board.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
 };
+export const numbersWhite = [8, 7, 6, 5, 4, 3, 2, 1];
+export const numbersBlack = [1, 2, 3, 4, 5, 6, 7, 8];

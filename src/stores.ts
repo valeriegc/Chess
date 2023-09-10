@@ -41,3 +41,4 @@ export const player = writable('white');
 export const theme = writable('bw');
 export const userStore = writable<User | null>(null);
 export const waiting = writable(true);
+export const messages = writable<Msg[]>([]);
