@@ -2,7 +2,7 @@
 	import { doc, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
-	import { gameId, gameStarted, moves } from '../stores';
+	import { gameId, gameStarted, moves, userId } from '../stores';
 	import KingW from '../pieces/King_W.svelte';
 	import { page } from '$app/stores';
 
@@ -27,7 +27,9 @@
 			await setDoc(doc(db, 'games', $gameId), {
 				board: boardArray,
 				player: turn,
-				moves: $moves
+				moves: $moves,
+				black: $userId,
+				white: ''
 			});
 		} catch (e) {
 			console.error('Error adding document: ', e);

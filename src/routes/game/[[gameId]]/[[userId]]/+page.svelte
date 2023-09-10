@@ -13,6 +13,12 @@
 	$userId = data.userId;
 	let visible = true;
 
+	if (data.playerIsWhite) {
+		$player = 'white';
+	} else {
+		$player = 'black';
+	}
+
 	onMount(() => {
 		const urlHasGameId = $page.params.gameId !== undefined;
 		const urlHasUserId = $page.params.userId !== undefined;

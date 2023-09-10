@@ -1,4 +1,4 @@
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { createGameId } from './functions';
 import { db } from '$lib/firebase/firebase';
 
@@ -23,9 +23,21 @@ export const load = async ({ params, cookies }) => {
 		userId = createGameId().toUpperCase();
 	}
 
-	const gameRef = doc(db, 'games', gameId);
-	const gameSnap = await getDoc(gameRef);
-	const gameStarted = gameSnap.exists();
+	let playerIsWhite = false;
 
-	return { gameId, userId, gameStarted };
+	const gameRef = doc(db, 'games', gameId);
+	const gameDoc = await getDoc(gameRef);
+	const gameStarted = gameDoc.exists();
+	if (gameStarted) {
+		const gameData = gameDoc.data();
+		playerIsWhite = userId !== gameData.black;
+		if (gameData.white == '' && playerIsWhite) {
+			const gameRef = doc(db, 'games', gameId);
+			await updateDoc(gameRef, {
+				white: userId
+			});
+		}
+	}
+
+	return { gameId, userId, gameStarted, playerIsWhite };
 };
