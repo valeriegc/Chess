@@ -11,36 +11,25 @@
 
 	export const controlMenu = (selectedBtn: string) => {
 		switch (selectedBtn) {
-			case 'settings':
-				settings = true;
-				chat = false;
-				giveup = false;
-				tie = false;
-				takeback = false;
-				break;
 			case 'chat':
-				settings = false;
 				chat = true;
 				giveup = false;
 				tie = false;
 				takeback = false;
 				break;
 			case 'giveup':
-				settings = false;
 				chat = false;
 				giveup = true;
 				tie = false;
 				takeback = false;
 				break;
 			case 'tie':
-				settings = false;
 				chat = false;
 				giveup = false;
 				tie = true;
 				takeback = false;
 				break;
 			case 'takeback':
-				settings = false;
 				chat = false;
 				giveup = false;
 				tie = false;
@@ -49,7 +38,6 @@
 		}
 	};
 
-	let settings = false;
 	let chat = true;
 	let giveup = false;
 	let tie = false;
@@ -86,20 +74,24 @@
 <div class="container">
 	<div>
 		<button
-			style="border-bottom:{settings ? '2px solid white' : 'none'}"
-			on:click={() => controlMenu('settings')}><img class="icon" src="/settings.png" /></button
-		>
-		<button
-			style="border-bottom:{!settings ? '2px solid white' : 'none'}"
+			style="border-bottom:{chat ? '2px solid white' : 'none'}"
 			on:click={() => controlMenu('chat')}><img class="icon" src="/chat.png" /></button
 		>
-		<button on:click={() => controlMenu('giveup')}><img src="/resign.png" class="icon" /></button>
-		<button on:click={() => controlMenu('tie')}><img src="/tie.png" class="icon" /></button>
-		<button on:click={() => controlMenu('takeback')}><img src="/return.png" class="icon" /></button>
+		<button
+			style="border-bottom:{giveup ? '2px solid white' : 'none'}"
+			on:click={() => controlMenu('giveup')}><img src="/resign.png" class="icon" /></button
+		>
+		<button
+			style="border-bottom:{tie ? '2px solid white' : 'none'}"
+			on:click={() => controlMenu('tie')}><img src="/tie.png" class="icon" /></button
+		>
+		<button
+			style="border-bottom:{takeback ? '2px solid white' : 'none'}"
+			on:click={() => controlMenu('takeback')}><img src="/return.png" class="icon" /></button
+		>
 	</div>
-	{#if settings}
-		<div class="buttonWrap" />
-	{:else if chat}
+
+	{#if chat}
 		<div class="messageWrap">
 			<div>
 				{#each messages as { message, sender }}
@@ -120,21 +112,33 @@
 		<div class="messageWrap">
 			<div class="innerWrap">
 				<p>Resign the game?</p>
-				<div><button>Yes</button><button>No</button></div>
+				<div>
+					<button class="yesButton">Yes</button><button on:click={() => controlMenu('chat')}
+						>No</button
+					>
+				</div>
 			</div>
 		</div>
 	{:else if tie}
 		<div class="messageWrap">
 			<div class="innerWrap">
 				<p>Suggest a tie?</p>
-				<div><button>Yes</button><button>No</button></div>
+				<div>
+					<button class="yesButton">Yes</button><button on:click={() => controlMenu('chat')}
+						>No</button
+					>
+				</div>
 			</div>
 		</div>
 	{:else if takeback}
 		<div class="messageWrap">
 			<div class="innerWrap">
 				<p>Ask opponent for takeback?</p>
-				<div><button>Yes</button><button>No</button></div>
+				<div>
+					<button class="yesButton">Yes</button><button on:click={() => controlMenu('chat')}
+						>No</button
+					>
+				</div>
 			</div>
 		</div>
 	{/if}
@@ -151,11 +155,6 @@
 		width: auto;
 	}
 
-	.buttonWrap {
-		display: flex;
-		flex-direction: column;
-		width: 80%;
-	}
 	button {
 		text-align: left;
 		margin-bottom: 1rem;
@@ -163,7 +162,11 @@
 	}
 	button:hover {
 		background-color: black;
+		border: solid transparent 2px;
 		border-bottom: white 2px solid;
+	}
+	.yesButton {
+		margin-right: 1rem;
 	}
 
 	textarea {
