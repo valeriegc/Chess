@@ -16,9 +16,9 @@
 	} from '../global';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
 	import { getPiececomponent } from '../functions/getPieceComponent';
-	import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
+	import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
-
+	console.log($player);
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
 
@@ -32,7 +32,7 @@
 	let selectedSquare = -1;
 	let kingLocation = -1;
 	let allowedMoves: number[] = [];
-	let allAllowedMoves;
+	let allAllowedMoves: number[];
 	let selectedPiece: Piece;
 	let checked = false;
 
@@ -141,7 +141,7 @@
 		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
 	};
 
-	$: if ($gameId !== 'noIdYet') {
+	$: if ($gameId) {
 		onSnapshot(doc(db, 'games', $gameId), (doc) => {
 			const allData = doc.data();
 			if (allData) {

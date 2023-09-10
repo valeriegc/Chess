@@ -1,18 +1,14 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { doc, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
-	import { gameId, gameStarted, moves } from '../stores';
-	import { goto } from '$app/navigation';
+	import { gameId, gameStarted, moves, userId } from '../stores';
 	import KingW from '../pieces/King_W.svelte';
-	import { invalid_attribute_name_character } from 'svelte/internal';
-	let url: string;
-	let confirmation = false;
-	let initialParams = '';
-	export let visible;
+	import { page } from '$app/stores';
 
-	onMount(() => (url = window.location.href));
+	let confirmation = false;
+	export let visible;
+	let url = $page.url.origin + '/game/' + $gameId;
 
 	const initiateChat = async () => {
 		try {
@@ -25,37 +21,21 @@
 	};
 
 	const createGame = async () => {
-		$gameId = initialParams;
 		let boardArray = initPieces();
 		let turn = 'white';
 		try {
 			await setDoc(doc(db, 'games', $gameId), {
 				board: boardArray,
 				player: turn,
-				moves: $moves
+				moves: $moves,
+				black: $userId,
+				white: ''
 			});
 		} catch (e) {
 			console.error('Error adding document: ', e);
 		}
-		$gameStarted = true;
-		$gameStarted = $gameStarted;
 		visible = false;
 		initiateChat();
-		goto(url);
-	};
-
-	const queryParamGenerator = () => {
-		initialParams = '';
-		const charCodes = Array.from(Array(26)).map((e, i) => i + 65);
-		const alphabet = charCodes.map((n) => String.fromCharCode(n));
-		for (let i = 0; i < 10; i++) {
-			let randomInt = Math.floor(Math.random() * (25 - 1 + 1) + 1);
-			let randomLetter = alphabet[randomInt];
-			initialParams = initialParams + randomLetter;
-		}
-		initialParams = initialParams.toLowerCase();
-		url += '/' + initialParams;
-		return url;
 	};
 
 	const handleCopy = () => {
@@ -82,7 +62,6 @@
 			<input value={url} />
 			<button on:click={() => handleCopy()}>Copy</button>
 			<button on:click={() => createGame()}>Start</button>
-			<button on:click={() => queryParamGenerator()} />
 		</div>
 	</div>
 </div>
