@@ -18,7 +18,7 @@
 	import { getPiececomponent } from '../functions/getPieceComponent';
 	import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
-	console.log($player);
+
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
 
@@ -162,9 +162,15 @@
 	<div class="boardInnerWrap">
 		<div class="boardY">
 			<div class="boardY">
-				{#each { length: 8 } as _, i}
-					<div class="numbers">{i + 1}</div>
-				{/each}
+				{#if black}
+					{#each { length: 8 } as _, i}
+						<div class="numbers">{i + 1}</div>
+					{/each}
+				{:else}
+					{#each { length: 8 } as _, i}
+						<div class="numbers">{8 - i}</div>
+					{/each}
+				{/if}
 			</div>
 		</div>
 		<div class="boardGrid" class:black>
@@ -195,9 +201,15 @@
 			{/each}
 		</div>
 		<div class="boardY">
-			{#each { length: 8 } as _, i}
-				<div class="numbers">{i + 1}</div>
-			{/each}
+			{#if black}
+				{#each { length: 8 } as _, i}
+					<div class="numbers">{i + 1}</div>
+				{/each}
+			{:else}
+				{#each { length: 8 } as _, i}
+					<div class="numbers">{8 - i}</div>
+				{/each}
+			{/if}
 		</div>
 	</div>
 	<div class="boardX">

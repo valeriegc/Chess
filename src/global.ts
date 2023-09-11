@@ -70,10 +70,11 @@ export const onBoardEdge = (direction: string, currentSquare: number) => {
 };
 
 export const alphaCalc = (i: number) => {
-	let rowNumber = rowFinder(i).toString();
+	let originalRowN = rowFinder(i);
+	let mirroredRowN = (9 - originalRowN).toString();
 	let columnId = columnFinder(i) - 1;
 	let correctLetter = letters[columnId];
-	return correctLetter + rowNumber;
+	return correctLetter + mirroredRowN;
 };
 export const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] as const;
 export const numbers = [1, 2, 3, 4, 5, 6, 7, 8] as const;

@@ -5,11 +5,11 @@
 </script>
 
 <div class="outerMove">
-	<div class="moveBox">
-		<h3>Moves</h3>
-		<div class="spinnerWrap">
-			<Spinner />
-		</div>
+	<h3>Moves</h3>
+	<div>
+		<Spinner />
+	</div>
+	<div class="moves">
 		{#if $moves}
 			{#each $moves as move}
 				<div class="moveLine">
@@ -18,9 +18,9 @@
 					</div>
 
 					<p>
-						Moved from <strong>{move.postCoord}</strong>
+						Moved from <strong>{move.preCoord}</strong>
 						to
-						<strong>{move.preCoord}</strong>
+						<strong>{move.postCoord}</strong>
 					</p>
 				</div>
 			{/each}
@@ -32,14 +32,16 @@
 	.outerMove {
 		height: 400px;
 		width: 350px;
-		overflow: hidden;
 		margin-left: 2rem;
 		background-color: rgba(252, 249, 249, 0.151);
 		border-radius: 5px;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
 	}
-	.moveBox {
-		width: 350px;
+	.moves {
 		overflow-y: scroll;
+		margin-top: 1rem;
 	}
 	h3 {
 		text-align: center;
@@ -56,25 +58,25 @@
 		margin-left: 2rem;
 	}
 	::-webkit-scrollbar {
-		width: 15px;
+		width: 10px;
 	}
 
-	/* Track */
+	/*track*/
 	::-webkit-scrollbar-track {
 		background: transparent;
 		-webkit-border-radius: 10px;
 		border-radius: 10px;
 	}
 
-	/* Handle */
+	/*handle */
 	::-webkit-scrollbar-thumb {
 		background: var(--primary);
 		-webkit-border-radius: 10px;
 		border-radius: 10px;
 	}
 
-	/* Handle on hover */
+	/*handle-hover*/
 	::-webkit-scrollbar-thumb:hover {
-		background: var(--secondary);
+		background: rgba(169, 169, 169, 0.524);
 	}
 </style>
