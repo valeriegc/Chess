@@ -7,11 +7,11 @@ export const isCheckMate = (boardArr: Square[], turn: 'black' | 'white', kingLoc
 	const playerPieces = [];
 	let checkmate = true;
 
-	boardArr.map((n) => {
+	boardArr.map((n, i) => {
 		if (n.piece && n.piece.color == turn) {
 			playerPieces.push({
 				piece: n.piece,
-				squareNumber: n
+				squareNumber: i
 			});
 		}
 	});

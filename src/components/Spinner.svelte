@@ -1,5 +1,6 @@
 <script>
-	import { waiting, resign, player } from '../stores';
+	import { waiting, resign, player, winner } from '../stores';
+	import AuthControl from './AuthControl.svelte';
 </script>
 
 <div class="spinnerBox">
@@ -8,6 +9,12 @@
 			You resigned the game.
 		{:else}
 			The opponent resigned the game.
+		{/if}
+	{:else if $winner}
+		{#if $winner == $player}
+			You won.
+		{:else}
+			The opponent won.
 		{/if}
 	{:else if $waiting}
 		<div>Awaiting for opponent</div>

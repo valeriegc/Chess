@@ -60,20 +60,15 @@
 	};
 
 	const checkForWinner = async () => {
-		if (turn == $player) {
-			kingLocation = findKing(boardArr, turn);
-			let checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
-			if (checked) {
-				const checkMate = isCheckMate(boardArr, turn, kingLocation);
-				if (checkMate) {
-					await updateDoc(doc(db, 'games', $gameId), {
-						winner: turn == 'white' ? 'black' : 'white'
-					});
-				}
-			}
-		} else return;
+		kingLocation = findKing(boardArr, turn);
+		const checkMate = isCheckMate(boardArr, turn, kingLocation);
+		console.log('this ran');
+		if (checkMate) {
+			await updateDoc(doc(db, 'games', $gameId), {
+				winner: $player
+			});
+		}
 	};
-	checkForWinner();
 
 	const fillSquare = ({ piece, square }: FillSquare) => {
 		boardArr[square].piece = piece;
@@ -94,6 +89,7 @@
 		await updateDoc(doc(db, 'games', $gameId), {
 			checked: $player == 'white' ? 'black' : 'white'
 		});
+		checkForWinner();
 	};
 
 	const movePiece = async (newSquare: number) => {

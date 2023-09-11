@@ -1,8 +1,21 @@
 <script lang="ts">
+	import { winner, player } from '../stores';
 </script>
 
 <div class="container">
-	<div class="wrap">Game has ended</div>
+	<div class="wrap">
+		{#if $winner == $player}
+			Congratulations! You have won the game.
+			<img src="/win.png" class="icon" />
+		{:else}
+			You lost, the {$winner} was victorious.
+			<img src="/lose.png" class="icon" />
+		{/if}
+		<div>
+			<a href="/game" on:click={() => ($winner = '')}>Start a new game</a>
+			<a href="/profile on:click={() => ($winner = '')}">Go to profile</a>
+		</div>
+	</div>
 </div>
 
 <style>
@@ -29,5 +42,14 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 0.5rem;
+	}
+	.icon {
+		height: 2rem;
+		width: auto;
+		margin: 1rem;
+	}
+	a {
+		margin: 1rem;
+		color: lightgrey;
 	}
 </style>

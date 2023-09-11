@@ -11,8 +11,12 @@
 		{/if}
 		<img src="/resign.png" class="icon" />
 		<div class="linkbox">
-			<a href="/game">Start a new game</a>
-			<a href="/profile">Go to profile</a>
+			<a href="/game" on:click={() => ($resign = { resigned: false, resigner: '' })}
+				>Start a new game</a
+			>
+			<a href="/profile" on:click={() => ($resign = { resigned: false, resigner: '' })}
+				>Go to profile</a
+			>
 		</div>
 	</div>
 </div>
