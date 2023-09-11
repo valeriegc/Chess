@@ -1,9 +1,15 @@
 <script>
-	import { waiting } from '../stores';
+	import { waiting, resign, player } from '../stores';
 </script>
 
 <div class="spinnerBox">
-	{#if $waiting}
+	{#if $resign.resigned}
+		{#if $resign.resigner == $player}
+			You resigned the game.
+		{:else}
+			The opponent resigned the game.
+		{/if}
+	{:else if $waiting}
 		<div>Awaiting for opponent</div>
 		<div class="spin" />
 	{:else}

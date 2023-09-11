@@ -29,7 +29,8 @@
 				player: turn,
 				moves: $moves,
 				black: $userId,
-				white: ''
+				white: '',
+				resignation: { resigned: false, resigner: '' }
 			});
 		} catch (e) {
 			console.error('Error adding document: ', e);

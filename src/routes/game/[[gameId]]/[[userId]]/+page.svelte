@@ -2,11 +2,12 @@
 	import Board from '../../../../components/Board.svelte';
 	import MoveBox from '../../../../components/MoveBox.svelte';
 	import StartGame from '../../../../components/StartGame.svelte';
-	import { gameId, player, url, userId } from '../../../../stores';
+	import { gameId, player, resign, url, userId } from '../../../../stores';
 	import GameSettings from '../../../../components/GameSettings.svelte';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import Resigned from '../../../../components/Resigned.svelte';
 
 	export let data: PageData;
 	$gameId = data.gameId;
@@ -43,6 +44,9 @@
 	<Board />
 	{#if data.gameStarted}
 		<GameSettings />
+	{/if}
+	{#if $resign.resigned}
+		<Resigned />
 	{/if}
 </div>
 

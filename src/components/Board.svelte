@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { gameId, type Piece, type Square, player, moves, waiting } from '../stores';
+	import { gameId, type Piece, type Square, player, moves, waiting, resign } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -148,6 +148,9 @@
 				boardArr = allData?.board;
 				turn = allData?.player;
 				$moves = allData?.moves;
+				if (allData.resignation.resigned) {
+					($resign.resigned = true), ($resign.resigner = allData.resignation.resigner);
+				}
 			}
 		});
 	}
