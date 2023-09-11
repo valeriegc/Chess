@@ -46,6 +46,7 @@
 	let messages: Msg[] = [];
 
 	const chatRef = doc(db, 'chats', $gameId);
+	const gameRef = doc(db, 'games', $gameId);
 
 	const sendMsg = async (e) => {
 		if (e.which == 13) {
@@ -63,6 +64,15 @@
 			return messages;
 		}
 	};
+	const resignGame = async () => {
+		updateDoc(gameRef, {
+			resignation: {
+				resigned: true,
+				resigner: $player
+			}
+		});
+	};
+
 	onSnapshot(doc(db, 'chats', $gameId), (doc) => {
 		const allData = doc.data();
 		if (allData) {
@@ -113,8 +123,8 @@
 			<div class="innerWrap">
 				<p>Resign the game?</p>
 				<div>
-					<button class="yesButton">Yes</button><button on:click={() => controlMenu('chat')}
-						>No</button
+					<button on:click={resignGame} class="yesButton">Yes</button><button
+						on:click={() => controlMenu('chat')}>No</button
 					>
 				</div>
 			</div>

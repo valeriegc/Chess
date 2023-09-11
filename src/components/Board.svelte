@@ -21,6 +21,10 @@
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
+	let resignation = {
+		resigned: false,
+		resigner: ''
+	};
 
 	$: if (turn !== $player) {
 		$waiting = true;
@@ -148,6 +152,10 @@
 				boardArr = allData?.board;
 				turn = allData?.player;
 				$moves = allData?.moves;
+				if (allData.resignation.resigned) {
+					(resignation.resigned = resignation.resigned),
+						(resignation.resigner = resignation.resigner);
+				}
 			}
 		});
 	}
