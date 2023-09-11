@@ -42,3 +42,12 @@ export const theme = writable('bw');
 export const userStore = writable<User | null>(null);
 export const userId = writable<string>();
 export const waiting = writable(true);
+
+export interface Resign {
+	resigned: boolean;
+	resigner: string;
+}
+export const resign = writable<Resign>({
+	resigned: false,
+	resigner: ''
+});

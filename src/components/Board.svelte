@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { gameId, type Piece, type Square, player, moves, waiting } from '../stores';
+	import { gameId, type Piece, type Square, player, moves, waiting, resign } from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -21,10 +21,6 @@
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
-	let resignation = {
-		resigned: false,
-		resigner: ''
-	};
 
 	$: if (turn !== $player) {
 		$waiting = true;
@@ -153,8 +149,7 @@
 				turn = allData?.player;
 				$moves = allData?.moves;
 				if (allData.resignation.resigned) {
-					(resignation.resigned = resignation.resigned),
-						(resignation.resigner = resignation.resigner);
+					($resign.resigned = true), ($resign.resigner = allData.resignation.resigner);
 				}
 			}
 		});
