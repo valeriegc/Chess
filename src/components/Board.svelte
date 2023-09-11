@@ -1,5 +1,14 @@
 <script lang="ts">
-	import { gameId, type Piece, type Square, player, moves, waiting, resign } from '../stores';
+	import {
+		gameId,
+		type Piece,
+		type Square,
+		player,
+		moves,
+		waiting,
+		resign,
+		winner
+	} from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -18,6 +27,7 @@
 	import { getPiececomponent } from '../functions/getPieceComponent';
 	import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
+	import { isCheckMate } from '../functions/isCheckMate';
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
@@ -49,6 +59,17 @@
 		return turn;
 	};
 
+	const checkForWinner = async () => {
+		kingLocation = findKing(boardArr, turn);
+		const checkMate = isCheckMate(boardArr, turn, kingLocation);
+		console.log('this ran');
+		if (checkMate) {
+			await updateDoc(doc(db, 'games', $gameId), {
+				winner: $player
+			});
+		}
+	};
+
 	const fillSquare = ({ piece, square }: FillSquare) => {
 		boardArr[square].piece = piece;
 	};
@@ -62,6 +83,13 @@
 			player: turn,
 			moves: $moves
 		});
+	};
+
+	const sendCheckToFirebase = async () => {
+		await updateDoc(doc(db, 'games', $gameId), {
+			checked: $player == 'white' ? 'black' : 'white'
+		});
+		checkForWinner();
 	};
 
 	const movePiece = async (newSquare: number) => {
@@ -139,6 +167,9 @@
 		resetAllowedMoves();
 		kingLocation = findKing(boardArr, turn);
 		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
+		if (checked) {
+			sendCheckToFirebase();
+		}
 	};
 
 	$: if ($gameId) {
@@ -148,8 +179,12 @@
 				boardArr = allData?.board;
 				turn = allData?.player;
 				$moves = allData?.moves;
+				$winner = allData?.winner;
 				if (allData.resignation.resigned) {
 					($resign.resigned = true), ($resign.resigner = allData.resignation.resigner);
+				}
+				if (allData.checked == $player) {
+					checked = true;
 				}
 			}
 		});

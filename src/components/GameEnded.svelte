@@ -1,22 +1,19 @@
-<script>
-	import { player, resign } from '../stores';
+<script lang="ts">
+	import { winner, player } from '../stores';
 </script>
 
 <div class="container">
 	<div class="wrap">
-		{#if $resign.resigner !== $player}
-			Your opponent has resigned the game.
+		{#if $winner == $player}
+			Congratulations! You have won the game.
+			<img src="/win.png" class="icon" />
 		{:else}
-			You have resigned the game.
+			You lost, the {$winner} was victorious.
+			<img src="/lose.png" class="icon" />
 		{/if}
-		<img src="/resign.png" class="icon" />
-		<div class="linkbox">
-			<a href="/game" on:click={() => ($resign = { resigned: false, resigner: '' })}
-				>Start a new game</a
-			>
-			<a href="/profile" on:click={() => ($resign = { resigned: false, resigner: '' })}
-				>Go to profile</a
-			>
+		<div>
+			<a href="/game" on:click={() => ($winner = '')}>Start a new game</a>
+			<a href="/profile on:click={() => ($winner = '')}">Go to profile</a>
 		</div>
 	</div>
 </div>
@@ -46,16 +43,13 @@
 		align-items: center;
 		gap: 0.5rem;
 	}
-	.linkbox {
-		margin-top: 1rem;
-	}
-	a {
-		color: grey;
-		margin: 1rem;
-	}
 	.icon {
 		height: 2rem;
 		width: auto;
-		margin-top: 1rem;
+		margin: 1rem;
+	}
+	a {
+		margin: 1rem;
+		color: lightgrey;
 	}
 </style>
