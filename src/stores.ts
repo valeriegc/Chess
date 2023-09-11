@@ -51,3 +51,4 @@ export const resign = writable<Resign>({
 	resigned: false,
 	resigner: ''
 });
+export const winner = writable('');

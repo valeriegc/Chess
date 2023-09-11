@@ -18,6 +18,7 @@
 	import { getPiececomponent } from '../functions/getPieceComponent';
 	import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
+	import { isCheckMate } from '../functions/isCheckMate';
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
@@ -150,6 +151,15 @@
 				$moves = allData?.moves;
 				if (allData.resignation.resigned) {
 					($resign.resigned = true), ($resign.resigner = allData.resignation.resigner);
+				}
+
+				//check if king is checked right after receiving data, if its players turn
+				if (turn == $player) {
+					kingLocation = findKing(boardArr, turn);
+					checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
+					const checkMate = isCheckMate(boardArr, turn, kingLocation);
+					if (checkMate) {
+					}
 				}
 			}
 		});
