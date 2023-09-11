@@ -31,7 +31,8 @@
 				black: $userId,
 				white: '',
 				resignation: { resigned: false, resigner: '' },
-				winner: $winner
+				winner: $winner,
+				checked: ''
 			});
 		} catch (e) {
 			console.error('Error adding document: ', e);

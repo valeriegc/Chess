@@ -1,5 +1,14 @@
 <script lang="ts">
-	import { gameId, type Piece, type Square, player, moves, waiting, resign } from '../stores';
+	import {
+		gameId,
+		type Piece,
+		type Square,
+		player,
+		moves,
+		waiting,
+		resign,
+		winner
+	} from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
 	import { pieceCheck } from '../functions/pieceCheck';
@@ -50,6 +59,22 @@
 		return turn;
 	};
 
+	const checkForWinner = async () => {
+		if (turn == $player) {
+			kingLocation = findKing(boardArr, turn);
+			let checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
+			if (checked) {
+				const checkMate = isCheckMate(boardArr, turn, kingLocation);
+				if (checkMate) {
+					await updateDoc(doc(db, 'games', $gameId), {
+						winner: turn == 'white' ? 'black' : 'white'
+					});
+				}
+			}
+		} else return;
+	};
+	checkForWinner();
+
 	const fillSquare = ({ piece, square }: FillSquare) => {
 		boardArr[square].piece = piece;
 	};
@@ -62,6 +87,12 @@
 			board: boardArr,
 			player: turn,
 			moves: $moves
+		});
+	};
+
+	const sendCheckToFirebase = async () => {
+		await updateDoc(doc(db, 'games', $gameId), {
+			checked: $player == 'white' ? 'black' : 'white'
 		});
 	};
 
@@ -140,6 +171,9 @@
 		resetAllowedMoves();
 		kingLocation = findKing(boardArr, turn);
 		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
+		if (checked) {
+			sendCheckToFirebase();
+		}
 	};
 
 	$: if ($gameId) {
@@ -149,17 +183,12 @@
 				boardArr = allData?.board;
 				turn = allData?.player;
 				$moves = allData?.moves;
+				$winner = allData?.winner;
 				if (allData.resignation.resigned) {
 					($resign.resigned = true), ($resign.resigner = allData.resignation.resigner);
 				}
-
-				//check if king is checked right after receiving data, if its players turn
-				if (turn == $player) {
-					kingLocation = findKing(boardArr, turn);
-					checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
-					const checkMate = isCheckMate(boardArr, turn, kingLocation);
-					if (checkMate) {
-					}
+				if (allData.checked == $player) {
+					checked = true;
 				}
 			}
 		});

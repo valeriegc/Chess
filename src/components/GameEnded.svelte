@@ -2,7 +2,7 @@
 </script>
 
 <div class="container">
-	<div class="wrap" />
+	<div class="wrap">Game has ended</div>
 </div>
 
 <style>
