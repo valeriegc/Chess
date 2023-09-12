@@ -50,7 +50,6 @@
 					$userStore = {
 						email: userData.email,
 						picture: userData.picture,
-						theme: userData.theme,
 						lost: userData.lost,
 						won: userData.won,
 						played: userData.played,

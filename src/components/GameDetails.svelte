@@ -2,6 +2,9 @@
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase/firebase';
 	import { signOut } from 'firebase/auth';
+	export let played;
+	export let lost;
+	export let won;
 
 	const signOutSSR = async () => {
 		const res = await fetch('api/signin', {
@@ -17,9 +20,9 @@
 	<div>
 		<p style="font-size:1.5rem;">Statistics</p>
 		<div style="margin-left:1.5rem">
-			<p>Games Played:</p>
-			<p>Lost:</p>
-			<p>Won:</p>
+			<p>Games Played: {played}</p>
+			<p>Lost: {lost}</p>
+			<p>Won: {won}</p>
 		</div>
 		<p style="font-size:1.5rem;">Friends</p>
 	</div>
