@@ -11,6 +11,7 @@
 	} from 'firebase/auth';
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
 	import { userStore } from '../stores.js';
+	import ForgotPw from '../components/ForgotPw.svelte';
 
 	let createAccount = false;
 	let email = '';
@@ -20,6 +21,8 @@
 	export let form;
 	export let success: boolean;
 	let showError = true;
+	let forgotPw = true;
+	let open = false;
 
 	$: if (success) {
 		goto('/profile');
@@ -95,7 +98,6 @@
 						$userStore = {
 							email: userData.email,
 							picture: userData.picture,
-							theme: userData.theme,
 							lost: userData.lost,
 							won: userData.won,
 							played: userData.played,
@@ -179,13 +181,16 @@
 					{createAccount ? ' Sign up' : 'Login'} with Google</button
 				>
 				<div class="linkBox">
-					<p class="option">Forgot your password?</p>
+					<p class="option" on:click={() => (open = true)}>Forgot your password?</p>
 					<p class="option" on:click={() => goto('/game')}>Continue without registration</p>
 				</div>
 			</form>
 		</div>
 	</div>
 	<div />
+	{#if forgotPw && open}
+		<ForgotPw bind:open />
+	{/if}
 </div>
 
 <style>
