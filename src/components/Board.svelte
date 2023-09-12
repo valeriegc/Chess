@@ -7,7 +7,8 @@
 		moves,
 		waiting,
 		resign,
-		winner
+		winner,
+		userId
 	} from '../stores';
 	import { initPieces } from '../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
@@ -25,8 +26,8 @@
 	} from '../global';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
 	import { getPiececomponent } from '../functions/getPieceComponent';
-	import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
-	import { db } from '$lib/firebase/firebase';
+	import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
+	import { db, user } from '$lib/firebase/firebase';
 	import { isCheckMate } from '../functions/isCheckMate';
 
 	let boardArr = initPieces();
@@ -59,10 +60,13 @@
 		return turn;
 	};
 
+	$: if ($winner !== '') {
+		updateFirebaseStats();
+	}
+
 	const checkForWinner = async () => {
 		kingLocation = findKing(boardArr, turn);
 		const checkMate = isCheckMate(boardArr, turn, kingLocation);
-		console.log('this ran');
 		if (checkMate) {
 			await updateDoc(doc(db, 'games', $gameId), {
 				winner: $player
@@ -83,6 +87,26 @@
 			player: turn,
 			moves: $moves
 		});
+	};
+
+	const updateFirebaseStats = async () => {
+		const playerWon = $player == $winner;
+		const userData = await getDoc(doc(db, 'users', $userId));
+		const specifics = userData.data();
+		if (specifics) {
+			let lost = specifics.lost;
+			let won = specifics.won;
+			if (playerWon) {
+				won += 1;
+			}
+			if (!playerWon) {
+				lost += 1;
+			}
+			await updateDoc(doc(db, 'users', $userId), {
+				lost: lost,
+				won: won
+			});
+		}
 	};
 
 	const sendCheckToFirebase = async () => {

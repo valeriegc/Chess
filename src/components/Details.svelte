@@ -1,6 +1,7 @@
 <script>
-	let email = 'testEmail';
-	let password = '';
+	export let userEmail;
+	export let userPw;
+	export let userPicture;
 </script>
 
 <div class="detailWrap">
@@ -10,16 +11,18 @@
 			<div>
 				<label>
 					<p>Email</p>
-					<p style="font-weight:200">{email}</p>
+					<p style="font-weight:200">{userEmail}</p>
 				</label>
 				<label>
 					<p>Password</p>
-					<input value={password} placeholder="Password hidden here" />
+					<input value={userPw} placeholder="Password hidden here" />
 				</label>
 			</div>
 			<div class="pictureContainer">
 				<p>Picture</p>
-				<div class="userPic" />
+				<div class="userPic">
+					<img src={userPicture} />
+				</div>
 			</div>
 		</div>
 	</div>

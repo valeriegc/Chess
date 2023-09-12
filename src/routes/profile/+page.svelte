@@ -1,17 +1,19 @@
 <script>
-	import { signOut } from 'firebase/auth';
 	import Details from '../../components/Details.svelte';
 	import GameDetails from '../../components/GameDetails.svelte';
-	import { goto } from '$app/navigation';
+	export let data;
+	let userData = data.userData;
 </script>
 
-<div class="gridWrap">
-	<div class="grid">
-		<Details />
-		<GameDetails />
-		<img src="battle.jpg" class="themeImg" />
+{#if userData}
+	<div class="gridWrap">
+		<div class="grid">
+			<Details userEmail={userData.email} userPw={''} userPicture={userData.picture} />
+			<GameDetails played={userData.played} lost={userData.lost} won={userData.won} />
+			<img src="battle.jpg" class="themeImg" />
+		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	.gridWrap {

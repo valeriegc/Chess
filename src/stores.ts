@@ -21,7 +21,6 @@ export interface Move {
 export interface User {
 	email: string;
 	picture: string;
-	theme: string;
 	lost: number;
 	won: number;
 	played: number;
