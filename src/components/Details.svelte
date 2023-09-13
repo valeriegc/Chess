@@ -1,7 +1,11 @@
 <script>
+	import { auth } from '$lib/firebase/firebase';
+	import { userPic } from '../stores';
 	export let userEmail;
 	export let userPw;
-	export let userPicture;
+	export let open;
+
+	$userPic = auth.currentUser?.photoURL;
 </script>
 
 <div class="detailWrap">
@@ -19,9 +23,12 @@
 				</label>
 			</div>
 			<div class="pictureContainer">
-				<p>Picture</p>
+				<div class="picHeader">
+					<p>Picture</p>
+					<img class="icon" src="cam.png" on:click={() => (open = true)} />
+				</div>
 				<div class="userPic">
-					<img src={userPicture} />
+					<img src={$userPic} />
 				</div>
 			</div>
 		</div>
@@ -40,6 +47,23 @@
 		flex-direction: row;
 		justify-content: space-around;
 	}
+	.icon {
+		height: 2rem;
+		width: auto;
+		padding: 0.25rem;
+		background-color: rgb(71, 70, 70);
+		border-radius: 10px;
+		border: 0;
+		cursor: pointer;
+	}
+	.picHeader {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 0.5rem;
+	}
 
 	p {
 		font-weight: 700;
@@ -48,7 +72,13 @@
 	.userPic {
 		height: 8rem;
 		width: 8rem;
+		overflow: hidden;
 		background-color: var(--secondary);
 		box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+		border-radius: 100%;
+	}
+	img {
+		height: 8rem;
+		width: 8rem;
 	}
 </style>
