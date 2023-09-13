@@ -51,3 +51,4 @@ export const resign = writable<Resign>({
 	resigner: ''
 });
 export const winner = writable('');
+export const userPic = writable('');

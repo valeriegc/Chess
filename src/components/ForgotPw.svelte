@@ -20,7 +20,7 @@
 		</div>
 		<p>Email:</p>
 		<input type="email" bind:value={email} />
-		<button on:click={sendConfirmation}
+		<button class="confirm" on:click={sendConfirmation}
 			>Send a confirmation email
 			<img class="iconS" src="/key.png" /></button
 		>
@@ -93,7 +93,7 @@
 		font-size: small;
 		margin: 0;
 	}
-	button {
+	.confirm {
 		background-color: rgb(94, 90, 90);
 		padding-inline: 1rem;
 		font-size: small;
