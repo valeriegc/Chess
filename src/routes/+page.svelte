@@ -63,6 +63,7 @@
 			} else {
 				await setDoc(doc(db, 'users', userObj.uid), {
 					email: userObj?.email,
+					userName: userObj?.displayName,
 					theme: 'bw',
 					picture: '',
 					played: 0,

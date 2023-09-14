@@ -40,7 +40,7 @@ export const load = async ({ params, cookies }) => {
 			const userData = userDoc.data();
 
 			if (userData) {
-				(whitePic = userData.picture), (whiteName = userData.email);
+				(whitePic = userData.picture), (whiteName = userData.userName);
 			}
 
 			const gameRef = doc(db, 'games', gameId);

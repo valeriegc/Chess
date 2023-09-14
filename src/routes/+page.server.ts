@@ -1,4 +1,3 @@
-import { goto } from '$app/navigation';
 import { db } from '$lib/firebase/firebase.js';
 import { adminAuth } from '$lib/server/admin.js';
 import { fail } from '@sveltejs/kit';
@@ -32,7 +31,7 @@ export const actions = {
 			.then(async (userRecord) => {
 				await setDoc(doc(db, 'users', userRecord.uid), {
 					email: userRecord.email,
-					theme: 'bw',
+					userName: userRecord.displayName,
 					picture: '',
 					played: 0,
 					lost: 0,

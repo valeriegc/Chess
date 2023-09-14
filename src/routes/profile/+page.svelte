@@ -14,7 +14,14 @@
 {#if userData}
 	<div class="gridWrap">
 		<div class="grid">
-			<Details bind:open userEmail={userData.email} userPw={''} userPicture={userData.picture} />
+			<Details
+				bind:open
+				userEmail={userData.email}
+				userPw={''}
+				userPicture={userData.picture}
+				userName={userData.userName}
+				uid={userData.uid}
+			/>
 			<GameDetails played={userData.played} lost={userData.lost} won={userData.won} />
 			<img src="battle.jpg" class="themeImg" />
 		</div>
