@@ -30,7 +30,7 @@
 		let blackName = '';
 		if (userData) {
 			blackPic = userData.picture;
-			blackName = userData.email;
+			blackName = userData.userName;
 		}
 		try {
 			await setDoc(doc(db, 'games', $gameId), {

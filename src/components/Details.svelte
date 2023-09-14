@@ -1,31 +1,45 @@
 <script>
-	import { userPic } from '../stores';
+	import { doc, updateDoc } from 'firebase/firestore';
+	import { userId, userPic } from '../stores';
+	import { db } from '$lib/firebase/firebase';
 	export let userEmail;
 	export let userPw;
 	export let userPicture;
 	export let userName;
 	export let open;
+	export let uid;
+
+	export const updateUserName = async () => {
+		const userRef = doc(db, 'users', uid);
+		await updateDoc(userRef, {
+			userName: userName
+		});
+		editing = false;
+	};
+	$: editing = false;
 
 	$userPic = userPicture;
 </script>
 
 <div class="detailWrap">
 	<div style="margin-inline:auto">
-		<p style="margin:0; font-size:1.75rem;font-weight:200">User details</p>
+		<h3>User details</h3>
 		<div class="innerContainer">
 			<div>
-				<label>
-					<p>Username</p>
-					<p style="font-size:small">{userName}</p>
-				</label>
-				<label>
-					<p>Email</p>
-					<p style="font-weight:200;font-size:small">{userEmail}</p>
-				</label>
-				<label>
-					<p>Password</p>
-					<input value={userPw} placeholder="Password hidden here" />
-				</label>
+				<h4 class="detailHeaders">Username</h4>
+				<div>
+					<input
+						class="userDetail"
+						style="margin-bottom:3rem;"
+						bind:value={userName}
+						on:click={() => (editing = true)}
+					/>
+					{#if editing}
+						<button on:click={updateUserName}>Save</button>
+					{/if}
+				</div>
+				<h4 class="detailHeaders">Email</h4>
+				<p class="userDetail">{userEmail}</p>
 			</div>
 			<div class="pictureContainer">
 				<div class="picHeader">
@@ -45,12 +59,32 @@
 		background-color: rgba(0, 0, 0, 0.562);
 		border: none;
 		width: 40rem;
-		padding: 1.5rem;
+		padding-block: 1.5rem;
+		padding-inline: 2rem;
 	}
 	.innerContainer {
 		display: flex;
 		flex-direction: row;
-		justify-content: space-around;
+		justify-content: space-between;
+		padding-right: 5rem;
+	}
+	.userDetail {
+		font-size: small;
+		font-weight: 400;
+		margin-left: 1rem;
+	}
+	.detailHeaders {
+		margin: 0.5rem;
+	}
+	h3 {
+		margin: 0;
+		margin-bottom: 1rem;
+		font-size: 1.75rem;
+		font-weight: 200;
+	}
+	input {
+		height: 1.5rem;
+		width: 10rem;
 	}
 	.icon {
 		height: 2rem;
