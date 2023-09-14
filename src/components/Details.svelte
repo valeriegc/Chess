@@ -3,6 +3,7 @@
 	export let userEmail;
 	export let userPw;
 	export let userPicture;
+	export let userName;
 	export let open;
 
 	$userPic = userPicture;
@@ -14,8 +15,12 @@
 		<div class="innerContainer">
 			<div>
 				<label>
+					<p>Username</p>
+					<p style="font-size:small">{userName}</p>
+				</label>
+				<label>
 					<p>Email</p>
-					<p style="font-weight:200">{userEmail}</p>
+					<p style="font-weight:200;font-size:small">{userEmail}</p>
 				</label>
 				<label>
 					<p>Password</p>
@@ -40,7 +45,7 @@
 		background-color: rgba(0, 0, 0, 0.562);
 		border: none;
 		width: 40rem;
-		padding: 2rem;
+		padding: 1.5rem;
 	}
 	.innerContainer {
 		display: flex;
@@ -66,7 +71,8 @@
 	}
 
 	p {
-		font-weight: 700;
+		font-weight: 600;
+		font-size: medium;
 		color: whitesmoke;
 	}
 	.userPic {
