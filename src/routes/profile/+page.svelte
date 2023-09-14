@@ -2,7 +2,6 @@
 	import ChangePic from '../../components/ChangePic.svelte';
 	import Details from '../../components/Details.svelte';
 	import GameDetails from '../../components/GameDetails.svelte';
-	import { userPic } from '../../stores';
 	export let data;
 	let open = false;
 	let userData = data.userData;

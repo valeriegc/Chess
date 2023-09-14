@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { auth, db } from '$lib/firebase/firebase';
-	import { updateProfile } from 'firebase/auth';
 	import { userPic } from '../stores';
 	import { doc, updateDoc } from 'firebase/firestore';
 	export let open = true;
@@ -27,7 +26,7 @@
 			<img src="/close.png" class="icon" on:click={() => (open = false)} />
 		</div>
 		<div class="imgBox">
-			<img src={imageLink == '' ? firebaseUser.photoURL : imageLink} class="userPic" />
+			<img src={imageLink == '' ? $userPic : imageLink} class="userPic" />
 		</div>
 		<p>Input a link for the image below</p>
 		<div class="inputWrap">
