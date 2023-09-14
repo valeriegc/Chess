@@ -1,13 +1,16 @@
 <script lang="ts">
-	import { auth } from '$lib/firebase/firebase';
-	import { updateProfile } from 'firebase/auth';
+	import { auth, db } from '$lib/firebase/firebase';
 	import { userPic } from '../stores';
+	import { doc, updateDoc } from 'firebase/firestore';
 	export let open = true;
 
-	const firebaseUser = auth.currentUser;
+	const uid = auth.currentUser!.uid;
 
 	const setImageToFirebase = async () => {
-		await updateProfile(firebaseUser!, { photoURL: imageLink });
+		let userRef = doc(db, 'users', uid);
+		await updateDoc(userRef, {
+			picture: imageLink
+		});
 		open = false;
 		$userPic = imageLink;
 	};
@@ -22,7 +25,7 @@
 			<img src="/close.png" class="icon" on:click={() => (open = false)} />
 		</div>
 		<div class="imgBox">
-			<img src={imageLink == '' ? firebaseUser.photoURL : imageLink} class="userPic" />
+			<img src={imageLink == '' ? $userPic : imageLink} class="userPic" />
 		</div>
 		<p>Input a link for the image below</p>
 		<div class="inputWrap">

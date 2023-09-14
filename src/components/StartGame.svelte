@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { doc, setDoc } from 'firebase/firestore';
+	import { doc, getDoc, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
 	import { gameId, winner, moves, userId } from '../stores';
@@ -23,12 +23,23 @@
 	const createGame = async () => {
 		let boardArray = initPieces();
 		let turn = 'white';
+		let userRef = doc(db, 'users', $userId);
+		let userDoc = await getDoc(userRef);
+		let userData = userDoc.data();
+		let blackPic = '';
+		let blackName = '';
+		if (userData) {
+			blackPic = userData.picture;
+			blackName = userData.email;
+		}
 		try {
 			await setDoc(doc(db, 'games', $gameId), {
 				board: boardArray,
 				player: turn,
 				moves: $moves,
 				black: $userId,
+				blackPic: blackPic,
+				blackName: blackName,
 				white: '',
 				resignation: { resigned: false, resigner: '' },
 				winner: $winner,

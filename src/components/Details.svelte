@@ -1,11 +1,11 @@
 <script>
-	import { auth } from '$lib/firebase/firebase';
 	import { userPic } from '../stores';
 	export let userEmail;
 	export let userPw;
+	export let userPicture;
 	export let open;
 
-	$userPic = auth.currentUser?.photoURL;
+	$userPic = userPicture;
 </script>
 
 <div class="detailWrap">

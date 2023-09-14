@@ -28,16 +28,28 @@ export const load = async ({ params, cookies }) => {
 	const gameRef = doc(db, 'games', gameId);
 	const gameDoc = await getDoc(gameRef);
 	const gameStarted = gameDoc.exists();
+
 	if (gameStarted) {
 		const gameData = gameDoc.data();
 		playerIsWhite = userId !== gameData.black;
+		let whitePic = '';
+		let whiteName = '';
 		if (gameData.white == '' && playerIsWhite) {
+			const userRef = doc(db, 'users', userId);
+			const userDoc = await getDoc(userRef);
+			const userData = userDoc.data();
+
+			if (userData) {
+				(whitePic = userData.picture), (whiteName = userData.email);
+			}
+
 			const gameRef = doc(db, 'games', gameId);
 			await updateDoc(gameRef, {
-				white: userId
+				white: userId,
+				whitePic: whitePic,
+				whiteName: whiteName
 			});
 		}
 	}
-
 	return { gameId, userId, gameStarted, playerIsWhite };
 };
