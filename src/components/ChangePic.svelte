@@ -1,13 +1,18 @@
 <script lang="ts">
-	import { auth } from '$lib/firebase/firebase';
+	import { auth, db } from '$lib/firebase/firebase';
 	import { updateProfile } from 'firebase/auth';
 	import { userPic } from '../stores';
+	import { doc, updateDoc } from 'firebase/firestore';
 	export let open = true;
 
 	const firebaseUser = auth.currentUser;
+	const uid = auth.currentUser!.uid;
 
 	const setImageToFirebase = async () => {
-		await updateProfile(firebaseUser!, { photoURL: imageLink });
+		let userRef = doc(db, 'users', uid);
+		await updateDoc(userRef, {
+			picture: imageLink
+		});
 		open = false;
 		$userPic = imageLink;
 	};

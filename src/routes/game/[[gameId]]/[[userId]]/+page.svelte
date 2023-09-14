@@ -9,6 +9,7 @@
 	import { page } from '$app/stores';
 	import Resigned from '../../../../components/Resigned.svelte';
 	import GameEnded from '../../../../components/GameEnded.svelte';
+	import Opponents from '../../../../components/Opponents.svelte';
 
 	export let data: PageData;
 	$gameId = data.gameId;
@@ -41,7 +42,10 @@
 	{#if !data.gameStarted && visible}
 		<StartGame bind:visible />
 	{/if}
-	<MoveBox />
+	<div class="leftWrap">
+		<Opponents />
+		<MoveBox />
+	</div>
 	<Board />
 	{#if data.gameStarted}
 		<GameSettings />
