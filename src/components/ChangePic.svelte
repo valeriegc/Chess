@@ -4,7 +4,6 @@
 	import { doc, updateDoc } from 'firebase/firestore';
 	export let open = true;
 
-	const firebaseUser = auth.currentUser;
 	const uid = auth.currentUser!.uid;
 
 	const setImageToFirebase = async () => {
