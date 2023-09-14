@@ -86,6 +86,9 @@
 		height: 1.5rem;
 		width: 10rem;
 	}
+	button {
+		height: 1.5rem;
+	}
 	.icon {
 		height: 2rem;
 		width: auto;
