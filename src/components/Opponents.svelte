@@ -23,11 +23,22 @@
 
 <div class="wrap">
 	<div class="playerBox">
-		<img class="pic" src={player1Pic} />
+		<div class="picBox">
+			<img class="pic" src={player1Pic} />
+			<div class="iconWrap" style="background-color:white">
+				<img class="icon" src="/pawnIconBlack.png" />
+			</div>
+		</div>
 		<div>{player1Name}</div>
 	</div>
 	<div class="playerBox">
-		<img class="pic" src={player2Pic} />
+		<div class="picBox">
+			<img class="pic" src={player2Pic} />
+			<div class="iconWrap" style="background-color:black">
+				<img class="icon" src="/pawnIconWhite.png" />
+			</div>
+		</div>
+
 		<div>{player2Name}</div>
 	</div>
 </div>
@@ -56,5 +67,23 @@
 		border-radius: 100%;
 		height: 6rem;
 		width: 6rem;
+	}
+	.iconWrap {
+		border-radius: 100%;
+		position: absolute;
+		bottom: 0.25rem;
+		right: 0rem;
+		height: 2rem;
+		width: 2rem;
+		border: solid white 1px;
+		display: flex;
+	}
+	.icon {
+		height: 1.25rem;
+		width: 1.25rem;
+		margin: auto;
+	}
+	.picBox {
+		position: relative;
 	}
 </style>
