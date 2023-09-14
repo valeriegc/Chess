@@ -4,8 +4,8 @@
 	import { gameId } from '../stores';
 
 	let player1Pic = '';
-	let player1Name = '';
-	let player2Name = '';
+	let player1Name = 'Anonymous';
+	let player2Name = 'Anonymous';
 	let player2Pic = '';
 
 	$: if ($gameId) {
@@ -18,6 +18,10 @@
 					(player2Pic = allData.whitePic);
 			}
 		});
+		if (player1Name == '') player1Name = 'Anonymous';
+		if (player2Name == '') player2Name = 'Anonymous';
+		if (player1Pic == '') player1Pic = '/anonym.png';
+		if (player2Pic == '') player2Pic = '/anonym.png';
 	}
 </script>
 
@@ -29,8 +33,9 @@
 				<img class="icon" src="/pawnIconBlack.png" />
 			</div>
 		</div>
-		<div>{player1Name}</div>
+		<div class="name">{player1Name}</div>
 	</div>
+	VS.
 	<div class="playerBox">
 		<div class="picBox">
 			<img class="pic" src={player2Pic} />
@@ -38,8 +43,7 @@
 				<img class="icon" src="/pawnIconWhite.png" />
 			</div>
 		</div>
-
-		<div>{player2Name}</div>
+		<div class="name">{player2Name}</div>
 	</div>
 </div>
 
@@ -52,6 +56,7 @@
 		margin-bottom: 1rem;
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 	}
 	.playerBox {
 		width: 50%;
@@ -85,5 +90,8 @@
 	}
 	.picBox {
 		position: relative;
+	}
+	.name {
+		font-size: small;
 	}
 </style>
