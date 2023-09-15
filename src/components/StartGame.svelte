@@ -68,13 +68,11 @@
 			<h2>CHESS</h2>
 			<div><KingW /></div>
 		</div>
-		<p>
-			In order to start the game, copy the link and send it to your opponent. Once you are done,
-			click start and wait for your opponent.
-		</p>
+		<p>In order to start, copy the link and send it to your opponent.</p>
+		<p>Once you are done, click start and wait for their first move.</p>
 		<div class="choices">
 			<input value={url} />
-			<button on:click={() => handleCopy()}>Copy</button>
+			<button class="copy" on:click={() => handleCopy()}>Copy</button>
 			<button on:click={() => createGame()}>Start</button>
 		</div>
 	</div>
@@ -94,25 +92,35 @@
 	.modalWrap {
 		margin: auto;
 		width: 38rem;
+		background-image: url('/greyBG.jpg');
 		background-color: white;
+		color: whitesmoke;
 		padding: 2rem;
-		padding-inline: 4rem;
-		border: lightgray solid 0.5px;
+		padding-inline: 3rem;
+		border: gray solid 0.5px;
 		box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
 			rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+		border-radius: 5px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 	}
 	p {
-		color: black;
-		font-size: large;
+		font-size: medium;
+		margin: 0.5rem;
 	}
 	input {
-		border-color: black;
-		color: black;
+		font-size: small;
+		height: 2rem;
+		width: 60%;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		border-right: transparent solid 1px;
 	}
 
 	h2 {
 		text-align: center;
-		color: black;
 	}
 	.headerWrap {
 		display: flex;
@@ -121,18 +129,19 @@
 		justify-content: center;
 	}
 	.choices {
-		margin-top: 1rem;
-		margin-left: 2rem;
 		display: flex;
+		margin-top: 1rem;
+		width: 100%;
 		align-items: center;
+		justify-content: center;
 	}
 	button {
-		height: 2.5rem;
+		height: 2rem;
 		padding-inline: 1rem;
-		margin-right: 0.5rem;
-		border: solid black 1px;
 	}
-	input {
-		height: 2.5rem;
+	.copy {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+		margin-right: 0.75rem;
 	}
 </style>
