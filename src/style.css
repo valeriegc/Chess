@@ -16,6 +16,7 @@
 	}
 button {
 	height: 2.75rem;
+	border-radius:5px;
 	border: none;
 	background-color: black;
 	font-size: medium;
@@ -23,24 +24,26 @@ button {
 	cursor:pointer;
 }
 button:hover {
-	transition-duration: 0.5;
-	background-color: var(--secondary);
+	transition-duration: 0.4s;
+	background-color: rgb(56, 57, 59);
 }
 input {
 	height: 2rem;
-	border: solid 0.5px whitesmoke;
+	border: solid 0.5px rgb(84, 83, 83);
 	color: whitesmoke;
 	font-size: medium;
 	padding-inline: 0.5rem;
 	background-color: transparent;
+	border-radius:5px;
 	outline:none;
 }
 input::placeholder {
-	color: whitesmoke;
+	color: grey;
 }
 input::hover{
 	border:none;
 }
 input:focus {
-	outline: none;
+	outline:none;
+	border: solid 0.5px whitesmoke;
 }

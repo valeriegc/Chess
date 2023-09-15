@@ -148,12 +148,13 @@
 				>
 			</div>
 			<form method="POST" use:enhance>
-				<input name="email" type="email" placeholder="Email" bind:value={email} />
-				<input name="password" type="password" placeholder="Password" bind:value={password} />
-				{#if createAccount}
-					<input name="confirmPassword" type="password" placeholder="Confirm Password" />
-				{/if}
-
+				<div class="contentWrap">
+					<input name="email" type="email" placeholder="Email" bind:value={email} />
+					<input name="password" type="password" placeholder="Password" bind:value={password} />
+					{#if createAccount}
+						<input name="confirmPassword" type="password" placeholder="Confirm Password" />
+					{/if}
+				</div>
 				{#if loginError && showError}
 					<div class="error">
 						{loginError}
@@ -178,16 +179,17 @@
 						<div class="closeError">x</div>
 					</div>
 				{/if}
-
-				<button
-					on:click={() => (createAccount ? '' : regularSignIn())}
-					type={createAccount ? 'submit' : 'button'}
-					>{createAccount ? ' Sign up' : 'Login'}
-				</button>
-				<button on:click={singInWithGoogle} class="googleBtn" type="button">
-					<img src="googleWhite.png" width="20" height="20" alt="logo of google" />
-					{createAccount ? ' Sign up' : 'Login'} with Google</button
-				>
+				<div class="contentWrap">
+					<button
+						on:click={() => (createAccount ? '' : regularSignIn())}
+						type={createAccount ? 'submit' : 'button'}
+						>{createAccount ? ' Sign up' : 'Login'}
+					</button>
+					<button on:click={singInWithGoogle} class="googleBtn" type="button">
+						<img src="googleWhite.png" width="20" height="20" alt="logo of google" />
+						{createAccount ? ' Sign up' : 'Login'} with Google</button
+					>
+				</div>
 				<div class="linkBox">
 					<p class="option" on:click={() => (open = true)}>Forgot your password?</p>
 					<p class="option" on:click={() => goto('/game')}>Continue without registration</p>
@@ -215,7 +217,7 @@
 		font-size: 9rem;
 		left: 18rem;
 		top: 19rem;
-		color: rgb(245, 245, 245);
+		color: whitesmoke;
 	}
 	.mainImg {
 		margin-left: 5rem;
@@ -242,15 +244,18 @@
 	.choiceBtn {
 		background-color: transparent;
 		border-bottom: solid transparent 1px;
+		border-radius: 0;
 	}
 	.choiceBtn:hover {
 		background-color: transparent;
-		color: white;
+		color: whitesmoke;
 	}
-	form {
+	.contentWrap {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		gap: 0.3rem;
+		margin-bottom: 1rem;
 	}
 	.googleBtn {
 		display: flex;
@@ -259,15 +264,16 @@
 		gap: 0.5rem;
 	}
 	.error {
-		color: lightpink;
-		margin: 0;
+		color: pink;
+		font-size: small;
+		margin-bottom: 1rem;
 		position: relative;
 	}
 	.closeError {
 		color: lightpink;
 		position: absolute;
 		right: 0;
-		top: 0;
+		top: -1rem;
 		font-size: medium;
 		cursor: pointer;
 	}
