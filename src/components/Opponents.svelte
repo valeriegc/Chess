@@ -18,32 +18,28 @@
 					(player2Pic = allData.whitePic);
 			}
 		});
-		if (player1Name == '') player1Name = 'Anonymous';
-		if (player2Name == '') player2Name = 'Anonymous';
-		if (player1Pic == '') player1Pic = '/anonym.png';
-		if (player2Pic == '') player2Pic = '/anonym.png';
 	}
 </script>
 
 <div class="wrap">
 	<div class="playerBox">
 		<div class="picBox">
-			<img class="pic" src={player1Pic} />
+			<img class="pic" src={player1Pic ? player1Pic : '/anonym.png'} />
 			<div class="iconWrap" style="background-color:white">
 				<img class="icon" src="/pawnIconBlack.png" />
 			</div>
 		</div>
-		<div class="name">{player1Name}</div>
+		<div class="name">{player1Name ? player1Name : 'Anonymous'}</div>
 	</div>
 	VS.
 	<div class="playerBox">
 		<div class="picBox">
-			<img class="pic" src={player2Pic} />
+			<img class="pic" src={player2Pic ? player2Pic : '/anonym.png'} />
 			<div class="iconWrap" style="background-color:black">
 				<img class="icon" src="/pawnIconWhite.png" />
 			</div>
 		</div>
-		<div class="name">{player2Name}</div>
+		<div class="name">{player2Name ? player2Name : 'Anonymous'}</div>
 	</div>
 </div>
 

@@ -4,6 +4,10 @@
 	import { arrayUnion, doc, updateDoc, onSnapshot } from 'firebase/firestore';
 	import { gameId } from '../stores';
 
+	let hoveringChat = false;
+	let hoveringGiveup = false;
+	let hoveringTie = false;
+
 	interface Msg {
 		message: string;
 		sender: string;
@@ -15,25 +19,16 @@
 				chat = true;
 				giveup = false;
 				tie = false;
-				takeback = false;
 				break;
 			case 'giveup':
 				chat = false;
 				giveup = true;
 				tie = false;
-				takeback = false;
 				break;
 			case 'tie':
 				chat = false;
 				giveup = false;
 				tie = true;
-				takeback = false;
-				break;
-			case 'takeback':
-				chat = false;
-				giveup = false;
-				tie = false;
-				takeback = true;
 				break;
 		}
 	};
@@ -41,7 +36,6 @@
 	let chat = true;
 	let giveup = false;
 	let tie = false;
-	let takeback = false;
 	let msg = '';
 	let messages: Msg[] = [];
 
@@ -84,20 +78,25 @@
 <div class="container">
 	<div>
 		<button
-			style="border-bottom:{chat ? '2px solid white' : 'none'}"
-			on:click={() => controlMenu('chat')}><img class="icon" src="/chat.png" /></button
+			style="border-bottom:{chat || hoveringChat ? '2px solid whitesmoke' : 'none'}"
+			on:mouseover={() => (hoveringChat = true)}
+			on:mouseleave={() => (hoveringChat = false)}
+			on:click={() => controlMenu('chat')}
+			class="menuBtn"><img class="icon" src="/chat.png" /></button
 		>
 		<button
-			style="border-bottom:{giveup ? '2px solid white' : 'none'}"
-			on:click={() => controlMenu('giveup')}><img src="/resign.png" class="icon" /></button
+			style="border-bottom:{giveup || hoveringGiveup ? '2px solid whitesmoke' : 'none'}"
+			on:mouseover={() => (hoveringGiveup = true)}
+			on:mouseleave={() => (hoveringGiveup = false)}
+			on:click={() => controlMenu('giveup')}
+			class="menuBtn"><img src="/resign.png" class="icon" /></button
 		>
 		<button
-			style="border-bottom:{tie ? '2px solid white' : 'none'}"
-			on:click={() => controlMenu('tie')}><img src="/tie.png" class="icon" /></button
-		>
-		<button
-			style="border-bottom:{takeback ? '2px solid white' : 'none'}"
-			on:click={() => controlMenu('takeback')}><img src="/return.png" class="icon" /></button
+			style={tie || hoveringTie ? 'border-bottom:solid whitesmoke 2px' : ''}
+			on:mouseover={() => (hoveringTie = true)}
+			on:mouseleave={() => (hoveringTie = false)}
+			on:click={() => controlMenu('tie')}
+			class="menuBtn"><img src="/tie.png" class="icon" /></button
 		>
 	</div>
 
@@ -123,7 +122,8 @@
 			<div class="innerWrap">
 				<p>Resign the game?</p>
 				<div>
-					<button on:click={resignGame} class="yesButton">Yes</button><button
+					<button on:click={resignGame} class="noAndYes" id="yes">Yes</button><button
+						class="noAndYes"
 						on:click={() => controlMenu('chat')}>No</button
 					>
 				</div>
@@ -134,19 +134,9 @@
 			<div class="innerWrap">
 				<p>Suggest a tie?</p>
 				<div>
-					<button class="yesButton">Yes</button><button on:click={() => controlMenu('chat')}
-						>No</button
-					>
-				</div>
-			</div>
-		</div>
-	{:else if takeback}
-		<div class="messageWrap">
-			<div class="innerWrap">
-				<p>Ask opponent for takeback?</p>
-				<div>
-					<button class="yesButton">Yes</button><button on:click={() => controlMenu('chat')}
-						>No</button
+					<button class="noAndYes" id="yes">Yes</button><button
+						class="noAndYes"
+						on:click={() => controlMenu('chat')}>No</button
 					>
 				</div>
 			</div>
@@ -158,25 +148,31 @@
 	.container {
 		height: 400px;
 		width: 300px;
-		margin-right: 5rem;
+		margin-right: 2rem;
 	}
 	.icon {
 		height: 2rem;
 		width: auto;
 	}
 
-	button {
+	.menuBtn {
 		text-align: left;
 		margin-bottom: 1rem;
 		border: solid transparent 2px;
 	}
-	button:hover {
+	.menuBtn:hover {
 		background-color: black;
 		border: solid transparent 2px;
 		border-bottom: white 2px solid;
+		transition: 0;
 	}
-	.yesButton {
+	#yes {
 		margin-right: 1rem;
+	}
+	.noAndYes {
+		font-size: small;
+		padding-inline: 1rem;
+		padding-block: 0.5rem;
 	}
 
 	textarea {
@@ -187,13 +183,16 @@
 		border: solid black 1px;
 		padding: 5px;
 		outline: none;
+		border-radius: 5px;
 	}
 	.messageWrap {
 		border: solid black 1px;
+		border-radius: 5px;
 		height: 70%;
 		background-color: rgba(0, 0, 0, 0.411);
 		display: flex;
 		flex-direction: column;
+		padding: 2rem;
 	}
 	.innerWrap {
 		margin: auto;

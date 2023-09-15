@@ -1,6 +1,5 @@
 <script>
 	import { waiting, resign, player, winner } from '../stores';
-	import AuthControl from './AuthControl.svelte';
 </script>
 
 <div class="spinnerBox">
@@ -41,12 +40,12 @@
 		background-color: whitesmoke;
 		animation: spin 1s infinite alternate;
 	}
-	@keyframes spin {
+	/**@keyframes spin {
 		from {
 			transform: translate3d(30px, 0, 0);
 		}
 		to {
 			transform: translate3d(-30px, 0, 0);
 		}
-	}
+	}**/
 </style>
