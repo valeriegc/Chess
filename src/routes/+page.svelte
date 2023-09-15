@@ -23,6 +23,8 @@
 	let showError = true;
 	let forgotPw = true;
 	let open = false;
+	let createAccountHover = false;
+	let logInHover = false;
 
 	$: if (success) {
 		goto('/profile');
@@ -130,14 +132,19 @@
 		<div class="formWrap">
 			<div class="formChoices">
 				<button
+					on:mouseover={() => (logInHover = true)}
+					on:mouseleave={() => (logInHover = false)}
 					class="choiceBtn"
-					style="border-bottom:{createAccount ? 'none' : 'solid 1px whitesmoke'}"
+					style="border-bottom:{!createAccount || logInHover ? 'solid 1px whitesmoke' : ''}"
 					on:click={() => (createAccount = false)}>Log in</button
 				>
 				<button
+					on:mouseover={() => (createAccountHover = true)}
+					on:mouseleave={() => (createAccountHover = false)}
 					class="choiceBtn"
 					on:click={() => (createAccount = true)}
-					style="border-bottom:{!createAccount ? 'none' : 'solid 1px whitesmoke'}">Sign up</button
+					style="border-bottom:{createAccount || createAccountHover ? 'solid 1px whitesmoke' : ''}"
+					>Sign up</button
 				>
 			</div>
 			<form method="POST" use:enhance>
@@ -234,9 +241,11 @@
 	}
 	.choiceBtn {
 		background-color: transparent;
+		border-bottom: solid transparent 1px;
 	}
 	.choiceBtn:hover {
 		background-color: transparent;
+		color: white;
 	}
 	form {
 		display: flex;
