@@ -22,16 +22,19 @@
 		type FillSquare,
 		getCastleLocations,
 		invalidSelection,
-		findKing
+		findKing,
+		rowOnEdge
 	} from '../global';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
 	import { getPiececomponent } from '../functions/getPieceComponent';
 	import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 	import { db, user } from '$lib/firebase/firebase';
 	import { isCheckMate } from '../functions/isCheckMate';
+	import PromoteModal from './PromoteModal.svelte';
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
+	let promotionVisible = false;
 
 	$: if (turn !== $player) {
 		$waiting = true;
@@ -87,6 +90,10 @@
 			player: turn,
 			moves: $moves
 		});
+	};
+
+	const pawnPromotion = () => {
+		promotionVisible = true;
 	};
 
 	const updateFirebaseStats = async () => {
@@ -177,16 +184,19 @@
 
 		const moveAllowed = allowedMoves.includes(clickedSquare);
 
-		if (moveAllowed) {
-			if (isKingCastling(boardArr[clickedSquare].piece, turn)) {
-				castleKing(selectedSquare, clickedSquare, boardArr);
-			} else {
-				movePiece(clickedSquare);
-			}
-		} else {
+		if (!moveAllowed) {
 			updateSelection(clickedSquare);
 			return;
 		}
+
+		if (isKingCastling(boardArr[clickedSquare].piece, turn)) {
+			castleKing(selectedSquare, clickedSquare, boardArr);
+		} else if (selectedPiece.type == 'pawn' && rowOnEdge(clickedSquare)) {
+			pawnPromotion();
+		} else {
+			movePiece(clickedSquare);
+		}
+
 		resetSelection();
 		resetAllowedMoves();
 		kingLocation = findKing(boardArr, turn);
@@ -216,6 +226,9 @@
 </script>
 
 <div class="boardOuterWrap">
+	{#if promotionVisible}
+		<PromoteModal bind:promotionVisible />
+	{/if}
 	<div class="boardX">
 		{#each letters as letter}
 			<div class="letters">{letter}</div>
@@ -285,8 +298,8 @@
 	.boardOuterWrap {
 		display: flex;
 		flex-direction: column;
-		width: 680px;
 		margin-left: 3rem;
+		position: relative;
 	}
 	.boardX {
 		display: flex;
