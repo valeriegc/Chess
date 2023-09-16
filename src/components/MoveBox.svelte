@@ -1,6 +1,6 @@
 <script>
 	import { getPiececomponent } from '../functions/getPieceComponent';
-	import { moves } from '../stores';
+	import { moves } from '../stores/moves';
 	import Spinner from './Spinner.svelte';
 </script>
 

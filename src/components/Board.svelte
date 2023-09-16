@@ -17,7 +17,6 @@
 	import {
 		alphaCalc,
 		isKingCastling,
-		letters,
 		darkSquares,
 		type FillSquare,
 		getCastleLocations,
@@ -31,6 +30,8 @@
 	import { db, user } from '$lib/firebase/firebase';
 	import { isCheckMate } from '../functions/isCheckMate';
 	import PromoteModal from './PromoteModal.svelte';
+	import BoardWrap from './BoardWrap.svelte';
+	import { addMoves } from '../stores/moves';
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
@@ -150,19 +151,6 @@
 		});
 	};
 
-	const addMoves = (previouspos: number, newpos: number, piece: Piece) => {
-		const preAlph = alphaCalc(previouspos);
-		const postAlph = alphaCalc(newpos);
-		$moves.push({
-			pre: previouspos,
-			post: newpos,
-			piece: piece,
-			preCoord: preAlph,
-			postCoord: postAlph
-		});
-		$moves = $moves;
-	};
-
 	const castleKing = (oldKingLoc: number, oldTowerLoc: number, board: Square[]) => {
 		const movingKing = board[oldKingLoc].piece!;
 		const movingTower = board[oldTowerLoc].piece!;
@@ -225,108 +213,40 @@
 	}
 </script>
 
-<div class="boardOuterWrap">
-	{#if promotionVisible}
-		<PromoteModal bind:promotionVisible />
-	{/if}
-	<div class="boardX">
-		{#each letters as letter}
-			<div class="letters">{letter}</div>
-		{/each}
-	</div>
-	<div class="boardInnerWrap">
-		<div class="boardY">
-			<div class="boardY">
-				{#if black}
-					{#each { length: 8 } as _, i}
-						<div class="numbers">{i + 1}</div>
-					{/each}
-				{:else}
-					{#each { length: 8 } as _, i}
-						<div class="numbers">{8 - i}</div>
-					{/each}
+{#if promotionVisible}
+	<PromoteModal bind:promotionVisible />
+{/if}
+<BoardWrap player={$player}>
+	<div class="boardGrid" class:black>
+		{#each boardArr as square, i}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<div
+				class="square"
+				class:black
+				style="background-color:{checked &&
+				turn == square.piece?.color &&
+				square.piece.type == 'king'
+					? 'red'
+					: allowedMoves.includes(i)
+					? 'var(--possibleMove)'
+					: i == selectedSquare
+					? 'var(--selectedSquare)'
+					: darkSquares.includes(i)
+					? 'var(--darkSquare)'
+					: 'var(--lightSquare)'}"
+				on:click={() => handleSelectAndMove(i)}
+			>
+				{#if square.piece !== null}
+					<div in:fly={{ duration: 1000 }} out:fade>
+						<svelte:component this={getPiececomponent(square.piece)} />
+					</div>
 				{/if}
 			</div>
-		</div>
-		<div class="boardGrid" class:black>
-			{#each boardArr as square, i}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<div
-					class="square"
-					class:black
-					style="background-color:{checked &&
-					turn == square.piece?.color &&
-					square.piece.type == 'king'
-						? 'red'
-						: allowedMoves.includes(i)
-						? 'var(--possibleMove)'
-						: i == selectedSquare
-						? 'var(--selectedSquare)'
-						: darkSquares.includes(i)
-						? 'var(--darkSquare)'
-						: 'var(--lightSquare)'}"
-					on:click={() => handleSelectAndMove(i)}
-				>
-					{#if square.piece !== null}
-						<div in:fly={{ duration: 1000 }} out:fade>
-							<svelte:component this={getPiececomponent(square.piece)} />
-						</div>
-					{/if}
-				</div>
-			{/each}
-		</div>
-		<div class="boardY">
-			{#if black}
-				{#each { length: 8 } as _, i}
-					<div class="numbers">{i + 1}</div>
-				{/each}
-			{:else}
-				{#each { length: 8 } as _, i}
-					<div class="numbers">{8 - i}</div>
-				{/each}
-			{/if}
-		</div>
-	</div>
-	<div class="boardX">
-		{#each letters as letter}
-			<div class="letters">{letter}</div>
 		{/each}
 	</div>
-</div>
+</BoardWrap>
 
 <style>
-	.boardOuterWrap {
-		display: flex;
-		flex-direction: column;
-		margin-left: 3rem;
-		position: relative;
-	}
-	.boardX {
-		display: flex;
-		height: 40px;
-		padding-inline: 40px;
-	}
-	.letters {
-		width: 70px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: whitesmoke;
-	}
-	.boardInnerWrap {
-		display: flex;
-	}
-	.boardY {
-		height: 100%;
-		width: 40px;
-	}
-	.numbers {
-		height: 70px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: whitesmoke;
-	}
 	.boardGrid {
 		height: 550px;
 		width: 550px;
