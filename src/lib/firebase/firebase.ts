@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, type User } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { writable } from 'svelte/store';
@@ -28,7 +28,6 @@ const userStore = () => {
 			subscribe
 		};
 	}
-
 	const { subscribe } = writable(auth?.currentUser ?? null, (set) => {
 		unsubscribe = onAuthStateChanged(auth, (user) => {
 			set(user);

@@ -1,7 +1,7 @@
 import type { Piece, Square } from '$lib/interfaces/interfaces';
 import { kingChecked } from './kingChecked';
 
-export const moveAllowedWhileCheck = (
+export const kingNotChecked = (
 	board: Square[],
 	newLoc: number,
 	currentLoc: number,

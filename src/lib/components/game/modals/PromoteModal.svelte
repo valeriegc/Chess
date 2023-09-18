@@ -1,6 +1,6 @@
 <script>
 	import { player } from '../../../stores/stores';
-	export let promotionVisible;
+	export let promotePawn;
 	import QueenB from '../../../../pieces/Queen_B.svelte';
 	import QueenW from '../../../../pieces/Queen_W.svelte';
 	import HorseB from '../../../../pieces/Horse_B.svelte';
