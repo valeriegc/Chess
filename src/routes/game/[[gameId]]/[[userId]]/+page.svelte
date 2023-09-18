@@ -10,8 +10,10 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import Game from '$lib/components/game/Game.svelte';
+	import PromoteModal from '$lib/components/game/modals/PromoteModal.svelte';
 
 	export let data: PageData;
+	let promotePawn = false;
 	$gameId = data.gameId;
 	$userId = data.userId;
 	let visible = true;
@@ -46,7 +48,7 @@
 		<Opponents />
 		<MoveBox />
 	</div>
-	<Game />
+	<Game {promotePawn} />
 	{#if data.gameStarted}
 		<Settings />
 	{/if}
@@ -55,6 +57,9 @@
 	{/if}
 	{#if $winner}
 		<GameEnded />
+	{/if}
+	{#if promotePawn}
+		<PromoteModal bind:promotePawn />
 	{/if}
 </div>
 

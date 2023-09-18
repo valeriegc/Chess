@@ -1,18 +1,24 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import type { Square } from '../stores/stores';
 import type { Move } from '../stores/moves';
 import { db } from '$lib/firebase/firebase';
+import type { Square } from '$lib/interfaces/interfaces';
 
 export const updateFirebase = async (gameRef, board: Square[], player: string, moves: Move[]) => {
 	await updateDoc(gameRef, {
 		board: board,
 		player: player,
-		moves: moves
+		moves: moves,
+		checked: ''
 	});
 };
-export const updateWinnerToFirebase = async (gameRef, winner) => {
+export const updateWinnerToFirebase = async (gameRef, player) => {
 	await updateDoc(gameRef, {
-		winner: winner
+		winner: player
+	});
+};
+export const sendCheckToFirebase = async (gameRef, turn) => {
+	await updateDoc(gameRef, {
+		checked: turn
 	});
 };
 
@@ -34,9 +40,4 @@ export const updateFirebaseStats = async (player, winner, userId) => {
 			won: won
 		});
 	}
-};
-export const sendCheckToFirebase = async (gameRef, player) => {
-	await updateDoc(gameRef, {
-		checked: player == 'white' ? 'black' : 'white'
-	});
 };

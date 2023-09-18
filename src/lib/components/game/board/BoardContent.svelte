@@ -9,7 +9,7 @@
 	export let possibleMoves: number[];
 	export let selectedSquare: number;
 	export let black: boolean;
-	export let handleSelectAndMove;
+	export let handleClick;
 </script>
 
 <div class="boardGrid" class:black>
@@ -27,7 +27,7 @@
 				: darkSquares.includes(i)
 				? 'var(--darkSquare)'
 				: 'var(--lightSquare)'}"
-			on:click={() => handleSelectAndMove(i)}
+			on:click={() => handleClick(i)}
 		>
 			{#if square.piece !== null}
 				<div in:fly={{ duration: 1000 }} out:fade>
