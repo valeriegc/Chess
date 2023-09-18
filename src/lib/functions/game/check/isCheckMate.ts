@@ -1,6 +1,6 @@
 import type { Square } from '$lib/interfaces/interfaces';
 import { pieceCheck } from '../moving/pieceCheck';
-import { moveAllowedWhileCheck } from './checkedMoves';
+import { kingNotChecked } from './checkedMoves';
 
 export const isCheckMate = (boardArr: Square[], turn: 'black' | 'white', kingLoc: number) => {
 	//filter boardArr to all pieces that have same color as the player is maintaining square numbers and pieces
@@ -25,7 +25,7 @@ export const isCheckMate = (boardArr: Square[], turn: 'black' | 'white', kingLoc
 
 		if (allowed.length > 0) {
 			actualAllowed = allowed.filter((n) => {
-				moveAllowedWhileCheck(boardArr, n, currentSquare, kingLoc, currentPiece, turn);
+				kingNotChecked(boardArr, n, currentSquare, kingLoc, currentPiece, turn);
 			});
 		}
 		//if allowed moves found, change checkmate to false, as player has moves

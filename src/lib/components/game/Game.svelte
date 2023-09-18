@@ -1,26 +1,27 @@
 <script lang="ts">
 	import { gameId, player, waiting, resign, winner, userId } from '../../stores/stores';
 	import { doc, onSnapshot } from 'firebase/firestore';
-	import { db, user } from '$lib/firebase/firebase';
+	import { db } from '$lib/firebase/firebase';
 	import PromoteModal from './modals/PromoteModal.svelte';
 	import BoardWrap from './board/BoardWrap.svelte';
 	import { addMoves, moves } from '../../stores/moves';
+	import { changeTurn } from '../../functions/game/turns/changeTurn';
 	import {
 		sendCheckToFirebase,
 		updateFirebase,
-		updateFirebaseStats,
-		updateWinnerToFirebase
+		updateFirebaseStats
 	} from '$lib/firebase/firebaseUpdate';
 	import { initPieces } from '$lib/functions/rendering/initPieces';
-	import type { FillSquare, Piece, Square } from '$lib/interfaces/interfaces';
-	import { findKing, invalidSelection } from '$lib/functions/game/moving/squareContent';
+	import type { Piece } from '$lib/interfaces/interfaces';
+	import { fillSquare, findKing, invalidSelection } from '$lib/functions/game/moving/squareContent';
 	import { pieceCheck } from '$lib/functions/game/moving/pieceCheck';
-	import { getCastleLocations, isKingCastling } from '$lib/functions/game/castling/castling';
+	import { castleKing, isKingCastling } from '$lib/functions/game/castling/castling';
 	import { rowOnEdge } from '$lib/functions/game/moving/squareLocation';
-	import { isCheckMate } from '$lib/functions/game/check/isCheckMate';
-	import { moveAllowedWhileCheck } from '$lib/functions/game/check/checkedMoves';
+	import { kingNotChecked } from '$lib/functions/game/check/checkedMoves';
 	import { kingChecked } from '$lib/functions/game/check/kingChecked';
 	import BoardContent from './board/BoardContent.svelte';
+	import { checkForWinner } from '$lib/functions/game/winning/winnerCheck';
+	import { emptySquare } from '$lib/functions/game/moving/squareContent';
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
@@ -31,61 +32,32 @@
 	} else {
 		$waiting = false;
 	}
-
 	$: black = $player == 'black';
-
-	let selectedSquare = -1;
-	let kingLocation = -1;
-	let allowedMoves: number[] = [];
-	let allAllowedMoves: number[];
-	let selectedPiece: Piece;
-	let checked = false;
 	$: gameRef = doc(db, 'games', $gameId);
-
-	const resetSelection = () => {
-		selectedSquare = -1;
-	};
-	const resetAllowedMoves = () => {
-		allowedMoves = [];
-		allAllowedMoves = [];
-	};
-
-	const changeTurn = () => {
-		turn == 'white' ? (turn = 'black') : (turn = 'white');
-		return turn;
-	};
-
 	$: if ($winner !== '') {
 		updateFirebaseStats($player, $winner, $userId);
 	}
 
-	const checkForWinner = async () => {
-		kingLocation = findKing(boardArr, turn);
-		const checkMate = isCheckMate(boardArr, turn, kingLocation);
-		if (checkMate) {
-			updateWinnerToFirebase(gameRef, $player);
-			checkForWinner();
-		}
+	let selectedSquare = -1;
+	let possibleMoves: number[] = [];
+	let selectedPiece: Piece;
+	let checked = false;
+
+	const resetSelection = () => {
+		selectedSquare = -1;
+		possibleMoves = [];
 	};
 
-	const fillSquare = ({ piece, square }: FillSquare) => {
-		boardArr[square].piece = piece;
-	};
-	const emptySquare = (square: number) => {
-		boardArr[square].piece = null;
-	};
 	const pawnPromotion = () => {
 		promotionVisible = true;
 	};
 
 	const movePiece = async (newSquare: number) => {
 		checked = false;
-		emptySquare(selectedSquare);
-		fillSquare({ piece: selectedPiece!, square: newSquare });
+		boardArr = emptySquare(boardArr, selectedSquare);
+		boardArr = fillSquare({ piece: selectedPiece!, square: newSquare }, boardArr);
 		addMoves(selectedSquare, newSquare, selectedPiece!);
-		resetSelection();
-		resetAllowedMoves();
-		changeTurn();
+		turn = changeTurn(turn);
 		updateFirebase(gameRef, boardArr, turn, $moves);
 	};
 
@@ -93,38 +65,23 @@
 		if (invalidSelection(boardArr, clickedSquare, turn)) return;
 		selectedSquare = clickedSquare;
 		selectedPiece = boardArr[selectedSquare].piece!;
-		let initialAllowed = pieceCheck(
+		let movesForPiece = pieceCheck(
 			boardArr[selectedSquare].piece!,
 			selectedSquare,
 			boardArr,
 			turn
 		)!;
-		kingLocation = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
-		allowedMoves = initialAllowed.filter((n: number) => {
-			return moveAllowedWhileCheck(boardArr, n, selectedSquare, kingLocation, selectedPiece!, turn);
+		const kingLoc = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
+		possibleMoves = movesForPiece.filter((n: number) => {
+			return kingNotChecked(boardArr, n, selectedSquare, kingLoc, selectedPiece!, turn);
 		});
-	};
-
-	const castleKing = (oldKingLoc: number, oldTowerLoc: number, board: Square[]) => {
-		const movingKing = board[oldKingLoc].piece!;
-		const movingTower = board[oldTowerLoc].piece!;
-		const newLocations = getCastleLocations(oldTowerLoc, oldKingLoc);
-
-		emptySquare(oldKingLoc);
-		emptySquare(oldTowerLoc);
-
-		fillSquare({ piece: movingKing!, square: newLocations.king });
-		fillSquare({ piece: movingTower!, square: newLocations.tower });
-
-		addMoves(oldKingLoc, newLocations.king, movingKing);
-		addMoves(oldTowerLoc, newLocations.tower, movingTower);
 	};
 
 	const handleSelectAndMove = (clickedSquare: number) => {
 		const playersTurn = turn == $player;
 		if (!playersTurn) return;
 
-		const moveAllowed = allowedMoves.includes(clickedSquare);
+		const moveAllowed = possibleMoves.includes(clickedSquare);
 
 		if (!moveAllowed) {
 			updateSelection(clickedSquare);
@@ -132,19 +89,18 @@
 		}
 
 		if (isKingCastling(boardArr[clickedSquare].piece, turn)) {
-			castleKing(selectedSquare, clickedSquare, boardArr);
+			boardArr = castleKing(selectedSquare, clickedSquare, boardArr);
 		} else if (selectedPiece.type == 'pawn' && rowOnEdge(clickedSquare)) {
 			pawnPromotion();
 		} else {
 			movePiece(clickedSquare);
 		}
-
 		resetSelection();
-		resetAllowedMoves();
-		kingLocation = findKing(boardArr, turn);
-		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
+		const kingLoc = findKing(boardArr, turn);
+		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLoc);
 		if (checked) {
 			sendCheckToFirebase(gameRef, player);
+			checkForWinner(boardArr, turn, player, gameRef);
 		}
 	};
 
@@ -174,7 +130,7 @@
 	<BoardContent
 		{boardArr}
 		{selectedSquare}
-		{allowedMoves}
+		{possibleMoves}
 		{turn}
 		{checked}
 		{black}

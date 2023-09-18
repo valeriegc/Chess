@@ -2,6 +2,7 @@ import { get } from 'svelte/store';
 import { kingChecked } from '../check/kingChecked';
 import { moves } from '../../../stores/moves';
 import type { Piece, Square } from '$lib/interfaces/interfaces';
+import { emptySquare, fillSquare } from '../moving/squareContent';
 
 export const isKingCastling = (squareContent: Piece | null, turn: string) => {
 	if (squareContent == null) return false;
@@ -83,4 +84,20 @@ export const castlingCheck = (board: Square[], turn: 'black' | 'white') => {
 	}
 
 	return castleSquares;
+};
+
+export const castleKing = (oldKingLoc: number, oldTowerLoc: number, board: Square[]) => {
+	const movingKing = board[oldKingLoc].piece!;
+	const movingTower = board[oldTowerLoc].piece!;
+	const newLocations = getCastleLocations(oldTowerLoc, oldKingLoc);
+
+	board = emptySquare(board, oldKingLoc);
+	board = emptySquare(board, oldTowerLoc);
+	board = fillSquare({ piece: movingKing!, square: newLocations.king }, board);
+	board = fillSquare({ piece: movingKing!, square: newLocations.king }, board);
+
+	addMoves(oldKingLoc, newLocations.king, movingKing);
+	addMoves(oldTowerLoc, newLocations.tower, movingTower);
+
+	return boardArr;
 };

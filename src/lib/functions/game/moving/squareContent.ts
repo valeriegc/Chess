@@ -1,4 +1,4 @@
-import type { Piece, Square } from '$lib/interfaces/interfaces';
+import type { FillSquare, Piece, Square } from '$lib/interfaces/interfaces';
 
 export const hasOwnPiece = (squareContent: Piece | null, turn: string) => {
 	if (!squareContent) return false;
@@ -24,4 +24,13 @@ export const invalidSelection = (
 };
 export const findKing = (board: Square[], turn: 'black' | 'white') => {
 	return board.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
+};
+
+export const emptySquare = (board: Square[], square: number) => {
+	board[square].piece = null;
+	return board;
+};
+export const fillSquare = ({ piece, square }: FillSquare, board: Square[]) => {
+	board[square].piece = piece;
+	return board;
 };

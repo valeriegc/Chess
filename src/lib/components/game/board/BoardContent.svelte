@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
 	import { darkSquares } from '$lib/functions/rendering/board';
 	import { getPiececomponent } from '$lib/functions/rendering/getPieceComponent';
+	import type { Square } from '$lib/interfaces/interfaces';
 	import { fade, fly } from 'svelte/transition';
-	export let boardArr;
+	export let boardArr: Square[];
 	export let turn;
-	export let checked;
-	export let allowedMoves;
-	export let selectedSquare;
-	export let black;
+	export let checked: boolean;
+	export let possibleMoves: number[];
+	export let selectedSquare: number;
+	export let black: boolean;
 	export let handleSelectAndMove;
 </script>
 
@@ -19,7 +20,7 @@
 			class:black
 			style="background-color:{checked && turn == square.piece?.color && square.piece.type == 'king'
 				? 'red'
-				: allowedMoves.includes(i)
+				: possibleMoves.includes(i)
 				? 'var(--possibleMove)'
 				: i == selectedSquare
 				? 'var(--selectedSquare)'
