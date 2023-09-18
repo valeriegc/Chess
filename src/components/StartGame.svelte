@@ -2,7 +2,8 @@
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
 	import { initPieces } from '../functions/initPieces';
-	import { gameId, winner, moves, userId } from '../stores';
+	import { gameId, winner, userId } from '../stores';
+	import { moves } from '../stores/moves';
 	import KingW from '../pieces/King_W.svelte';
 	import { page } from '$app/stores';
 

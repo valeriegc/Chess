@@ -1,5 +1,6 @@
 import { get } from 'svelte/store';
-import { moves, type Square } from '../../stores';
+import { type Square } from '../../stores';
+import { moves } from '../../stores/moves';
 import { kingChecked } from '../kingChecked';
 
 export const castlingCheck = (board: Square[], turn: 'black' | 'white') => {

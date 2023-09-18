@@ -4,7 +4,6 @@
 		type Piece,
 		type Square,
 		player,
-		moves,
 		waiting,
 		resign,
 		winner,
@@ -15,7 +14,6 @@
 	import { pieceCheck } from '../functions/pieceCheck';
 	import { kingChecked } from '../functions/kingChecked';
 	import {
-		alphaCalc,
 		isKingCastling,
 		darkSquares,
 		type FillSquare,
@@ -26,12 +24,18 @@
 	} from '../global';
 	import { moveAllowedWhileCheck } from '../functions/moveChecks/checkedMoves';
 	import { getPiececomponent } from '../functions/getPieceComponent';
-	import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
+	import { doc, onSnapshot } from 'firebase/firestore';
 	import { db, user } from '$lib/firebase/firebase';
 	import { isCheckMate } from '../functions/isCheckMate';
 	import PromoteModal from './PromoteModal.svelte';
 	import BoardWrap from './BoardWrap.svelte';
-	import { addMoves } from '../stores/moves';
+	import { addMoves, moves } from '../stores/moves';
+	import {
+		sendCheckToFirebase,
+		updateFirebase,
+		updateFirebaseStats,
+		updateWinnerToFirebase
+	} from '../firebaseUpdate';
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
@@ -50,6 +54,7 @@
 	let allAllowedMoves: number[];
 	let selectedPiece: Piece;
 	let checked = false;
+	$: gameRef = doc(db, 'games', $gameId);
 
 	const resetSelection = () => {
 		selectedSquare = -1;
@@ -65,16 +70,15 @@
 	};
 
 	$: if ($winner !== '') {
-		updateFirebaseStats();
+		updateFirebaseStats($player, $winner, $userId);
 	}
 
 	const checkForWinner = async () => {
 		kingLocation = findKing(boardArr, turn);
 		const checkMate = isCheckMate(boardArr, turn, kingLocation);
 		if (checkMate) {
-			await updateDoc(doc(db, 'games', $gameId), {
-				winner: $player
-			});
+			updateWinnerToFirebase(gameRef, $player);
+			checkForWinner();
 		}
 	};
 
@@ -84,44 +88,8 @@
 	const emptySquare = (square: number) => {
 		boardArr[square].piece = null;
 	};
-
-	const updateFirebase = async () => {
-		await updateDoc(doc(db, 'games', $gameId), {
-			board: boardArr,
-			player: turn,
-			moves: $moves
-		});
-	};
-
 	const pawnPromotion = () => {
 		promotionVisible = true;
-	};
-
-	const updateFirebaseStats = async () => {
-		const playerWon = $player == $winner;
-		const userData = await getDoc(doc(db, 'users', $userId));
-		const specifics = userData.data();
-		if (specifics) {
-			let lost = specifics.lost;
-			let won = specifics.won;
-			if (playerWon) {
-				won += 1;
-			}
-			if (!playerWon) {
-				lost += 1;
-			}
-			await updateDoc(doc(db, 'users', $userId), {
-				lost: lost,
-				won: won
-			});
-		}
-	};
-
-	const sendCheckToFirebase = async () => {
-		await updateDoc(doc(db, 'games', $gameId), {
-			checked: $player == 'white' ? 'black' : 'white'
-		});
-		checkForWinner();
 	};
 
 	const movePiece = async (newSquare: number) => {
@@ -132,7 +100,7 @@
 		resetSelection();
 		resetAllowedMoves();
 		changeTurn();
-		updateFirebase();
+		updateFirebase(gameRef, boardArr, turn, $moves);
 	};
 
 	const updateSelection = (clickedSquare: number) => {
@@ -190,7 +158,7 @@
 		kingLocation = findKing(boardArr, turn);
 		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLocation);
 		if (checked) {
-			sendCheckToFirebase();
+			sendCheckToFirebase(gameRef, player);
 		}
 	};
 
@@ -198,10 +166,10 @@
 		onSnapshot(doc(db, 'games', $gameId), (doc) => {
 			const allData = doc.data();
 			if (allData) {
-				boardArr = allData?.board;
-				turn = allData?.player;
-				$moves = allData?.moves;
-				$winner = allData?.winner;
+				boardArr = allData.board;
+				turn = allData.player;
+				$moves = allData.moves;
+				$winner = allData.winner;
 				if (allData.resignation.resigned) {
 					($resign.resigned = true), ($resign.resigner = allData.resignation.resigner);
 				}

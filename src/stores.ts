@@ -11,13 +11,7 @@ export interface Square {
 	coords: string;
 	piece: Piece | null;
 }
-export interface Move {
-	pre: number;
-	post: number;
-	piece: Piece;
-	preCoord: string;
-	postCoord: string;
-}
+
 export interface User {
 	email: string;
 	picture: string;
@@ -27,7 +21,6 @@ export interface User {
 	uid: string;
 }
 
-export const moves = writable<Move[]>([]);
 export let startOpen = writable('true');
 export const url = writable('');
 export const authenticated = writable({
@@ -37,7 +30,6 @@ export const authenticated = writable({
 });
 export const gameStarted = writable(false);
 export const player = writable('white');
-export const theme = writable('bw');
 export const userStore = writable<User | null>(null);
 export const userId = writable<string>();
 export const waiting = writable(true);
