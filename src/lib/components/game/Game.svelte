@@ -1,28 +1,26 @@
 <script lang="ts">
-	import { gameId, player, waiting, resign, winner, userId } from '../../../stores/stores';
-	import { fade, fly } from 'svelte/transition';
+	import { gameId, player, waiting, resign, winner, userId } from '../../stores/stores';
 	import { doc, onSnapshot } from 'firebase/firestore';
 	import { db, user } from '$lib/firebase/firebase';
-	import PromoteModal from '../modals/PromoteModal.svelte';
-	import BoardWrap from './BoardWrap.svelte';
-	import { addMoves, moves } from '../../../stores/moves';
+	import PromoteModal from './modals/PromoteModal.svelte';
+	import BoardWrap from './board/BoardWrap.svelte';
+	import { addMoves, moves } from '../../stores/moves';
 	import {
 		sendCheckToFirebase,
 		updateFirebase,
 		updateFirebaseStats,
 		updateWinnerToFirebase
-	} from '../../../../lib/firebase/firebaseUpdate';
+	} from '$lib/firebase/firebaseUpdate';
 	import { initPieces } from '$lib/functions/rendering/initPieces';
 	import type { FillSquare, Piece, Square } from '$lib/interfaces/interfaces';
 	import { findKing, invalidSelection } from '$lib/functions/game/moving/squareContent';
 	import { pieceCheck } from '$lib/functions/game/moving/pieceCheck';
 	import { getCastleLocations, isKingCastling } from '$lib/functions/game/castling/castling';
 	import { rowOnEdge } from '$lib/functions/game/moving/squareLocation';
-	import { darkSquares } from '$lib/functions/rendering/board';
-	import { getPiececomponent } from '$lib/functions/rendering/getPieceComponent';
 	import { isCheckMate } from '$lib/functions/game/check/isCheckMate';
 	import { moveAllowedWhileCheck } from '$lib/functions/game/check/checkedMoves';
 	import { kingChecked } from '$lib/functions/game/check/kingChecked';
+	import BoardContent from './board/BoardContent.svelte';
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
@@ -35,6 +33,7 @@
 	}
 
 	$: black = $player == 'black';
+
 	let selectedSquare = -1;
 	let kingLocation = -1;
 	let allowedMoves: number[] = [];
@@ -172,49 +171,16 @@
 	<PromoteModal bind:promotionVisible />
 {/if}
 <BoardWrap player={$player}>
-	<div class="boardGrid" class:black>
-		{#each boardArr as square, i}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div
-				class="square"
-				class:black
-				style="background-color:{checked &&
-				turn == square.piece?.color &&
-				square.piece.type == 'king'
-					? 'red'
-					: allowedMoves.includes(i)
-					? 'var(--possibleMove)'
-					: i == selectedSquare
-					? 'var(--selectedSquare)'
-					: darkSquares.includes(i)
-					? 'var(--darkSquare)'
-					: 'var(--lightSquare)'}"
-				on:click={() => handleSelectAndMove(i)}
-			>
-				{#if square.piece !== null}
-					<div in:fly={{ duration: 1000 }} out:fade>
-						<svelte:component this={getPiececomponent(square.piece)} />
-					</div>
-				{/if}
-			</div>
-		{/each}
-	</div>
+	<BoardContent
+		{boardArr}
+		{selectedSquare}
+		{allowedMoves}
+		{turn}
+		{checked}
+		{black}
+		{handleSelectAndMove}
+	/>
 </BoardWrap>
 
 <style>
-	.boardGrid {
-		height: 550px;
-		width: 550px;
-		display: grid;
-		grid-template-columns: repeat(8, 1fr);
-		grid-template-rows: repeat(8, 1fr);
-	}
-	.square {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.black {
-		transform: scaleY(-1);
-	}
 </style>
