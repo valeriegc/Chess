@@ -1,6 +1,6 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { createGameId } from './functions';
 import { db } from '$lib/firebase/firebase';
+import { createGameId } from '$lib/functions/game/start/start.js';
 
 export const load = async ({ params, cookies }) => {
 	let gameId: string;

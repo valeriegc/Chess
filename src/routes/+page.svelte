@@ -10,8 +10,8 @@
 		browserSessionPersistence
 	} from 'firebase/auth';
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
-	import { userStore } from '../stores.js';
-	import ForgotPw from '../components/ForgotPw.svelte';
+	import { userStore } from '../lib/stores/stores.js';
+	import ForgotPw from '$lib/components/signin/ForgotPw.svelte';
 
 	let createAccount = false;
 	let email = '';
