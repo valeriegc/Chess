@@ -2,7 +2,7 @@ export interface FillSquare {
 	piece: Piece;
 	square: number;
 }
-export const pieceList = ['pawn', 'tower', 'horse', 'bishop', 'queen', 'king'] as const;
+export const pieceList = ['pawn', 'rook', 'horse', 'bishop', 'queen', 'king'] as const;
 
 export type PieceType = (typeof pieceList)[number];
 export interface Piece {

@@ -1,9 +1,9 @@
-import type { Piece, Square } from '../../stores';
-import { horseCheck } from '../game/moves/horse';
-import { pawnCheck } from '../game/moves/pawn';
-import { towerCheck } from '../game/moves/rook';
-import { bishopCheck } from '../game/moves/bishop';
-import { row } from '../../global';
+import type { Piece, Square } from '$lib/interfaces/interfaces';
+import { bishopCheck } from '../moving/bishop';
+import { horseCheck } from '../moving/horse';
+import { pawnCheck } from '../moving/pawn';
+import { rookCheck } from '../moving/rook';
+import { row } from '../moving/squareLocation';
 
 export const kingChecked = (board: Square[], king: Piece, kingLocation: number) => {
 	const opponentColor = king.color == 'black' ? 'white' : 'black';
@@ -26,8 +26,8 @@ export const kingChecked = (board: Square[], king: Piece, kingLocation: number) 
 	const bishopThreat = bishopCheck(kingLocation, board, ownColor);
 	checkForOpponent(bishopThreat, { type: 'bishop', color: opponentColor });
 
-	const towerThreat = towerCheck(kingLocation, board, ownColor);
-	checkForOpponent(towerThreat, { type: 'tower', color: opponentColor });
+	const towerThreat = rookCheck(kingLocation, board, ownColor);
+	checkForOpponent(towerThreat, { type: 'rook', color: opponentColor });
 
 	const horseThreat = horseCheck(kingLocation, board, ownColor);
 	checkForOpponent(horseThreat, { type: 'horse', color: opponentColor });

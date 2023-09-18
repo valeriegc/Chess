@@ -1,5 +1,5 @@
 <script>
-	import { getPiececomponent } from '../../../../functions/rendering/getPieceComponent';
+	import { getPiececomponent } from '$lib/functions/rendering/getPieceComponent';
 	import { moves } from '../../../stores/moves';
 	import Spinner from './Spinner.svelte';
 </script>

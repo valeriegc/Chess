@@ -1,15 +1,14 @@
+import type { Square } from '$lib/interfaces/interfaces';
+import { hasOpponentPiece, hasOwnPiece } from './squareContent';
 import {
-	lastColumn,
-	columnFinder,
 	biggestSquare,
+	columnFinder,
 	firstColumn,
-	smallestSquare,
-	hasOpponentPiece,
-	hasOwnPiece
-} from '../../../global';
-import type { Square } from '../../../stores/stores';
+	lastColumn,
+	smallestSquare
+} from './squareLocation';
 
-export const towerCheck = (targetSquare: number, board: Square[], turn: string) => {
+export const rookCheck = (targetSquare: number, board: Square[], turn: string) => {
 	const columnNumber = columnFinder(targetSquare);
 	const tempArray: number[] = [];
 	const rowLength = 8;

@@ -1,14 +1,14 @@
+import type { Square } from '$lib/interfaces/interfaces';
+import { castlingCheck } from '../castling/castling';
+import { hasOwnPiece } from './squareContent';
 import {
+	biggestSquare,
 	column,
+	columnFinder,
 	firstColumn,
 	lastColumn,
-	row,
-	columnFinder,
-	biggestSquare,
-	hasOwnPiece
-} from '../../../global';
-import type { Square } from '../../../stores/stores';
-import { castlingCheck } from './castling';
+	row
+} from './squareLocation';
 
 export const kingCheck = (kingLoc: number, board: Square[], turn: string) => {
 	const kingColumn = columnFinder(kingLoc);

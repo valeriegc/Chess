@@ -1,32 +1,8 @@
 <script lang="ts">
-	import {
-		gameId,
-		type Piece,
-		type Square,
-		player,
-		waiting,
-		resign,
-		winner,
-		userId
-	} from '../../../stores/stores';
-	import { initPieces } from '../../../../functions/rendering/initPieces';
+	import { gameId, player, waiting, resign, winner, userId } from '../../../stores/stores';
 	import { fade, fly } from 'svelte/transition';
-	import { pieceCheck } from '../../../../functions/game/moving/pieceCheck';
-	import { kingChecked } from '../../../../functions/game/check/kingChecked';
-	import {
-		isKingCastling,
-		darkSquares,
-		type FillSquare,
-		getCastleLocations,
-		invalidSelection,
-		findKing,
-		rowOnEdge
-	} from '../../../../global';
-	import { moveAllowedWhileCheck } from '../../../../functions/game/check/checkedMoves';
-	import { getPiececomponent } from '../../../../functions/rendering/getPieceComponent';
 	import { doc, onSnapshot } from 'firebase/firestore';
 	import { db, user } from '$lib/firebase/firebase';
-	import { isCheckMate } from '../../../../functions/game/check/isCheckMate';
 	import PromoteModal from '../modals/PromoteModal.svelte';
 	import BoardWrap from './BoardWrap.svelte';
 	import { addMoves, moves } from '../../../stores/moves';
@@ -36,6 +12,17 @@
 		updateFirebaseStats,
 		updateWinnerToFirebase
 	} from '../../../../lib/firebase/firebaseUpdate';
+	import { initPieces } from '$lib/functions/rendering/initPieces';
+	import type { FillSquare, Piece, Square } from '$lib/interfaces/interfaces';
+	import { findKing, invalidSelection } from '$lib/functions/game/moving/squareContent';
+	import { pieceCheck } from '$lib/functions/game/moving/pieceCheck';
+	import { getCastleLocations, isKingCastling } from '$lib/functions/game/castling/castling';
+	import { rowOnEdge } from '$lib/functions/game/moving/squareLocation';
+	import { darkSquares } from '$lib/functions/rendering/board';
+	import { getPiececomponent } from '$lib/functions/rendering/getPieceComponent';
+	import { isCheckMate } from '$lib/functions/game/check/isCheckMate';
+	import { moveAllowedWhileCheck } from '$lib/functions/game/check/checkedMoves';
+	import { kingChecked } from '$lib/functions/game/check/kingChecked';
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';

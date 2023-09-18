@@ -1,16 +1,16 @@
-import type { PieceType, Square } from '../../stores/stores';
+import type { PieceType, Square } from '$lib/interfaces/interfaces';
 
 export const initPieces = () => {
 	const boardArray: Square[] = [];
 	const blackPieces: PieceType[] = [
-		'tower',
+		'rook',
 		'horse',
 		'bishop',
 		'queen',
 		'king',
 		'bishop',
 		'horse',
-		'tower'
+		'rook'
 	];
 	let whitePieces = [...blackPieces];
 

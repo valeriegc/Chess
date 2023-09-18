@@ -2,7 +2,7 @@ import { db } from '$lib/firebase/firebase.js';
 import { adminAuth } from '$lib/server/admin.js';
 import { fail } from '@sveltejs/kit';
 import { doc, setDoc } from 'firebase/firestore';
-import { passwordInvalid } from '../global.js';
+import { passwordInvalid } from '$lib/functions/signin/pwValidator';
 
 export const actions = {
 	default: async ({ request }) => {

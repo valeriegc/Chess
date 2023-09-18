@@ -1,5 +1,5 @@
 <script>
-	import { letters } from '../../../../global';
+	import { letters } from '$lib/functions/rendering/board';
 	export let player;
 </script>
 

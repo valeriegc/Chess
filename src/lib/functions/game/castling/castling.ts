@@ -1,11 +1,11 @@
 import { get } from 'svelte/store';
-import type { Piece, Square } from '../../../stores/stores';
 import { kingChecked } from '../check/kingChecked';
 import { moves } from '../../../stores/moves';
+import type { Piece, Square } from '$lib/interfaces/interfaces';
 
 export const isKingCastling = (squareContent: Piece | null, turn: string) => {
 	if (squareContent == null) return false;
-	if (squareContent.type == 'tower' && squareContent.color == turn) return true;
+	if (squareContent.type == 'rook' && squareContent.color == turn) return true;
 	else return false;
 };
 export const getCastleLocations = (oldTowerLoc: number, oldKingLoc: number) => {
@@ -38,15 +38,15 @@ export const castlingCheck = (board: Square[], turn: 'black' | 'white') => {
 		rightRoute = [5, 6];
 		castleRight = 7;
 		castleLeft = 0;
-		leftTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'tower' && n.pre == 0);
-		rightTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'tower' && n.pre == 7);
+		leftTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'rook' && n.pre == 0);
+		rightTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'rook' && n.pre == 7);
 	} else {
 		leftRoute = [57, 58, 59];
 		rightRoute = [61, 62];
 		castleRight = 63;
 		castleLeft = 56;
-		leftTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'tower' && n.pre == 56);
-		rightTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'tower' && n.pre == 63);
+		leftTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'rook' && n.pre == 56);
+		rightTowerNotMoved = !pastMoves.find((n) => n.piece.type == 'rook' && n.pre == 63);
 	}
 	const kingAlreadyMoved = pastMoves.find((n) => n.piece.type == 'king' && n.piece.color == turn);
 

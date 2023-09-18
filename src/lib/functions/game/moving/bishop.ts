@@ -1,14 +1,13 @@
+import type { Square } from '$lib/interfaces/interfaces';
+import { hasOpponentPiece, hasOwnPiece } from './squareContent';
 import {
-	hasOwnPiece,
-	hasOpponentPiece,
-	onBoardEdge,
 	boardSphere,
-	diagonalRowSW,
-	diagonalRowSE,
 	diagonalRowNE,
-	diagonalRowNW
-} from '../../../global';
-import type { Square } from '../../../stores/stores';
+	diagonalRowNW,
+	diagonalRowSE,
+	diagonalRowSW,
+	onBoardEdge
+} from './squareLocation';
 
 export const bishopCheck = (currentLoc: number, board: Square[], turn: string) => {
 	const diagonalRowBuilder = (direction: string, currentLoc: number, diagonalDistance: number) => {

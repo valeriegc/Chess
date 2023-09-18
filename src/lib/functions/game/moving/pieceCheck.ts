@@ -1,10 +1,10 @@
-import { towerCheck } from './rook';
-import type { Piece, Square } from '../../../stores/stores';
+import { rookCheck } from './rook';
 import { horseCheck } from './horse';
 import { pawnCheck } from './pawn';
 import { queenCheck } from './queen';
 import { bishopCheck } from './bishop';
 import { kingCheck } from './king';
+import type { Piece, Square } from '$lib/interfaces/interfaces';
 
 export const pieceCheck = (
 	movingPiece: Piece,
@@ -14,8 +14,8 @@ export const pieceCheck = (
 ) => {
 	let pieceType = movingPiece.type;
 	switch (pieceType) {
-		case 'tower':
-			return towerCheck(targetSquare, board, turn);
+		case 'rook':
+			return rookCheck(targetSquare, board, turn);
 
 		case 'horse':
 			return horseCheck(targetSquare, board, turn);

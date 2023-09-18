@@ -1,4 +1,4 @@
-import type { Piece, Square } from '../../../stores/stores';
+import type { Piece, Square } from '$lib/interfaces/interfaces';
 
 export const hasOwnPiece = (squareContent: Piece | null, turn: string) => {
 	if (!squareContent) return false;

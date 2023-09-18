@@ -1,5 +1,6 @@
-import { columnFinder, hasOwnPiece } from '../../../global';
-import type { Square } from '../../../stores/stores';
+import type { Square } from '$lib/interfaces/interfaces';
+import { hasOwnPiece } from './squareContent';
+import { columnFinder } from './squareLocation';
 
 export const horseCheck = (currentLoc: number, boardArr: Square[], turn: string) => {
 	const startColumnNumber = columnFinder(currentLoc);

@@ -1,6 +1,6 @@
-import type { Square } from '../../stores';
-import { moveAllowedWhileCheck } from '../game/moves/checkedMoves';
-import { pieceCheck } from '../game/pieceCheck';
+import type { Square } from '$lib/interfaces/interfaces';
+import { pieceCheck } from '../moving/pieceCheck';
+import { moveAllowedWhileCheck } from './checkedMoves';
 
 export const isCheckMate = (boardArr: Square[], turn: 'black' | 'white', kingLoc: number) => {
 	//filter boardArr to all pieces that have same color as the player is maintaining square numbers and pieces
@@ -15,7 +15,7 @@ export const isCheckMate = (boardArr: Square[], turn: 'black' | 'white', kingLoc
 			});
 		}
 	});
-	console.log(playerPieces);
+
 	//then check for each piece, whether it has allowed moves, while king is checked
 	playerPieces.forEach((n) => {
 		const currentSquare = n.squareNumber;
