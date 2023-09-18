@@ -2,7 +2,7 @@ import { updateFirebaseStats, updateWinnerToFirebase } from '$lib/firebase/fireb
 import type { Square } from '$lib/interfaces/interfaces';
 import { userId as id } from '$lib/stores/stores';
 import { get } from 'svelte/store';
-import { isCheckMate } from '../check/isCheckMate';
+import { isCheckMate } from './isCheckMate';
 import { findKing } from '../moving/squareContent';
 
 export const checkForWinner = async (boardArr: Square[], turn, player, gameRef) => {

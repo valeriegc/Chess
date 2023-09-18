@@ -16,8 +16,7 @@
 	import BoardContent from './board/BoardContent.svelte';
 	import { emptySquare } from '$lib/functions/game/moving/squareContent';
 	import { kingChecked } from '$lib/functions/game/check/kingChecked';
-	import { checkForWinner } from '$lib/functions/game/winning/winnerCheck';
-	('../../functions/game/check/kingStatus');
+	import { checkForWinner } from '$lib/functions/game/check/winnerCheck';
 
 	export let promotePawn;
 
@@ -82,12 +81,7 @@
 		if (invalidSelection(boardArr, clickedSquare, turn)) return;
 		selectedSquare = clickedSquare;
 		selectedPiece = boardArr[selectedSquare].piece!;
-		let movesForPiece = pieceCheck(
-			boardArr[selectedSquare].piece!,
-			selectedSquare,
-			boardArr,
-			turn
-		)!;
+		let movesForPiece = pieceCheck(selectedPiece, selectedSquare, boardArr, turn)!;
 		const kingLoc = boardArr.findIndex((n) => n.piece?.type == 'king' && n.piece.color == turn);
 		possibleMoves = movesForPiece.filter((n: number) => {
 			return kingNotChecked(boardArr, n, selectedSquare, kingLoc, selectedPiece!, turn);
