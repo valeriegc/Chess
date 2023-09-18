@@ -1,6 +1,6 @@
-import type { Square } from '../stores';
-import { moveAllowedWhileCheck } from './moveChecks/checkedMoves';
-import { pieceCheck } from './pieceCheck';
+import type { Square } from '../../stores';
+import { moveAllowedWhileCheck } from '../game/moves/checkedMoves';
+import { pieceCheck } from '../game/pieceCheck';
 
 export const isCheckMate = (boardArr: Square[], turn: 'black' | 'white', kingLoc: number) => {
 	//filter boardArr to all pieces that have same color as the player is maintaining square numbers and pieces

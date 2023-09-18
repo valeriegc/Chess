@@ -1,10 +1,10 @@
-import { towerCheck } from './moveChecks/towerCheck';
-import type { Piece, Square } from '../stores';
-import { horseCheck } from './moveChecks/horseCheck';
-import { pawnCheck } from './moveChecks/pawnCheck';
-import { queenCheck } from './moveChecks/queenCheck';
-import { bishopCheck } from './moveChecks/bishopCheck';
-import { kingCheck } from './moveChecks/kingCheck';
+import { towerCheck } from './rook';
+import type { Piece, Square } from '../../../stores/stores';
+import { horseCheck } from './horse';
+import { pawnCheck } from './pawn';
+import { queenCheck } from './queen';
+import { bishopCheck } from './bishop';
+import { kingCheck } from './king';
 
 export const pieceCheck = (
 	movingPiece: Piece,

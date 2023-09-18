@@ -1,6 +1,6 @@
-import type { Square } from '../../stores';
-import { bishopCheck } from './bishopCheck';
-import { towerCheck } from './towerCheck';
+import type { Square } from '../../../stores/stores';
+import { bishopCheck } from './bishop';
+import { towerCheck } from './rook';
 
 export const queenCheck = (targetSquare: number, board: Square[], turn: string) => {
 	const towerSquares = towerCheck(targetSquare, board, turn);

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
 	import { db } from '$lib/firebase/firebase';
-	import { initPieces } from '../../../../functions/initPieces';
-	import { gameId, winner, userId } from '../../../../stores';
-	import { moves } from '../../../../stores/moves';
-	import KingW from '../../../../pieces/King_W.svelte';
+	import { initPieces } from '../../../../functions/rendering/initPieces';
+	import { gameId, winner, userId } from '../../../stores/stores';
+	import { moves } from '../../../stores/moves';
+	import KingW from '../pieces/King_W.svelte';
 	import { page } from '$app/stores';
 
 	let confirmation = false;

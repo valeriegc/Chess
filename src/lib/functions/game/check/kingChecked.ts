@@ -1,9 +1,9 @@
-import type { Piece, Square } from '../stores';
-import { horseCheck } from './moveChecks/horseCheck';
-import { pawnCheck } from './moveChecks/pawnCheck';
-import { towerCheck } from './moveChecks/towerCheck';
-import { bishopCheck } from './moveChecks/bishopCheck';
-import { row } from '../global';
+import type { Piece, Square } from '../../stores';
+import { horseCheck } from '../game/moves/horse';
+import { pawnCheck } from '../game/moves/pawn';
+import { towerCheck } from '../game/moves/rook';
+import { bishopCheck } from '../game/moves/bishop';
+import { row } from '../../global';
 
 export const kingChecked = (board: Square[], king: Piece, kingLocation: number) => {
 	const opponentColor = king.color == 'black' ? 'white' : 'black';

@@ -1,7 +1,7 @@
 <script>
 	import { db } from '$lib/firebase/firebase';
 	import { doc, onSnapshot } from 'firebase/firestore';
-	import { gameId } from '../../../../stores';
+	import { gameId } from '../../../stores/stores';
 
 	let player1Pic = '';
 	let player1Name = 'Anonymous';

@@ -1,5 +1,5 @@
 <script>
-	import { player, resign } from '../../../../stores';
+	import { player, resign } from '../../../stores/stores';
 </script>
 
 <div class="container">

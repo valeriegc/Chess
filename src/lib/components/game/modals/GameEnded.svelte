@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { winner, player } from '../../../../stores';
+	import { winner, player } from '../../../stores/stores';
 </script>
 
 <div class="container">

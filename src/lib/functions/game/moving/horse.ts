@@ -1,5 +1,5 @@
-import { columnFinder, hasOwnPiece } from '../../global';
-import type { Square } from '../../stores';
+import { columnFinder, hasOwnPiece } from '../../../global';
+import type { Square } from '../../../stores/stores';
 
 export const horseCheck = (currentLoc: number, boardArr: Square[], turn: string) => {
 	const startColumnNumber = columnFinder(currentLoc);

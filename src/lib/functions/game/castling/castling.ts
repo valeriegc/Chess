@@ -1,8 +1,27 @@
 import { get } from 'svelte/store';
-import { type Square } from '../../stores';
-import { moves } from '../../stores/moves';
-import { kingChecked } from '../kingChecked';
+import type { Piece, Square } from '../../../stores/stores';
+import { kingChecked } from '../check/kingChecked';
+import { moves } from '../../../stores/moves';
 
+export const isKingCastling = (squareContent: Piece | null, turn: string) => {
+	if (squareContent == null) return false;
+	if (squareContent.type == 'tower' && squareContent.color == turn) return true;
+	else return false;
+};
+export const getCastleLocations = (oldTowerLoc: number, oldKingLoc: number) => {
+	let newKingLoc;
+	let newTowerLoc;
+	const castleToRight = oldTowerLoc > oldKingLoc;
+
+	if (castleToRight) {
+		newKingLoc = oldTowerLoc - 1;
+		newTowerLoc = oldTowerLoc - 2;
+	} else {
+		newKingLoc = oldTowerLoc + 1;
+		newTowerLoc = oldTowerLoc + 2;
+	}
+	return { tower: newTowerLoc, king: newKingLoc };
+};
 export const castlingCheck = (board: Square[], turn: 'black' | 'white') => {
 	let leftRoute = [];
 	let rightRoute = [];

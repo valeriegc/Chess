@@ -1,5 +1,5 @@
-import { rowFinder, hasOpponentPiece } from '../../global';
-import type { Square } from '../../stores';
+import { rowFinder, hasOpponentPiece } from '../../../global';
+import type { Square } from '../../../stores/stores';
 
 export const pawnCheck = (targetSquare: number, board: Square[], turn: string) => {
 	const tempArray: number[] = [];

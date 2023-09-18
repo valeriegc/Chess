@@ -1,6 +1,7 @@
 import { get, writable } from 'svelte/store';
-import type { Piece } from '../stores';
-import { columnFinder, letters, rowFinder } from '../global';
+import type { Piece } from '$lib/interfaces/interfaces';
+import { columnFinder, rowFinder } from '$lib/functions/game/moving/squareLocation';
+import { letters } from '$lib/functions/rendering/board';
 
 export interface Move {
 	pre: number;

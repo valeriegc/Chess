@@ -1,5 +1,5 @@
-import type { Piece, Square } from '../../stores';
-import { kingChecked } from '../kingChecked';
+import type { Piece, Square } from '../../../stores/stores';
+import { kingChecked } from '../../checked/kingChecked';
 
 export const moveAllowedWhileCheck = (
 	board: Square[],

@@ -7,8 +7,8 @@ import {
 	diagonalRowSE,
 	diagonalRowNE,
 	diagonalRowNW
-} from '../../global';
-import type { Square } from '../../stores';
+} from '../../../global';
+import type { Square } from '../../../stores/stores';
 
 export const bishopCheck = (currentLoc: number, board: Square[], turn: string) => {
 	const diagonalRowBuilder = (direction: string, currentLoc: number, diagonalDistance: number) => {

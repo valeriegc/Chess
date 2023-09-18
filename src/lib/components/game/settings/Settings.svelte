@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { db } from '$lib/firebase/firebase';
-	import { player } from '../../../../stores';
+	import { player } from '../../../stores/stores';
 	import { arrayUnion, doc, updateDoc, onSnapshot } from 'firebase/firestore';
-	import { gameId } from '../../../../stores';
+	import { gameId } from '../../../stores/stores';
 
 	let hoveringChat = false;
 	let hoveringGiveup = false;

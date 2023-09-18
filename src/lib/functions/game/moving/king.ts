@@ -6,9 +6,9 @@ import {
 	columnFinder,
 	biggestSquare,
 	hasOwnPiece
-} from '../../global';
-import type { Square } from '../../stores';
-import { castlingCheck } from './castlingCheck';
+} from '../../../global';
+import type { Square } from '../../../stores/stores';
+import { castlingCheck } from './castling';
 
 export const kingCheck = (kingLoc: number, board: Square[], turn: string) => {
 	const kingColumn = columnFinder(kingLoc);

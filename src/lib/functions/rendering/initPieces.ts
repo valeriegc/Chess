@@ -1,4 +1,4 @@
-import type { PieceType, Square } from '../stores';
+import type { PieceType, Square } from '../../stores/stores';
 
 export const initPieces = () => {
 	const boardArray: Square[] = [];

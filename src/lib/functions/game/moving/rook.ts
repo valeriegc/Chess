@@ -6,8 +6,8 @@ import {
 	smallestSquare,
 	hasOpponentPiece,
 	hasOwnPiece
-} from '../../global';
-import type { Square } from '../../stores';
+} from '../../../global';
+import type { Square } from '../../../stores/stores';
 
 export const towerCheck = (targetSquare: number, board: Square[], turn: string) => {
 	const columnNumber = columnFinder(targetSquare);

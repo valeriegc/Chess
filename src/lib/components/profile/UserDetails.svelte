@@ -1,6 +1,6 @@
 <script>
 	import { doc, updateDoc } from 'firebase/firestore';
-	import { userPic } from '../../../stores';
+	import { userPic } from '../../stores/stores';
 	import { db } from '$lib/firebase/firebase';
 	export let userEmail;
 	export let userPw;

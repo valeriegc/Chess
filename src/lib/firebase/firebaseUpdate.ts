@@ -1,6 +1,6 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import type { Square } from '../../stores';
-import type { Move } from '../../stores/moves';
+import type { Square } from '../stores/stores';
+import type { Move } from '../stores/moves';
 import { db } from '$lib/firebase/firebase';
 
 export const updateFirebase = async (gameRef, board: Square[], player: string, moves: Move[]) => {
