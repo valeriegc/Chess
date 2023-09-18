@@ -1,5 +1,5 @@
 <script>
-	import { letters } from '../../../global';
+	import { letters } from '../../../../global';
 	export let player;
 </script>
 

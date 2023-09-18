@@ -11,7 +11,7 @@
 	} from 'firebase/auth';
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
 	import { userStore } from '../stores.js';
-	import ForgotPw from '../components/signin/ForgotPw.svelte';
+	import ForgotPw from '$lib/components/signin/ForgotPw.svelte';
 
 	let createAccount = false;
 	let email = '';

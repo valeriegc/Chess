@@ -1,5 +1,5 @@
 <script>
-	import AuthControl from '../../components/signin/AuthControl.svelte';
+	import AuthControl from '$lib/components/signin/AuthControl.svelte';
 </script>
 
 <AuthControl>

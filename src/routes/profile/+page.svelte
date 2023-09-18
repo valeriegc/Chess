@@ -1,7 +1,7 @@
 <script>
-	import ChangePic from '../../components/profile/ChangePic.svelte';
-	import UserDetails from '../../components/profile/UserDetails.svelte';
-	import Stats from '../../components/profile/Stats.svelte';
+	import ChangePic from '$lib/components/profile/ChangePic.svelte';
+	import UserDetails from '$lib/components/profile/UserDetails.svelte';
+	import Stats from '$lib/components/profile/Stats.svelte';
 	export let data;
 	let open = false;
 	let userData = data.userData;
@@ -23,7 +23,7 @@
 				uid={userData.uid}
 			/>
 			<Stats played={userData.played} lost={userData.lost} won={userData.won} />
-			<img src="checkMate.jpg" class="themeImg" />
+			<img src="battle.jpg" class="themeImg" />
 		</div>
 	</div>
 {/if}

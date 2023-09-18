@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { db, user } from '$lib/firebase/firebase';
 	import { doc, getDoc } from 'firebase/firestore';
-	import { userStore } from '../../stores';
+	import { userStore } from '../../../stores';
 
 	const getUser = async () => {
 		const userData = await getDoc(doc(db, 'users', $user.uid));

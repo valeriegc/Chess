@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Board from '../../../../components/game/board/Board.svelte';
-	import MoveBox from '../../../../components/game/moves/MoveBox.svelte';
-	import Start from '../../../../components/game/modals/Start.svelte';
-	import Settings from '../../../../components/game/settings/Settings.svelte';
-	import Resigned from '../../../../components/game/modals/Resigned.svelte';
-	import GameEnded from '../../../../components/game/modals/GameEnded.svelte';
-	import Opponents from '../../../../components/game/players/Opponents.svelte';
+	import Board from '$lib/components/game/board/Board.svelte';
+	import MoveBox from '$lib/components/game/moves/MoveBox.svelte';
+	import Start from '$lib/components/game/modals/Start.svelte';
+	import Settings from '$lib/components/game/settings/Settings.svelte';
+	import Resigned from '$lib/components/game/modals/Resigned.svelte';
+	import GameEnded from '$lib/components/game/modals/GameEnded.svelte';
+	import Opponents from '$lib/components/game/players/Opponents.svelte';
 	import { gameId, player, resign, url, userId, winner } from '../../../../stores';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';

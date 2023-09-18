@@ -1,14 +1,14 @@
 <script>
-	import { player } from '../../../stores';
+	import { player } from '../../../../stores';
 	export let promotionVisible;
-	import QueenB from '../../../pieces/Queen_B.svelte';
-	import QueenW from '../../../pieces/Queen_W.svelte';
-	import HorseB from '../../../pieces/Horse_B.svelte';
-	import HorseW from '../../../pieces/Horse_W.svelte';
-	import TowerW from '../../../pieces/Tower_W.svelte';
-	import TowerB from '../../../pieces/Tower_B.svelte';
-	import BishopB from '../../../pieces/Bishop_B.svelte';
-	import BishopW from '../../../pieces/Bishop_W.svelte';
+	import QueenB from '../../../../pieces/Queen_B.svelte';
+	import QueenW from '../../../../pieces/Queen_W.svelte';
+	import HorseB from '../../../../pieces/Horse_B.svelte';
+	import HorseW from '../../../../pieces/Horse_W.svelte';
+	import TowerW from '../../../../pieces/Tower_W.svelte';
+	import TowerB from '../../../../pieces/Tower_B.svelte';
+	import BishopB from '../../../../pieces/Bishop_B.svelte';
+	import BishopW from '../../../../pieces/Bishop_W.svelte';
 
 	let whiteOptions = [QueenW, HorseW, TowerW, BishopW];
 	let blackOptions = [QueenB, HorseB, TowerB, BishopB];

@@ -1,5 +1,5 @@
 <script>
-	import { waiting, resign, player, winner } from '../../../stores';
+	import { waiting, resign, player, winner } from '../../../../stores';
 </script>
 
 <div class="spinnerBox">

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { auth, db } from '$lib/firebase/firebase';
-	import { userPic } from '../../stores';
+	import { userPic } from '../../../stores';
 	import { doc, updateDoc } from 'firebase/firestore';
 	export let open = true;
 

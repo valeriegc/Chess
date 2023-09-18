@@ -8,11 +8,11 @@
 		resign,
 		winner,
 		userId
-	} from '../../../stores';
-	import { initPieces } from '../../../functions/initPieces';
+	} from '../../../../stores';
+	import { initPieces } from '../../../../functions/initPieces';
 	import { fade, fly } from 'svelte/transition';
-	import { pieceCheck } from '../../../functions/pieceCheck';
-	import { kingChecked } from '../../../functions/kingChecked';
+	import { pieceCheck } from '../../../../functions/pieceCheck';
+	import { kingChecked } from '../../../../functions/kingChecked';
 	import {
 		isKingCastling,
 		darkSquares,
@@ -21,21 +21,21 @@
 		invalidSelection,
 		findKing,
 		rowOnEdge
-	} from '../../../global';
-	import { moveAllowedWhileCheck } from '../../../functions/moveChecks/checkedMoves';
-	import { getPiececomponent } from '../../../functions/getPieceComponent';
+	} from '../../../../global';
+	import { moveAllowedWhileCheck } from '../../../../functions/moveChecks/checkedMoves';
+	import { getPiececomponent } from '../../../../functions/getPieceComponent';
 	import { doc, onSnapshot } from 'firebase/firestore';
 	import { db, user } from '$lib/firebase/firebase';
-	import { isCheckMate } from '../../../functions/isCheckMate';
+	import { isCheckMate } from '../../../../functions/isCheckMate';
 	import PromoteModal from '../modals/PromoteModal.svelte';
 	import BoardWrap from './BoardWrap.svelte';
-	import { addMoves, moves } from '../../../stores/moves';
+	import { addMoves, moves } from '../../../../stores/moves';
 	import {
 		sendCheckToFirebase,
 		updateFirebase,
 		updateFirebaseStats,
 		updateWinnerToFirebase
-	} from '../../../lib/firebase/firebaseUpdate';
+	} from '../../../../lib/firebase/firebaseUpdate';
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
