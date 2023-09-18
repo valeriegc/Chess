@@ -1,15 +1,15 @@
 <script lang="ts">
-	import Board from '../../../../components/Board.svelte';
-	import MoveBox from '../../../../components/MoveBox.svelte';
-	import StartGame from '../../../../components/StartGame.svelte';
+	import Board from '../../../../components/game/board/Board.svelte';
+	import MoveBox from '../../../../components/game/moves/MoveBox.svelte';
+	import Start from '../../../../components/game/modals/Start.svelte';
+	import Settings from '../../../../components/game/settings/Settings.svelte';
+	import Resigned from '../../../../components/game/modals/Resigned.svelte';
+	import GameEnded from '../../../../components/game/modals/GameEnded.svelte';
+	import Opponents from '../../../../components/game/players/Opponents.svelte';
 	import { gameId, player, resign, url, userId, winner } from '../../../../stores';
-	import GameSettings from '../../../../components/GameSettings.svelte';
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import Resigned from '../../../../components/Resigned.svelte';
-	import GameEnded from '../../../../components/GameEnded.svelte';
-	import Opponents from '../../../../components/Opponents.svelte';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 	$gameId = data.gameId;
@@ -40,7 +40,7 @@
 
 <div class="container">
 	{#if !data.gameStarted && visible}
-		<StartGame bind:visible />
+		<Start bind:visible />
 	{/if}
 	<div class="leftWrap">
 		<Opponents />
@@ -48,7 +48,7 @@
 	</div>
 	<Board />
 	{#if data.gameStarted}
-		<GameSettings />
+		<Settings />
 	{/if}
 	{#if $resign.resigned}
 		<Resigned />

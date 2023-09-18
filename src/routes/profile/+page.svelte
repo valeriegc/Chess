@@ -1,7 +1,7 @@
 <script>
-	import ChangePic from '../../components/ChangePic.svelte';
-	import Details from '../../components/Details.svelte';
-	import GameDetails from '../../components/GameDetails.svelte';
+	import ChangePic from '../../components/profile/ChangePic.svelte';
+	import UserDetails from '../../components/profile/UserDetails.svelte';
+	import Stats from '../../components/profile/Stats.svelte';
 	export let data;
 	let open = false;
 	let userData = data.userData;
@@ -14,7 +14,7 @@
 {#if userData}
 	<div class="gridWrap">
 		<div class="grid">
-			<Details
+			<UserDetails
 				bind:open
 				userEmail={userData.email}
 				userPw={''}
@@ -22,8 +22,8 @@
 				userName={userData.userName}
 				uid={userData.uid}
 			/>
-			<GameDetails played={userData.played} lost={userData.lost} won={userData.won} />
-			<img src="battle.jpg" class="themeImg" />
+			<Stats played={userData.played} lost={userData.lost} won={userData.won} />
+			<img src="checkMate.jpg" class="themeImg" />
 		</div>
 	</div>
 {/if}
