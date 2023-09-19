@@ -17,12 +17,14 @@ export const columnFinder = (targetSquare: number) => {
 	if (targetSquare % 8 == 0) return 8;
 	else return targetSquare % 8;
 };
-
 export const rowFinder = (targetSquare: number) => {
 	targetSquare += 1;
 	return Math.ceil(targetSquare / 8);
 };
-
+export const squareOnBoard = (square: number) => {
+	if (square < 64 && square > 0) return true;
+	else return false;
+};
 export const rowOnEdge = (square: number) => {
 	let rowNumber = rowFinder(square);
 	if (rowNumber == 8 || rowNumber == 1) return true;
