@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 	import { letters } from '$lib/functions/rendering/board';
-	export let player;
+	export let player: 'black' | 'white';
 </script>
 
 <div class="boardOuterWrap">

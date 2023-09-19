@@ -11,7 +11,7 @@ export const authenticated = writable({
 	fetching: true
 });
 export const gameStarted = writable(false);
-export const player = writable('white');
+export const player = writable<'white' | 'black'>('white');
 export const userStore = writable<User | null>(null);
 export const userId = writable<string>();
 export const waiting = writable(true);

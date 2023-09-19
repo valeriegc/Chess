@@ -1,20 +1,21 @@
 <script lang="ts">
 	import { player } from '../../../stores/stores';
 	import { getPiececomponent } from '$lib/functions/rendering/getPieceComponent';
+	import type { Piece } from '$lib/interfaces/interfaces';
 
 	export let promotePawn: boolean;
-	export let move;
-	export let selectedPiece;
-	export let promotionSquare;
+	export let move: (square: number) => void;
+	export let selectedPiece: Piece;
+	export let promotionSquare: number;
 
 	let pieces = [
 		{ type: 'queen', color: $player },
 		{ type: 'horse', color: $player },
 		{ type: 'rook', color: $player },
 		{ type: 'bishop', color: $player }
-	];
+	] as const;
 
-	const promote = (selected) => {
+	const promote = (selected: Piece) => {
 		selectedPiece = selected;
 		move(promotionSquare);
 		promotePawn = false;

@@ -9,7 +9,7 @@ import {
 	onBoardEdge
 } from './squareLocation';
 
-export const bishopCheck = (currentLoc: number, board: Square[], turn: string) => {
+export const bishopCheck = (currentLoc: number, board: Square[], turn: 'black' | 'white') => {
 	const diagonalRowBuilder = (direction: string, currentLoc: number, diagonalDistance: number) => {
 		let tempArray = [];
 		if (!onBoardEdge(direction, currentLoc)) {

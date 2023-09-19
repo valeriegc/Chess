@@ -1,11 +1,11 @@
 import type { FillSquare, Piece, Square } from '$lib/interfaces/interfaces';
 
-export const hasOwnPiece = (squareContent: Piece | null, turn: string) => {
+export const hasOwnPiece = (squareContent: Piece | null, turn: 'black' | 'white') => {
 	if (!squareContent) return false;
 	else if (squareContent.color !== turn) return false;
 	return true;
 };
-export const hasOpponentPiece = (squareContent: Piece | null, turn: string) => {
+export const hasOpponentPiece = (squareContent: Piece | null, turn: 'black' | 'white') => {
 	if (!squareContent) return false;
 	else if (squareContent.color == turn) return false;
 	return true;

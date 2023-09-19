@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
 	import { doc, updateDoc } from 'firebase/firestore';
 	import { userPic } from '../../stores/stores';
 	import { db } from '$lib/firebase/firebase';
-	export let userEmail;
-	export let userPw;
-	export let userPicture;
-	export let userName;
-	export let open;
-	export let uid;
+	export let userEmail: string;
+	export let userPw: string;
+	export let userPicture: string;
+	export let userName: string;
+	export let open: boolean;
+	export let uid: string;
 
 	export const updateUserName = async () => {
 		const userRef = doc(db, 'users', uid);

@@ -23,7 +23,7 @@
 				uid={userData.uid}
 			/>
 			<Stats played={userData.played} lost={userData.lost} won={userData.won} />
-			<img src="battle.jpg" class="themeImg" />
+			<img alt="chess pieces in battle" src="battle.jpg" class="themeImg" />
 		</div>
 	</div>
 {/if}

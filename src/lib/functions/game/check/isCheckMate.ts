@@ -1,11 +1,15 @@
-import type { Square } from '$lib/interfaces/interfaces';
+import type { Piece, Square } from '$lib/interfaces/interfaces';
 import { pieceCheck } from '../moving/pieceCheck';
 import { kingNotChecked } from './checkedMoves';
 
+interface TempPiece {
+	piece: Piece;
+	squareNumber: number;
+}
+
 export const isCheckMate = (board: Square[], turn: 'black' | 'white', kingLoc: number) => {
 	//filter boardArr to all pieces that have same color as the player is maintaining square numbers and pieces
-	console.log('hello');
-	const pieces = [];
+	let pieces: TempPiece[] = [];
 	let checkmate = true;
 
 	board.map((n, i) => {
