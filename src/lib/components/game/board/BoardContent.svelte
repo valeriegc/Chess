@@ -4,12 +4,12 @@
 	import type { Square } from '$lib/interfaces/interfaces';
 	import { fade, fly } from 'svelte/transition';
 	export let boardArr: Square[];
-	export let turn;
+	export let turn: 'black' | 'white';
 	export let checked: boolean;
 	export let possibleMoves: number[];
 	export let selectedSquare: number;
 	export let black: boolean;
-	export let handleClick;
+	export let handleClick: (i: number) => void;
 </script>
 
 <div class="boardGrid" class:black>

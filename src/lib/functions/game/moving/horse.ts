@@ -2,7 +2,7 @@ import type { Square } from '$lib/interfaces/interfaces';
 import { hasOwnPiece } from './squareContent';
 import { columnFinder } from './squareLocation';
 
-export const horseCheck = (currentLoc: number, boardArr: Square[], turn: string) => {
+export const horseCheck = (currentLoc: number, boardArr: Square[], turn: 'black' | 'white') => {
 	const startColumnNumber = columnFinder(currentLoc);
 	let allHorseMoves = [
 		currentLoc - 15,

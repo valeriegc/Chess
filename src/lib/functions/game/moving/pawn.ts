@@ -3,7 +3,7 @@ import { hasOpponentPiece } from './squareContent';
 import { rowFinder } from './squareLocation';
 import { squareOnBoard } from './squareLocation';
 
-export const pawnCheck = (targetSquare: number, board: Square[], turn: string) => {
+export const pawnCheck = (targetSquare: number, board: Square[], turn: 'black' | 'white') => {
 	const tempArray: number[] = [];
 	const rowNumber = rowFinder(targetSquare);
 	const rowForward = turn == 'black' ? 8 : -8;

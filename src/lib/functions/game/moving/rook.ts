@@ -8,7 +8,7 @@ import {
 	smallestSquare
 } from './squareLocation';
 
-export const rookCheck = (targetSquare: number, board: Square[], turn: string) => {
+export const rookCheck = (targetSquare: number, board: Square[], turn: 'black' | 'white') => {
 	const columnNumber = columnFinder(targetSquare);
 	const tempArray: number[] = [];
 	const rowLength = 8;

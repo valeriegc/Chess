@@ -4,17 +4,19 @@
 	import { userStore } from '../../stores/stores';
 
 	const getUser = async () => {
-		const userData = await getDoc(doc(db, 'users', $user.uid));
-		if (userData.exists()) {
-			const finalData = userData.data();
-			$userStore = {
-				email: finalData.email,
-				picture: finalData.picture,
-				lost: finalData.lost,
-				won: finalData.won,
-				played: finalData.played,
-				uid: finalData.uid
-			};
+		if ($user) {
+			const userData = await getDoc(doc(db, 'users', $user.uid));
+			if (userData.exists()) {
+				const finalData = userData.data();
+				$userStore = {
+					email: finalData.email,
+					picture: finalData.picture,
+					lost: finalData.lost,
+					won: finalData.won,
+					played: finalData.played,
+					uid: finalData.uid
+				};
+			}
 		}
 	};
 

@@ -10,7 +10,7 @@ export const pieceCheck = (
 	movingPiece: Piece,
 	targetSquare: number,
 	board: Square[],
-	turn: string
+	turn: 'black' | 'white'
 ) => {
 	let pieceType = movingPiece.type;
 	switch (pieceType) {

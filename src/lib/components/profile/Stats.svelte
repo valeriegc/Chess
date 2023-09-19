@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase/firebase';
 	import { signOut } from 'firebase/auth';
-	export let played;
-	export let lost;
-	export let won;
+	export let played: number;
+	export let lost: number;
+	export let won: number;
 
 	const signOutSSR = async () => {
 		const res = await fetch('api/signin', {

@@ -3,8 +3,8 @@
 	--lightSquare: rgba(255, 255, 255, 0.63);
 	--selectedSquare: lightblue;
 	--possibleMove: lightgreen;
-	--primary:  rgba(33, 39, 52, 0.719);
-	--secondary: white; 
+	--primary: rgba(33, 39, 52, 0.719);
+	--secondary: white;
 	--tertiary: darkgray;
 	--modalBg: rgba(0, 0, 0, 0.582);
 }
@@ -12,16 +12,16 @@
 * {
 	box-sizing: border-box;
 	font-family: 'Raleway', cursive;
-	color:whitesmoke;
-	}
+	color: whitesmoke;
+}
 button {
 	height: 2.75rem;
-	border-radius:5px;
+	border-radius: 5px;
 	border: none;
 	background-color: black;
 	font-size: medium;
 	font-weight: normal;
-	cursor:pointer;
+	cursor: pointer;
 }
 button:hover {
 	transition-duration: 0.4s;
@@ -34,16 +34,16 @@ input {
 	font-size: medium;
 	padding-inline: 0.5rem;
 	background-color: transparent;
-	border-radius:5px;
-	outline:none;
+	border-radius: 5px;
+	outline: none;
 }
 input::placeholder {
 	color: grey;
 }
-input::hover{
-	border:none;
+input::hover {
+	border: none;
 }
 input:focus {
-	outline:none;
+	outline: none;
 	border: solid 0.5px whitesmoke;
 }

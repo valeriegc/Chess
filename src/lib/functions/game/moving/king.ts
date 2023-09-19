@@ -10,7 +10,7 @@ import {
 	row
 } from './squareLocation';
 
-export const kingCheck = (kingLoc: number, board: Square[], turn: string) => {
+export const kingCheck = (kingLoc: number, board: Square[], turn: 'black' | 'white') => {
 	const kingColumn = columnFinder(kingLoc);
 	let kingArray = [];
 	const allKingMoves = [

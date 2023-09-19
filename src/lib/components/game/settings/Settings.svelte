@@ -42,8 +42,8 @@
 	const chatRef = doc(db, 'chats', $gameId);
 	const gameRef = doc(db, 'games', $gameId);
 
-	const sendMsg = async (e) => {
-		if (e.which == 13) {
+	const sendMsg = async (e: KeyboardEvent) => {
+		if (e.key == 'Enter') {
 			messages.push({
 				message: msg,
 				sender: $player

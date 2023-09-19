@@ -42,11 +42,12 @@
 			},
 			body: JSON.stringify({ idToken })
 		});
+
 		const userObj = auth.currentUser;
-		const uid = userObj.uid;
-		const userRef = doc(db, 'users', uid);
 
 		if (userObj) {
+			const uid = userObj.uid;
+			const userRef = doc(db, 'users', uid);
 			const userDoc = await getDoc(userRef);
 			if (userDoc.exists()) {
 				const userDetails = await getDoc(userRef);
