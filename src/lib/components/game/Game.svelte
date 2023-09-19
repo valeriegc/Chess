@@ -17,8 +17,10 @@
 	import { emptySquare } from '$lib/functions/game/moving/squareContent';
 	import { kingChecked } from '$lib/functions/game/check/kingChecked';
 	import { checkForWinner } from '$lib/functions/game/check/winnerCheck';
+	import PromoteModal from './modals/PromoteModal.svelte';
 
-	export let promotePawn;
+	let promotePawn = false;
+	let promotionSquare = -1;
 
 	let boardArr = initPieces();
 	let turn: 'black' | 'white' = 'white';
@@ -54,7 +56,7 @@
 			boardArr = castleKing(selectedSquare, clickedSquare, boardArr);
 		} else if (selectedPiece.type == 'pawn' && rowOnEdge(clickedSquare)) {
 			promotePawn = true;
-			return;
+			promotionSquare = clickedSquare;
 		} else {
 			move(clickedSquare);
 		}
@@ -68,7 +70,6 @@
 		turn = changeTurn(turn);
 		updateFirebase(gameRef, boardArr, turn, $moves);
 		resetSelection();
-
 		const kingLoc = findKing(boardArr, turn);
 		checked = kingChecked(boardArr, { type: 'king', color: turn }, kingLoc);
 		if (checked) {
@@ -105,6 +106,9 @@
 	}
 </script>
 
+{#if promotePawn}
+	<PromoteModal bind:promotePawn {move} bind:selectedPiece {promotionSquare} />
+{/if}
 <BoardWrap player={$player}>
 	<BoardContent
 		{boardArr}
