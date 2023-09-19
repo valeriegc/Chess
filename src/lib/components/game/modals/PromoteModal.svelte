@@ -1,36 +1,40 @@
-<script>
+<script lang="ts">
 	import { player } from '../../../stores/stores';
-	export let promotePawn;
-	import QueenB from '../../../../pieces/Queen_B.svelte';
-	import QueenW from '../../../../pieces/Queen_W.svelte';
-	import HorseB from '../../../../pieces/Horse_B.svelte';
-	import HorseW from '../../../../pieces/Horse_W.svelte';
-	import TowerW from '../../../../pieces/Rook_W.svelte';
-	import TowerB from '../../../../pieces/Rook_B.svelte';
-	import BishopB from '../../../../pieces/Bishop_B.svelte';
-	import BishopW from '../../../../pieces/Bishop_W.svelte';
+	import { getPiececomponent } from '$lib/functions/rendering/getPieceComponent';
 
-	let whiteOptions = [QueenW, HorseW, TowerW, BishopW];
-	let blackOptions = [QueenB, HorseB, TowerB, BishopB];
+	export let promotePawn: boolean;
+	export let move;
+	export let selectedPiece;
+	export let promotionSquare;
+
+	let pieces = [
+		{ type: 'queen', color: $player },
+		{ type: 'horse', color: $player },
+		{ type: 'rook', color: $player },
+		{ type: 'bishop', color: $player }
+	];
+
+	const promote = (selected) => {
+		selectedPiece = selected;
+		move(promotionSquare);
+		promotePawn = false;
+	};
 </script>
 
 <div class="container">
 	<div class="wrap">
 		<h4>Choose a piece for promotion</h4>
 		<div class="pieces">
-			{#if $player == 'white'}
-				{#each whiteOptions as piece}
-					<div class="piece" style="background-color:{$player == 'white' ? 'black' : 'white'}">
-						<svelte:component this={piece} />
+			{#each pieces as piece}
+				<div on:click={() => promote(piece)}>
+					<div
+						class="piece"
+						style="background-color:{$player == 'white' ? 'black' : 'white'};z-index:10000"
+					>
+						<svelte:component this={getPiececomponent(piece)} />
 					</div>
-				{/each}
-			{:else}
-				{#each blackOptions as piece}
-					<div class="piece" style="background-color:{$player == 'white' ? 'black' : 'white'}">
-						<svelte:component this={piece} />
-					</div>
-				{/each}
-			{/if}
+				</div>
+			{/each}
 		</div>
 	</div>
 </div>
@@ -43,11 +47,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		z-index: 100;
+		z-index: 999;
 	}
 	.wrap {
 		height: 25%;
-		width: 50%;
+		width: 30%;
 		border-radius: 5px;
 		background-color: rgba(0, 0, 0, 0.695);
 		color: whitesmoke;
