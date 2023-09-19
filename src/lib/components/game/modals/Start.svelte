@@ -7,7 +7,6 @@
 	import { page } from '$app/stores';
 	import { initPieces } from '$lib/functions/rendering/initPieces';
 
-	let confirmation = false;
 	export let visible;
 	let url = $page.url.origin + '/game/' + $gameId;
 
@@ -57,8 +56,6 @@
 		{
 			() => navigator.clipboard.writeText(url);
 		}
-		confirmation = true;
-		setTimeout(() => (confirmation = false), 1000);
 	};
 </script>
 
