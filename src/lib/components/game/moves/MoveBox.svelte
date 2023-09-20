@@ -32,7 +32,6 @@
 	.outerMove {
 		height: 400px;
 		width: 350px;
-		margin-left: 2rem;
 		background-color: rgba(252, 249, 249, 0.151);
 		border-radius: 5px;
 		display: flex;

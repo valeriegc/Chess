@@ -31,8 +31,7 @@ export const castleKing = (oldKingLoc: number, oldTowerLoc: number, board: Squar
 
 	board = emptySquare(board, oldKingLoc);
 	board = emptySquare(board, oldTowerLoc);
-	board = fillSquare({ piece: movingKing!, square: newLocations.king }, board);
-	board = fillSquare({ piece: movingKing!, square: newLocations.king }, board);
+	board = fillSquare({ piece: movingTower, square: newLocations.tower }, board);
 
 	addMoves(oldKingLoc, newLocations.king, movingKing);
 	addMoves(oldTowerLoc, newLocations.tower, movingTower);

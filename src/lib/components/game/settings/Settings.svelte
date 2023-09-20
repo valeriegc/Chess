@@ -147,8 +147,7 @@
 <style>
 	.container {
 		height: 400px;
-		width: 350px;
-		margin-right: 5rem;
+		width: 300px;
 		margin-left: 2rem;
 	}
 	.icon {
