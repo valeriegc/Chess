@@ -147,7 +147,7 @@
 <style>
 	.container {
 		height: 400px;
-		width: 300px;
+		width: 350px;
 		margin-right: 5rem;
 		margin-left: 2rem;
 	}
@@ -193,7 +193,8 @@
 		background-color: rgba(0, 0, 0, 0.411);
 		display: flex;
 		flex-direction: column;
-		padding: 2rem;
+		padding: 0.5rem;
+		overflow-y: scroll;
 	}
 	.innerWrap {
 		margin: auto;
@@ -214,7 +215,7 @@
 		margin: 0;
 	}
 	.ownMsg {
-		color: grey;
+		color: rgb(185, 185, 185);
 		text-align: left;
 		width: 100%;
 		margin: 0;
@@ -228,5 +229,27 @@
 	textarea::placeholder {
 		color: lightgrey;
 		font-style: italic;
+	}
+	::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	/*track*/
+	::-webkit-scrollbar-track {
+		background: transparent;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+	}
+
+	/*handle */
+	::-webkit-scrollbar-thumb {
+		background: rgba(245, 245, 245, 0.434);
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+	}
+
+	/*handle-hover*/
+	::-webkit-scrollbar-thumb:hover {
+		background: rgba(169, 169, 169, 0.524);
 	}
 </style>
