@@ -211,7 +211,7 @@
 		flex-direction: row;
 		position: relative;
 		background-color: black;
-		background-image: url('greyBG.jpg');
+		background-image: url('/greyBG.jpg');
 	}
 	.header {
 		position: absolute;
@@ -232,7 +232,7 @@
 		flex-direction: column;
 		padding: 1rem;
 		background-color: black;
-		background-image: url('greyBG.jpg');
+		background-image: url('/greyBG.jpg');
 	}
 	.formWrap {
 		margin: auto;

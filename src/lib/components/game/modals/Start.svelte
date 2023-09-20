@@ -7,7 +7,6 @@
 	import { page } from '$app/stores';
 	import { initPieces } from '$lib/functions/rendering/initPieces';
 
-	let confirmation = false;
 	export let visible;
 	let url = $page.url.origin + '/game/' + $gameId;
 
@@ -54,11 +53,7 @@
 	};
 
 	const handleCopy = () => {
-		{
-			() => navigator.clipboard.writeText(url);
-		}
-		confirmation = true;
-		setTimeout(() => (confirmation = false), 1000);
+		navigator.clipboard.writeText(url);
 	};
 </script>
 
