@@ -9,8 +9,8 @@ interface TempPiece {
 
 export const isCheckMate = (board: Square[], turn: 'black' | 'white', kingLoc: number) => {
 	//filter boardArr to all pieces that have same color as the player is maintaining square numbers and pieces
+	let checkMate = true;
 	let pieces: TempPiece[] = [];
-	let checkmate = true;
 
 	board.map((n, i) => {
 		if (n.piece && n.piece.color == turn) {
@@ -26,15 +26,11 @@ export const isCheckMate = (board: Square[], turn: 'black' | 'white', kingLoc: n
 		const currentSquare = n.squareNumber;
 		const currentPiece = n.piece;
 		const allowed = pieceCheck(n.piece, currentSquare, board, turn);
-		let actualAllowed = [];
 
-		if (allowed.length > 0) {
-			actualAllowed = allowed.filter((n) => {
-				kingNotChecked(board, n, currentSquare, kingLoc, currentPiece, turn);
-			});
-		}
-		//if allowed moves found, change checkmate to false, as player has moves
-		if (actualAllowed.length > 0) checkmate = false;
+		allowed.map((n) => {
+			if (kingNotChecked(board, n, currentSquare, kingLoc, currentPiece, turn)) checkMate = false;
+		});
 	});
-	return checkmate;
+	//if allowed moves found, change checkmate to false, as player has moves
+	return checkMate;
 };
