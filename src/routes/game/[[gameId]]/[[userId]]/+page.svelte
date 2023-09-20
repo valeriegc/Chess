@@ -5,7 +5,7 @@
 	import Resigned from '$lib/components/game/modals/Resigned.svelte';
 	import GameEnded from '$lib/components/game/modals/GameEnded.svelte';
 	import Opponents from '$lib/components/game/players/Opponents.svelte';
-	import { gameId, player, resign, url, userId, winner } from '../../../../lib/stores/stores';
+	import { gameId, player, resign, userId, winner } from '../../../../lib/stores/stores';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
@@ -47,9 +47,7 @@
 		<MoveBox />
 	</div>
 	<Game />
-	{#if data.gameStarted}
-		<Settings />
-	{/if}
+	<Settings />
 	{#if $resign.resigned}
 		<Resigned />
 	{/if}
