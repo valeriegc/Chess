@@ -48,7 +48,6 @@
 		height: 10rem;
 		width: 350px;
 		background-color: rgba(0, 0, 0, 0.411);
-		margin-left: 2rem;
 		margin-bottom: 1rem;
 		display: flex;
 		flex-direction: row;

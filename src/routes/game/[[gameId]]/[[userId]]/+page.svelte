@@ -5,7 +5,7 @@
 	import Resigned from '$lib/components/game/modals/Resigned.svelte';
 	import GameEnded from '$lib/components/game/modals/GameEnded.svelte';
 	import Opponents from '$lib/components/game/players/Opponents.svelte';
-	import { gameId, player, resign, userId, winner } from '../../../../lib/stores/stores';
+	import { gameId, player, resign, url, userId, winner } from '../../../../lib/stores/stores';
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
@@ -38,16 +38,18 @@
 	});
 </script>
 
-<div class="container">
-	{#if !data.gameStarted && visible}
-		<Start bind:visible />
-	{/if}
-	<div class="leftWrap">
-		<Opponents />
-		<MoveBox />
+<div class="page">
+	<div class="container">
+		{#if !data.gameStarted && visible}
+			<Start bind:visible />
+		{/if}
+		<div class="leftWrap">
+			<Opponents />
+			<MoveBox />
+		</div>
+		<Game />
+		<Settings />
 	</div>
-	<Game />
-	<Settings />
 	{#if $resign.resigned}
 		<Resigned />
 	{/if}
@@ -57,11 +59,15 @@
 </div>
 
 <style>
+	.page {
+		background-image: url('/greyBG.jpg');
+		height: 100vh;
+		display: flex;
+	}
 	.container {
+		margin: auto;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		height: 100vh;
-		background-image: url('/greyBG.jpg');
 	}
 </style>
