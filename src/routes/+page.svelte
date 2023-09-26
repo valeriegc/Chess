@@ -22,10 +22,10 @@
 	let createAccountHover = false;
 	let logInHover = false;
 
-	$: console.log(form?.success);
+	$: console.log(form);
 	$: if (form && form.success) {
 		(email = form.newEmail), (password = form.newPassword);
-		regularSignIn();
+		setTimeout(() => regularSignIn(), 500);
 	}
 
 	const singInWithGoogle = async () => {
@@ -60,6 +60,7 @@
 			if (error instanceof Error) {
 				const errorCode = error.code;
 				const errorMessage = error.message;
+				console.error(error);
 			}
 		}
 	};

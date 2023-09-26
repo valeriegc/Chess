@@ -1,5 +1,4 @@
 import { getAuth } from 'firebase-admin/auth';
-import { getFirestore } from 'firebase/firestore';
 import {
 	C_CLIENT_EMAIL,
 	C_PROJECT_ID,
