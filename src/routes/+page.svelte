@@ -22,10 +22,9 @@
 	let createAccountHover = false;
 	let logInHover = false;
 
-	$: console.log(form);
 	$: if (form && form.success) {
 		(email = form.newEmail), (password = form.newPassword);
-		setTimeout(() => regularSignIn(), 500);
+		regularSignIn();
 	}
 
 	const singInWithGoogle = async () => {
