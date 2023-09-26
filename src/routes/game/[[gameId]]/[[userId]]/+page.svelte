@@ -39,10 +39,10 @@
 </script>
 
 <div class="page">
+	{#if !data.gameStarted && visible}
+		<Start bind:visible />
+	{/if}
 	<div class="container">
-		{#if !data.gameStarted && visible}
-			<Start bind:visible />
-		{/if}
 		<div class="leftWrap">
 			<Opponents />
 			<MoveBox />
