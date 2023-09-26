@@ -34,7 +34,7 @@
 		justify-content: center;
 		padding: 3rem;
 		position: relative;
-		background-image: url('greyBG.jpg');
+		background-image: url('/greyBG.jpg');
 		height: 100vh;
 	}
 	.grid {
