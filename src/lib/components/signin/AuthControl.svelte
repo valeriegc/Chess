@@ -1,28 +1,5 @@
 <script lang="ts">
-	import { db, user } from '$lib/firebase/firebase';
-	import { doc, getDoc } from 'firebase/firestore';
-	import { userStore } from '../../stores/stores';
-
-	const getUser = async () => {
-		if ($user) {
-			const userData = await getDoc(doc(db, 'users', $user.uid));
-			if (userData.exists()) {
-				const finalData = userData.data();
-				$userStore = {
-					email: finalData.email,
-					picture: finalData.picture,
-					lost: finalData.lost,
-					won: finalData.won,
-					played: finalData.played,
-					uid: finalData.uid
-				};
-			}
-		}
-	};
-
-	if ($user) {
-		getUser();
-	}
+	import { user } from '$lib/firebase/firebase';
 </script>
 
 {#if $user}
@@ -40,7 +17,7 @@
 	.outerAuthWrap {
 		display: flex;
 		background: black;
-		background-image: url('greyBG.jpg');
+		background-image: url('/greyBG.jpg');
 		height: 100vh;
 	}
 	.innerAuthWrap {
