@@ -1,5 +1,4 @@
 import type { Resign } from '$lib/interfaces/interfaces';
-import type { User } from 'firebase/auth';
 import { writable } from 'svelte/store';
 
 export const gameId = writable<string>();
@@ -12,7 +11,6 @@ export const authenticated = writable({
 });
 export const gameStarted = writable(false);
 export const player = writable<'white' | 'black'>('white');
-export const userStore = writable<User | null>(null);
 export const userId = writable<string>();
 export const waiting = writable(true);
 export const resign = writable<Resign>({
