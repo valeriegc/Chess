@@ -6,7 +6,6 @@ import { passwordInvalid } from '$lib/functions/signin/pwValidator';
 
 export const actions = {
 	default: async ({ request }) => {
-		let error = false;
 		const data = await request.formData();
 		const email = data.get('email') as string;
 		const displayName = email.substring(0, email.indexOf('@'));
@@ -25,27 +24,20 @@ export const actions = {
 			return fail(400, { passwordMismatch: true });
 		}
 
-		adminAuth
-			.createUser({
+		try {
+			const userRecord = await adminAuth.createUser({ email: email, password: password });
+			await setDoc(doc(db, 'users', userRecord.uid), {
 				email: email,
-				password: password
-			})
-			.then(async (userRecord) => {
-				await setDoc(doc(db, 'users', userRecord.uid), {
-					email: email,
-					userName: displayName,
-					picture: '',
-					played: 0,
-					lost: 0,
-					won: 0
-				});
-			})
-			.catch((error) => {
-				console.log('Error creating new user:', error);
-				error = true;
+				userName: displayName,
+				picture: '',
+				played: 0,
+				lost: 0,
+				won: 0
 			});
-		if (!error) {
 			return { success: true, newEmail: email, newPassword: password };
+		} catch (error) {
+			console.log('Error creating new user:', error);
+			return { error };
 		}
 	}
 };
