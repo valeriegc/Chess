@@ -20,6 +20,8 @@
 	let loginError = false;
 	export let form;
 	export let success: boolean;
+	export let newEmail: string;
+	export let newPassword: string;
 	let showError = true;
 	let forgotPw = true;
 	let open = false;
@@ -27,7 +29,8 @@
 	let logInHover = false;
 
 	$: if (success) {
-		goto('/profile');
+		(email = newEmail), (password = newPassword);
+		regularSignIn();
 	}
 
 	const singInWithGoogle = async () => {
@@ -80,6 +83,7 @@
 	};
 
 	const regularSignIn = async () => {
+		console.log('this ran');
 		setPersistence(auth, browserSessionPersistence);
 		try {
 			const { user } = await signInWithEmailAndPassword(auth, email, password);
