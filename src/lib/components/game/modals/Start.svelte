@@ -77,17 +77,16 @@
 <style>
 	.modalContainer {
 		position: absolute;
-		display: flex;
 		justify-content: center;
 		height: 100%;
 		width: 100%;
 		background-color: var(--modalBg);
 		transform: scale(1);
 		z-index: 100;
+		display: flex;
 	}
 	.modalWrap {
 		margin: auto;
-		width: 38rem;
 		background-image: url('/greyBG.jpg');
 		background-color: white;
 		color: whitesmoke;

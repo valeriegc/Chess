@@ -6,7 +6,6 @@
 
 	let hoveringChat = false;
 	let hoveringGiveup = false;
-	let hoveringTie = false;
 
 	interface Msg {
 		message: string;
@@ -14,28 +13,17 @@
 	}
 
 	export const controlMenu = (selectedBtn: string) => {
-		switch (selectedBtn) {
-			case 'chat':
-				chat = true;
-				giveup = false;
-				tie = false;
-				break;
-			case 'giveup':
-				chat = false;
-				giveup = true;
-				tie = false;
-				break;
-			case 'tie':
-				chat = false;
-				giveup = false;
-				tie = true;
-				break;
+		if (selectedBtn == 'chat') {
+			chat = true;
+			giveup = false;
+		} else {
+			chat = false;
+			giveup = true;
 		}
 	};
 
 	let chat = true;
 	let giveup = false;
-	let tie = false;
 	let msg = '';
 	let messages: Msg[] = [];
 
@@ -90,13 +78,6 @@
 			on:mouseleave={() => (hoveringGiveup = false)}
 			on:click={() => controlMenu('giveup')}
 			class="menuBtn"><img src="/resign.png" class="icon" /></button
-		>
-		<button
-			style={tie || hoveringTie ? 'border-bottom:solid whitesmoke 2px' : ''}
-			on:mouseover={() => (hoveringTie = true)}
-			on:mouseleave={() => (hoveringTie = false)}
-			on:click={() => controlMenu('tie')}
-			class="menuBtn"><img src="/tie.png" class="icon" /></button
 		>
 	</div>
 
