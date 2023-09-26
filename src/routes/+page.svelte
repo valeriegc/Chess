@@ -9,8 +9,6 @@
 		signInWithPopup,
 		browserSessionPersistence
 	} from 'firebase/auth';
-	import { doc, getDoc, setDoc } from 'firebase/firestore';
-	import { userStore } from '../lib/stores/stores.js';
 	import ForgotPw from '$lib/components/signin/ForgotPw.svelte';
 
 	let createAccount = false;
@@ -28,7 +26,8 @@
 	let createAccountHover = false;
 	let logInHover = false;
 
-	$: if (success) {
+	$: if (success == true) {
+		console.log('THIS RAN');
 		(email = newEmail), (password = newPassword);
 		regularSignIn();
 	}
@@ -45,45 +44,10 @@
 			},
 			body: JSON.stringify({ idToken })
 		});
-
-		const userObj = auth.currentUser;
-
-		if (userObj) {
-			const uid = userObj.uid;
-			const userRef = doc(db, 'users', uid);
-			const userDoc = await getDoc(userRef);
-			if (userDoc.exists()) {
-				const userDetails = await getDoc(userRef);
-				const userData = userDetails.data();
-				if (userData) {
-					$userStore = {
-						email: userData.email,
-						picture: userData.picture,
-						lost: userData.lost,
-						won: userData.won,
-						played: userData.played,
-						uid: userObj.uid
-					};
-				}
-				document.documentElement.dataset.theme = 'traditional';
-			} else {
-				await setDoc(doc(db, 'users', userObj.uid), {
-					email: userObj?.email,
-					userName: userObj?.displayName,
-					theme: 'bw',
-					picture: '',
-					played: 0,
-					lost: 0,
-					won: 0,
-					uid: uid
-				});
-			}
-			goto('/profile');
-		}
+		goto('/profile');
 	};
 
 	const regularSignIn = async () => {
-		console.log('this ran');
 		setPersistence(auth, browserSessionPersistence);
 		try {
 			const { user } = await signInWithEmailAndPassword(auth, email, password);
@@ -95,26 +59,6 @@
 				},
 				body: JSON.stringify({ idToken })
 			});
-			if (user) {
-				const uid = user.uid;
-				const userRef = doc(db, 'users', uid);
-				const userDoc = await getDoc(userRef);
-				if (userDoc.exists()) {
-					const userDetails = await getDoc(userRef);
-					const userData = userDetails.data();
-					if (userData) {
-						$userStore = {
-							email: userData.email,
-							picture: userData.picture,
-							lost: userData.lost,
-							won: userData.won,
-							played: userData.played,
-							uid: userData.uid
-						};
-						document.documentElement.dataset.theme = 'traditional';
-					}
-				}
-			}
 			goto('/profile');
 		} catch (error) {
 			//TO DO: Find a correct error type
