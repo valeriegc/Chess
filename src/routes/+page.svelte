@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import { auth, db } from '$lib/firebase/firebase';
+	import { auth } from '$lib/firebase/firebase';
 	import {
 		GoogleAuthProvider,
 		setPersistence,
@@ -9,8 +9,6 @@
 		signInWithPopup,
 		browserSessionPersistence
 	} from 'firebase/auth';
-	import { doc, getDoc, setDoc } from 'firebase/firestore';
-	import { userStore } from '../lib/stores/stores.js';
 	import ForgotPw from '$lib/components/signin/ForgotPw.svelte';
 
 	let createAccount = false;
@@ -19,15 +17,15 @@
 	let confirmationPassword = '';
 	let loginError = false;
 	export let form;
-	export let success: boolean;
-	let showError = true;
 	let forgotPw = true;
 	let open = false;
 	let createAccountHover = false;
 	let logInHover = false;
 
-	$: if (success) {
-		goto('/profile');
+	$: console.log(form);
+	$: if (form && form.success) {
+		(email = form.newEmail), (password = form.newPassword);
+		setTimeout(() => regularSignIn(), 500);
 	}
 
 	const singInWithGoogle = async () => {
@@ -42,41 +40,7 @@
 			},
 			body: JSON.stringify({ idToken })
 		});
-
-		const userObj = auth.currentUser;
-
-		if (userObj) {
-			const uid = userObj.uid;
-			const userRef = doc(db, 'users', uid);
-			const userDoc = await getDoc(userRef);
-			if (userDoc.exists()) {
-				const userDetails = await getDoc(userRef);
-				const userData = userDetails.data();
-				if (userData) {
-					$userStore = {
-						email: userData.email,
-						picture: userData.picture,
-						lost: userData.lost,
-						won: userData.won,
-						played: userData.played,
-						uid: userObj.uid
-					};
-				}
-				document.documentElement.dataset.theme = 'traditional';
-			} else {
-				await setDoc(doc(db, 'users', userObj.uid), {
-					email: userObj?.email,
-					userName: userObj?.displayName,
-					theme: 'bw',
-					picture: '',
-					played: 0,
-					lost: 0,
-					won: 0,
-					uid: uid
-				});
-			}
-			goto('/profile');
-		}
+		goto('/profile');
 	};
 
 	const regularSignIn = async () => {
@@ -84,46 +48,22 @@
 		try {
 			const { user } = await signInWithEmailAndPassword(auth, email, password);
 			const idToken = await user.getIdToken();
-			const res = await fetch('/api/signin', {
+			await fetch('/api/signin', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({ idToken })
 			});
-			if (user) {
-				const uid = user.uid;
-				const userRef = doc(db, 'users', uid);
-				const userDoc = await getDoc(userRef);
-				if (userDoc.exists()) {
-					const userDetails = await getDoc(userRef);
-					const userData = userDetails.data();
-					if (userData) {
-						$userStore = {
-							email: userData.email,
-							picture: userData.picture,
-							lost: userData.lost,
-							won: userData.won,
-							played: userData.played,
-							uid: userData.uid
-						};
-						document.documentElement.dataset.theme = 'traditional';
-					}
-				}
-			}
 			goto('/profile');
 		} catch (error) {
-			//TO DO: Find a correct error type
 			if (error instanceof Error) {
 				const errorCode = error.code;
 				const errorMessage = error.message;
+				console.error(error);
 			}
 		}
 	};
-
-	// BELOW THE OTHER SOLUTION
-
-	// When the user signs in with email and password.
 </script>
 
 <div class="pageWrap">
@@ -156,28 +96,21 @@
 						<input name="confirmPassword" type="password" placeholder="Confirm Password" />
 					{/if}
 				</div>
-				{#if loginError && showError}
-					<div class="error">
+				{#if loginError}
+					<div class="notify" id="error">
 						{loginError}
 						<div class="closeError">x</div>
 					</div>
 				{/if}
-				{#if form?.detailsMissing && showError}
-					<div class="error" on:click={() => (showError = false)}>
-						Please fill in all the fields
-						<div class="closeError">x</div>
-					</div>
-				{/if}
-				{#if form?.passwordError && showError}
-					<div class="error" on:click={() => (showError = false)}>
-						{form?.passwordError}
-						<div class="closeError">x</div>
-					</div>
-				{/if}
-				{#if form?.passwordMismatch && showError}
-					<div class="error" on:click={() => (showError = false)}>
-						The password and confirmation password do not match.
-						<div class="closeError">x</div>
+				{#if form?.detailsMissing || form?.passwordError || form?.passwordMismatch}
+					<div class="notify" id="error">
+						{#if form?.detailsMissing}
+							Please fill in all the fields
+						{:else if form?.passwordError}
+							{form.passwordError}
+						{:else if form?.passwordMismatch}
+							The passwords do not match.
+						{/if}
 					</div>
 				{/if}
 				<div class="contentWrap">
@@ -264,20 +197,21 @@
 		align-items: center;
 		gap: 0.5rem;
 	}
-	.error {
-		color: pink;
+	.notify {
+		padding: 0.75rem;
+		color: white;
+		border-radius: 5px;
 		font-size: small;
 		margin-bottom: 1rem;
 		position: relative;
 	}
-	.closeError {
-		color: lightpink;
-		position: absolute;
-		right: 0;
-		top: -1rem;
-		font-size: medium;
-		cursor: pointer;
+	#error {
+		background-color: darkred;
 	}
+	#success {
+		background-color: green;
+	}
+
 	.linkBox {
 		display: flex;
 		flex-direction: row;

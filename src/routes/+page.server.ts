@@ -6,8 +6,10 @@ import { passwordInvalid } from '$lib/functions/signin/pwValidator';
 
 export const actions = {
 	default: async ({ request }) => {
+		let error = false;
 		const data = await request.formData();
 		const email = data.get('email') as string;
+		const displayName = email.substring(0, email.indexOf('@'));
 		const password = data.get('password') as string;
 		const confirmPassword = data.get('confirmPassword');
 
@@ -30,17 +32,20 @@ export const actions = {
 			})
 			.then(async (userRecord) => {
 				await setDoc(doc(db, 'users', userRecord.uid), {
-					email: userRecord.email,
-					userName: userRecord.displayName,
+					email: email,
+					userName: displayName,
 					picture: '',
 					played: 0,
 					lost: 0,
 					won: 0
 				});
-				return { success: true };
 			})
 			.catch((error) => {
 				console.log('Error creating new user:', error);
+				error = true;
 			});
+		if (!error) {
+			return { success: true, newEmail: email, newPassword: password };
+		}
 	}
 };
