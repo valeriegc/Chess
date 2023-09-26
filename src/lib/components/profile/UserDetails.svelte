@@ -47,7 +47,9 @@
 					<img class="icon" src="cam.png" on:click={() => (open = true)} />
 				</div>
 				<div class="userPic">
-					<img src={$userPic} />
+					{#if $userPic}
+						<img src={$userPic} />
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -116,9 +118,10 @@
 		height: 8rem;
 		width: 8rem;
 		overflow: hidden;
-		background-color: var(--secondary);
+		background-color: transparent;
 		box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 		border-radius: 100%;
+		border: solid white 1px;
 	}
 	img {
 		height: 8rem;
