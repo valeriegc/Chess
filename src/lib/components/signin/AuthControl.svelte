@@ -1,17 +1,9 @@
-<script lang="ts">
-	import { user } from '$lib/firebase/firebase';
-</script>
-
-{#if $user}
-	<slot />
-{:else}
-	<div class="outerAuthWrap">
-		<div class="innerAuthWrap">
-			<p>You must be signed in to enter this page</p>
-			<a href="/">Sign in here</a>
-		</div>
+<div class="outerAuthWrap">
+	<div class="innerAuthWrap">
+		<p>You must be signed in to enter this page</p>
+		<a href="/">Sign in here</a>
 	</div>
-{/if}
+</div>
 
 <style>
 	.outerAuthWrap {

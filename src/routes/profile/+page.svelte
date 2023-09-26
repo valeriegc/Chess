@@ -2,10 +2,15 @@
 	import ChangePic from '$lib/components/profile/ChangePic.svelte';
 	import UserDetails from '$lib/components/profile/UserDetails.svelte';
 	import Stats from '$lib/components/profile/Stats.svelte';
+	import AuthControl from '$lib/components/signin/AuthControl.svelte';
 	export let data;
 	let open = false;
 	let userData = data.userData;
 </script>
+
+{#if !userData}
+	<AuthControl />
+{/if}
 
 {#if open && userData}
 	<ChangePic bind:open />
