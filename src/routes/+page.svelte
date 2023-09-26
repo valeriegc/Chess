@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import { auth, db } from '$lib/firebase/firebase';
+	import { auth } from '$lib/firebase/firebase';
 	import {
 		GoogleAuthProvider,
 		setPersistence,
@@ -17,18 +17,14 @@
 	let confirmationPassword = '';
 	let loginError = false;
 	export let form;
-	export let success: boolean;
-	export let newEmail: string;
-	export let newPassword: string;
-	let showError = true;
 	let forgotPw = true;
 	let open = false;
 	let createAccountHover = false;
 	let logInHover = false;
 
-	$: if (success == true) {
-		console.log('THIS RAN');
-		(email = newEmail), (password = newPassword);
+	$: console.log(form?.success);
+	$: if (form && form.success) {
+		(email = form.newEmail), (password = form.newPassword);
 		regularSignIn();
 	}
 
@@ -52,7 +48,7 @@
 		try {
 			const { user } = await signInWithEmailAndPassword(auth, email, password);
 			const idToken = await user.getIdToken();
-			const res = await fetch('/api/signin', {
+			await fetch('/api/signin', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -61,17 +57,12 @@
 			});
 			goto('/profile');
 		} catch (error) {
-			//TO DO: Find a correct error type
 			if (error instanceof Error) {
 				const errorCode = error.code;
 				const errorMessage = error.message;
 			}
 		}
 	};
-
-	// BELOW THE OTHER SOLUTION
-
-	// When the user signs in with email and password.
 </script>
 
 <div class="pageWrap">
@@ -104,28 +95,21 @@
 						<input name="confirmPassword" type="password" placeholder="Confirm Password" />
 					{/if}
 				</div>
-				{#if loginError && showError}
-					<div class="error">
+				{#if loginError}
+					<div class="notify" id="error">
 						{loginError}
 						<div class="closeError">x</div>
 					</div>
 				{/if}
-				{#if form?.detailsMissing && showError}
-					<div class="error" on:click={() => (showError = false)}>
-						Please fill in all the fields
-						<div class="closeError">x</div>
-					</div>
-				{/if}
-				{#if form?.passwordError && showError}
-					<div class="error" on:click={() => (showError = false)}>
-						{form?.passwordError}
-						<div class="closeError">x</div>
-					</div>
-				{/if}
-				{#if form?.passwordMismatch && showError}
-					<div class="error" on:click={() => (showError = false)}>
-						The password and confirmation password do not match.
-						<div class="closeError">x</div>
+				{#if form?.detailsMissing || form?.passwordError || form?.passwordMismatch}
+					<div class="notify" id="error">
+						{#if form?.detailsMissing}
+							Please fill in all the fields
+						{:else if form?.passwordError}
+							{form.passwordError}
+						{:else if form?.passwordMismatch}
+							The passwords do not match.
+						{/if}
 					</div>
 				{/if}
 				<div class="contentWrap">
@@ -212,20 +196,21 @@
 		align-items: center;
 		gap: 0.5rem;
 	}
-	.error {
-		color: pink;
+	.notify {
+		padding: 0.75rem;
+		color: white;
+		border-radius: 5px;
 		font-size: small;
 		margin-bottom: 1rem;
 		position: relative;
 	}
-	.closeError {
-		color: lightpink;
-		position: absolute;
-		right: 0;
-		top: -1rem;
-		font-size: medium;
-		cursor: pointer;
+	#error {
+		background-color: darkred;
 	}
+	#success {
+		background-color: green;
+	}
+
 	.linkBox {
 		display: flex;
 		flex-direction: row;
