@@ -16,8 +16,7 @@ Use without signin is also possible.
 
 **Sign-In:** 
 
-Firebase auth, Google OAuth. Authentication done with jwt tokens, that are validated on server side.
-Google auth provides client side JWTs.
+Firebase auth, Google OAuth.
 
 **Game:**
 Firebase Firestore used for both the game as well as the live chat on the game. 
