@@ -1,38 +1,34 @@
-# create-svelte
+CHESS 
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+A 2-player Chess game with a live chat, created with Svelte and Firebase (auth and firestore).
 
-## Creating a project
 
-If you're seeing this, you've probably already done this step. Congrats!
+![chess](https://github.com/valeriegc/chess/assets/96831644/d0cbc4cf-09bb-4112-8d82-7b27196ee903)
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+**Description**
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+**Use:** 
 
-## Developing
+A 2 player chess-game with a live chat, including statitics and profile features for users that have signed in.
+Use without signin is also possible. 
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+**Technologies:** 
 
-```bash
-npm run dev
+**Sign-In:** 
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+Firebase auth, Google OAuth. Authentication done with jwt tokens, that are validated on server side.
+Google auth provides client side JWTs.
 
-## Building
+**Game:**
+Firebase Firestore used for both the game as well as the live chat on the game. 
 
-To create a production version of your app:
+Other technologies used:
 
-```bash
-npm run build
-```
+Sveltekit for routing
+Typescript for type safety
+ESLint for code linting and Prettier for formatting
 
-You can preview the production build with `npm run preview`.
+Go test the project at [https://chess-mocha-iota.vercel.app/]! 
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Features to be added:
+- Error handling
