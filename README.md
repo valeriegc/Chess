@@ -1,9 +1,6 @@
-CHESS 
+[CHESS](https://github.com/valeriegc/chess/assets/96831644/d0cbc4cf-09bb-4112-8d82-7b27196ee903)
 
 A 2-player Chess game with a live chat, created with Svelte and Firebase (auth and firestore).
-
-
-![chess](https://github.com/valeriegc/chess/assets/96831644/d0cbc4cf-09bb-4112-8d82-7b27196ee903)
 
 **Description**
 
@@ -27,7 +24,7 @@ Sveltekit for routing
 Typescript for type safety
 ESLint for code linting and Prettier for formatting
 
-Go test the project at [https://chess-mocha-iota.vercel.app/]! 
+Go test the project at https://chess-mocha-iota.vercel.app/
 
 Features to be added:
 - Error handling
